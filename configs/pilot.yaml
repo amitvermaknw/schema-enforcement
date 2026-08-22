@@ -1,0 +1,28 @@
+# Pilot config — the smallest slice of the matrix.
+# Used by scripts/run_pilot.py for smoke-testing the harness.
+#
+# The full matrix (configs/full_matrix.yaml) sweeps all four dimensions;
+# the pilot fixes everything except inputs.
+
+experiment_name: pilot
+db_path: results/experiments.db
+
+paradigms:
+  - strict_repair
+
+topologies:
+  - sequential_3node
+
+schema_tiers:
+  - medium
+
+models:
+  - gpt-4o-mini
+
+max_retries: [3]
+
+inputs:
+  source: hardcoded         # or "hotpotqa"
+  n: 5
+
+temperature: 0.0

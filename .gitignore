@@ -1,0 +1,38 @@
+# Secrets
+.env
+*.pem
+service-account*.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# Experiment artifacts (do not commit — these can be many GB)
+results/*.db
+results/*.db-journal
+results/logs/
+data/hotpotqa/
+data/*.jsonl
+data/*.parquet
+
+# But keep the directory structure
+!results/.gitkeep
+!data/.gitkeep
+!figures/.gitkeep
+
+# Notebooks
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
