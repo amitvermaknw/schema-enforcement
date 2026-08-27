@@ -90,8 +90,15 @@ def _dispatch(messages: list, model: str, temperature: float) -> dict:
         if not _requires_default_temperature(model):
             kwargs["temperature"] = temperature
         resp = client.messages.create(**kwargs)
+        # Newer models (Sonnet 5, Opus 4.8, Fable 5) may return multi-block
+        # content: [ThinkingBlock(...), TextBlock(text=...)] when extended
+        # thinking is active. Older Claude models return a single TextBlock.
+        # Extract only the visible text blocks; ignore internal thinking.
+        text = "".join(
+            b.text for b in (resp.content or []) if hasattr(b, "text")
+        )
         return {
-            "raw": resp.content[0].text if resp.content else "",
+            "raw": text,
             "input_tokens": resp.usage.input_tokens,
             "output_tokens": resp.usage.output_tokens,
             "resolved_model": resp.model,

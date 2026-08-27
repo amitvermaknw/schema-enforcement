@@ -9,6 +9,19 @@ Usage examples:
     python3 scripts/run_crux.py --model claude-sonnet-5 --n 2 --dataset hotpotqa --schema-tier medium
     python3 scripts/run_crux.py --model claude-opus-4-8 --n 2 --dataset hotpotqa --schema-tier medium
 
+
+# Cheap tier
+python3 scripts/run_crux.py --model gpt-5.6-luna --n 2 --dataset hotpotqa
+python3 scripts/run_crux.py --model claude-haiku-4-5-20251001 --n 2 --dataset hotpotqa
+
+# Mid tier
+python3 scripts/run_crux.py --model gpt-5.6-terra --n 2 --dataset hotpotqa
+python3 scripts/run_crux.py --model claude-sonnet-5 --n 2 --dataset hotpotqa
+
+# Frontier tier
+python3 scripts/run_crux.py --model gpt-5.6-sol --n 2 --dataset hotpotqa
+python3 scripts/run_crux.py --model claude-opus-4-8 --n 2 --dataset hotpotqa
+
 Each run appends to results/experiments.db. Then:
     python scripts/analyze_crux.py
 """
