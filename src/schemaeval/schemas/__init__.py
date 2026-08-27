@@ -1,23 +1,23 @@
-"""Pydantic schemas organized by complexity tier.
+"""Pydantic schemas organized by complexity tier and topology.
 
-Two access patterns are supported:
+Access patterns:
+    from schemaeval.schemas import IdentifyOutput, GatherOutput, AnswerOutput
+    # -> resolves to `medium` tier (backward compat)
 
-1. Direct import (legacy — used by run_pilot.py):
-       from schemaeval.schemas import IdentifyOutput, GatherOutput, AnswerOutput
-   These always resolve to the `medium` tier for backward compatibility.
+    from schemaeval.schemas import get_schemas
+    IdentifyOutput, GatherOutput, AnswerOutput = get_schemas("medium")
+    IdentifyOutput, GatherOutput, AnswerOutput = get_schemas("medium_v2")
 
-2. Registry lookup (preferred — used by run_crux.py and future scripts):
-       from schemaeval.schemas import get_schemas
-       IdentifyOutput, GatherOutput, AnswerOutput = get_schemas("medium_v2")
-
-Adding a new tier:
-    1. Create schemas/<name>.py with IdentifyOutput, GatherOutput, AnswerOutput
-    2. Register it in SCHEMA_REGISTRY below
+    # For the 6-node topology:
+    from schemaeval.schemas.medium_6node import (
+        DecomposeOutput, VerifyOutput, RefineOutput
+    )
 """
 
-from schemaeval.schemas import medium, medium_v2
+from . import medium
+from . import medium_v2
+from . import medium_v3_loose_regex
 
-# Legacy direct imports — resolve to medium tier
 from schemaeval.schemas.medium import (
     IdentifyOutput,
     GatherOutput,
@@ -36,11 +36,16 @@ SCHEMA_REGISTRY: dict[str, tuple] = {
         medium_v2.GatherOutput,
         medium_v2.AnswerOutput,
     ),
+    "medium_v3_loose_regex": (
+        medium_v3_loose_regex.IdentifyOutput,
+        medium_v3_loose_regex.GatherOutput,
+        medium_v3_loose_regex.AnswerOutput,
+    ),
 }
 
 
 def get_schemas(tier: str) -> tuple:
-    """Return (IdentifyOutput, GatherOutput, AnswerOutput) classes for a tier."""
+    """Return (IdentifyOutput, GatherOutput, AnswerOutput) for a tier."""
     if tier not in SCHEMA_REGISTRY:
         raise ValueError(
             f"Unknown schema tier '{tier}'. "
