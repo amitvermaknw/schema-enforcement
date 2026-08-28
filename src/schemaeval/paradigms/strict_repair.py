@@ -15,6 +15,7 @@ from typing import Optional
 from pydantic import BaseModel, ValidationError
 
 from schemaeval.errors import summarize_parse_error, summarize_validation_error
+from schemaeval.prompts import build_system_prompt
 
 _openai_client = None
 _anthropic_client = None
@@ -113,18 +114,14 @@ def call_llm_strict_repair(
     model: str = "gpt-4o-mini",
     max_retries: int = 3,
     temperature: float = 0.0,
+    prompt_variant: str = "baseline",
 ) -> tuple[Optional[BaseModel], dict]:
     """Send prompt, validate response, repair on failure.
 
     Returns (validated_output_or_None, metrics).
     Each attempt entry includes resolved_model_version.
     """
-    schema_json = schema.model_json_schema()
-    system_msg = (
-        "You must respond with a single JSON object matching this schema.\n"
-        "Return ONLY the JSON — no markdown code fences, no prose, no explanation.\n\n"
-        f"Schema:\n{json.dumps(schema_json, indent=2)}"
-    )
+    system_msg = build_system_prompt(schema, variant=prompt_variant)
     messages = [
         {"role": "system", "content": system_msg},
         {"role": "user", "content": prompt},

@@ -2,25 +2,9 @@
 """Crux experiment runner: does failure-mode distribution differ across models?
 
 Usage examples:
-    python3 scripts/run_crux.py --model gpt-5.6-luna --n 2 --dataset hotpotqa --schema-tier medium
-    python3 scripts/run_crux.py --model gpt-5.6-terra --n 2 --dataset hotpotqa --schema-tier medium
-    python3 scripts/run_crux.py --model gpt-5.6-sol --n 2 --dataset hotpotqa --schema-tier medium
-    python3 scripts/run_crux.py --model claude-haiku-4-5-20251001 --n 2 --dataset hotpotqa --schema-tier medium
-    python3 scripts/run_crux.py --model claude-sonnet-5 --n 2 --dataset hotpotqa --schema-tier medium
-    python3 scripts/run_crux.py --model claude-opus-4-8 --n 2 --dataset hotpotqa --schema-tier medium
-
-
-# Cheap tier
-python3 scripts/run_crux.py --model gpt-5.6-luna --n 2 --dataset hotpotqa
-python3 scripts/run_crux.py --model claude-haiku-4-5-20251001 --n 2 --dataset hotpotqa
-
-# Mid tier
-python3 scripts/run_crux.py --model gpt-5.6-terra --n 2 --dataset hotpotqa
-python3 scripts/run_crux.py --model claude-sonnet-5 --n 2 --dataset hotpotqa
-
-# Frontier tier
-python3 scripts/run_crux.py --model gpt-5.6-sol --n 2 --dataset hotpotqa
-python3 scripts/run_crux.py --model claude-opus-4-8 --n 2 --dataset hotpotqa
+    python scripts/run_crux.py --model gpt-5.6-luna --n 30
+    python scripts/run_crux.py --model claude-sonnet-5 --n 30 --dataset financebench
+    python scripts/run_crux.py --model gpt-5.6-terra --n 30 --topology 6node
 
 Each run appends to results/experiments.db. Then:
     python scripts/analyze_crux.py
@@ -29,6 +13,7 @@ Each run appends to results/experiments.db. Then:
 import argparse
 import os
 import sys
+from functools import partial
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -40,6 +25,7 @@ load_dotenv(ROOT / ".env")
 from schemaeval.data import PILOT_SAMPLES, load_financebench, load_hotpotqa
 from schemaeval.db import init_db, log_run
 from schemaeval.paradigms import call_llm_strict_repair
+from schemaeval.prompts import available_variants as available_prompt_variants
 from schemaeval.schemas import available_tiers, get_schemas
 from schemaeval.topologies import run_sequential_graph
 
@@ -50,8 +36,8 @@ DB_PATH = os.getenv("DB_PATH", "results/experiments.db")
 def parse_args():
     p = argparse.ArgumentParser()
     p.add_argument("--model", required=True,
-                   help="Model name, e.g. gpt-4o-mini, gpt-4o, "
-                        "claude-haiku-4-5-20251001, claude-sonnet-4-6")
+                   help="Model name, e.g. gpt-5.6-luna, gpt-5.6-terra, "
+                        "claude-haiku-4-5-20251001, claude-sonnet-5")
     p.add_argument("--n", type=int, default=30,
                    help="Number of inputs (default: 30)")
     p.add_argument("--dataset", choices=["hotpotqa", "financebench", "hardcoded"],
@@ -59,13 +45,17 @@ def parse_args():
                    help="Task-input source (default: hotpotqa)")
     p.add_argument("--schema-tier", default="medium",
                    choices=available_tiers(),
-                   help="Which schema tier to use (default: medium)")
+                   help="Which schema tier to use (default: medium).")
+    p.add_argument("--prompt-variant", default="baseline",
+                   choices=available_prompt_variants(),
+                   help="System prompt variant (default: baseline). Used for "
+                        "Experiment E prompt-engineering ablation.")
     p.add_argument("--max-retries", type=int, default=3)
     return p.parse_args()
 
 
 def _check_key(model: str) -> None:
-    if model.startswith("gpt-") or model.startswith("o1-"):
+    if model.startswith("gpt-") or model.startswith("o1-") or model.startswith("o3") or model.startswith("o4"):
         if not os.getenv("OPENAI_API_KEY"):
             raise SystemExit("OPENAI_API_KEY not set in .env")
     elif model.startswith("claude-"):
@@ -93,39 +83,50 @@ def main():
     _check_key(args.model)
 
     questions = _load_inputs(args.dataset, args.n)
+
+    # Wrap the paradigm function so prompt_variant flows through the topology
+    # without changing topology function signatures.
+    paradigm_fn = partial(
+        call_llm_strict_repair, prompt_variant=args.prompt_variant
+    )
+
     schemas = get_schemas(args.schema_tier)
+    topology_label = "sequential_3node"
+
+    def run(q):
+        return run_sequential_graph(
+            q, paradigm_fn=paradigm_fn,
+            model=args.model, max_retries=args.max_retries,
+            schemas=schemas,
+        )
 
     conn = init_db(DB_PATH)
-    print(f"Model:       {args.model}")
-    print(f"Dataset:     {args.dataset}")
-    print(f"Schema tier: {args.schema_tier}")
-    print(f"Max retries: {args.max_retries}")
-    print(f"Inputs:      {len(questions)}")
-    print(f"Logging to:  {DB_PATH}\n")
+    print(f"Model:          {args.model}")
+    print(f"Dataset:        {args.dataset}")
+    print(f"Topology:       {topology_label}")
+    print(f"Schema tier:    {args.schema_tier}")
+    print(f"Prompt variant: {args.prompt_variant}")
+    print(f"Max retries:    {args.max_retries}")
+    print(f"Inputs:         {len(questions)}")
+    print(f"Logging to:     {DB_PATH}\n")
 
     n_success = 0
     n_repairs = 0
     total_tokens = 0
 
     for i, question in enumerate(questions, 1):
-        # Truncate the display so long FinanceBench prompts stay readable
         preview = question.replace("\n", " ")[:70]
         print(f"[{i}/{len(questions)}] {preview}...")
-        result = run_sequential_graph(
-            question,
-            paradigm_fn=call_llm_strict_repair,
-            model=args.model,
-            max_retries=args.max_retries,
-            schemas=schemas,
-        )
+        result = run(question)
         log_run(
             conn, result,
             paradigm="strict_repair",
-            topology="sequential_3node",
+            topology=topology_label,
             schema_tier=args.schema_tier,
             model=args.model,
             max_retries=args.max_retries,
             dataset=args.dataset,
+            prompt_variant=args.prompt_variant,
         )
         status = "OK" if result["graph_success"] else "FAIL"
         print(
@@ -140,7 +141,8 @@ def main():
 
     print("-" * 60)
     print(
-        f"Model={args.model} dataset={args.dataset} tier={args.schema_tier}: "
+        f"Model={args.model} dataset={args.dataset} topology={topology_label} "
+        f"tier={args.schema_tier} prompt={args.prompt_variant}: "
         f"{n_success}/{len(questions)} succeeded, "
         f"{n_repairs} total repairs, {total_tokens} total tokens"
     )

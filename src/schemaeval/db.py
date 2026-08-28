@@ -90,6 +90,17 @@ def _migrate(conn: sqlite3.Connection) -> None:
         conn.execute("UPDATE runs SET dataset = 'hotpotqa' WHERE dataset IS NULL")
         conn.commit()
 
+    # runs.prompt_variant — added for Experiment E (Haiku prompt ablation).
+    # Existing rows get 'baseline' since that's the prompt they were run under.
+    if "prompt_variant" not in cols_runs:
+        conn.execute(
+            "ALTER TABLE runs ADD COLUMN prompt_variant TEXT DEFAULT 'baseline'"
+        )
+        conn.execute(
+            "UPDATE runs SET prompt_variant = 'baseline' WHERE prompt_variant IS NULL"
+        )
+        conn.commit()
+
     # Post-migration indexes (must follow ALTER TABLE)
     conn.execute(
         "CREATE INDEX IF NOT EXISTS idx_attempts_version "
@@ -97,6 +108,10 @@ def _migrate(conn: sqlite3.Connection) -> None:
     )
     conn.execute(
         "CREATE INDEX IF NOT EXISTS idx_runs_dataset ON runs(dataset)"
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_runs_prompt_variant "
+        "ON runs(prompt_variant)"
     )
     conn.commit()
 
@@ -119,6 +134,7 @@ def log_run(
     model: str,
     max_retries: int,
     dataset: str = "hotpotqa",
+    prompt_variant: str = "baseline",
 ) -> None:
     """Log a graph run and all its node attempts."""
     conn.execute(
@@ -126,8 +142,8 @@ def log_run(
            (run_id, timestamp, paradigm, topology, schema_tier, model,
             max_retries, question, final_answer, graph_success,
             total_input_tokens, total_output_tokens, total_repairs,
-            total_latency_sec, dataset)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            total_latency_sec, dataset, prompt_variant)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
         (
             run_result["run_id"],
             datetime.now(timezone.utc).isoformat(),
@@ -140,6 +156,7 @@ def log_run(
             run_result["total_repairs"],
             run_result["total_latency_sec"],
             dataset,
+            prompt_variant,
         ),
     )
     for node_name, m in run_result["per_node"].items():
