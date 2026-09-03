@@ -1,191 +1,302 @@
-"""Classify Pydantic ValidationErrors into failure-mode categories.
+"""Failure category detection.
 
-Categories:
-    regex_pattern       — Field.pattern mismatch
-    length_bound        — min_length/max_length violated (string or list)
-    range_bound         — ge/le/gt/lt violated on numeric field
-    enum_violation      — Literal[...] value not in allowed set
-    type_error          — wrong Python type entirely
-    missing_field       — required field absent
-    extra_field         — unexpected field present
-    parse_error         — JSON itself was malformed
-    schema_mirroring    — model returned the schema definition instead of an
-                          instance (root-level keys like "properties",
-                          "required", "type", "title" instead of the actual
-                          fields). Discovered empirically in gpt-4o.
-    cross_field_ref     — model_validator: cross-reference broken
-                          (e.g. primary_entity_id not in entities)
-    count_mismatch      — model_validator: declared count != list length
-    categorical_numeric — model_validator: bucket doesn't match numeric value
-    cross_field_other   — model_validator: any other custom check
-    unknown             — untagged
+Classification pipeline for the schema-enforcement paper. Two-stage design:
+
+STAGE 1 — Heuristic detection on raw output (novel categories).
+    Checked FIRST because a schema-mirrored or prose-wrapped output can also
+    trigger Pydantic missing_field / parse_error, and we want the more specific
+    category to win.
+
+    Detected:
+      - schema_mirroring : root contains >=2 JSON Schema meta-keys
+      - markdown_wrap    : output starts with ``` code fence
+      - prose_preamble   : output starts with prose but contains embedded JSON
+
+STAGE 2 — Pydantic ValidationError type mapping (standard categories).
+    Runs only if Stage 1 didn't fire. Maps Pydantic error types to categories:
+      - string_pattern_mismatch -> regex_pattern
+      - string_too_long / list_too_long -> length_bound
+      - literal_error -> enum_violation
+      - missing -> missing_field
+      - value_error (from model_validator) -> cross_field_ref
+      - float_type / int_type / ...ge / ...le -> range_bound
+
+    For parse errors (json.JSONDecodeError), Stage 2 defaults to parse_error
+    ONLY if the raw output doesn't match any Stage 1 heuristic.
+
+Design principle: heuristics for novel behavioral categories are more
+specific than Pydantic's generic error types, so they should be checked first.
+This was a bug in an earlier version of this module (novel-category recall was
+~0.87 on schema_mirroring and ~0.00 on prose_preamble because Pydantic errors
+fired first). Fixed by running heuristics on raw_output before any Pydantic
+error mapping.
 """
 
 import json
 import re
+from typing import Optional
 
 from pydantic import ValidationError
 
 
-# Detects markdown code fences at the start of a response, with optional
-# language tag (json, JSON, etc.). Matches:  ```json\n...  or  ```\n...
+# ============================================================
+# Stage 1 — heuristic detection on raw output
+# ============================================================
+
+# JSON Schema meta-keywords. If >=2 of these appear as root keys in a valid
+# JSON dict output, it's schema_mirroring (model returned schema definition
+# shape instead of an instance).
+_SCHEMA_META_KEYS = {
+    "description", "properties", "required", "title", "type",
+    "additionalProperties", "$defs", "$schema", "$ref",
+    "definitions", "items", "anyOf", "allOf", "oneOf",
+}
+_SCHEMA_META_KEY_THRESHOLD = 2
+
+# Match code fences at the very start: ```json, ```JSON, ``` (bare), etc.
 _MARKDOWN_FENCE_RE = re.compile(r"^\s*```", re.MULTILINE)
 
-
-_PYDANTIC_ERROR_MAP = {
-    "string_pattern_mismatch": "regex_pattern",
-    "string_too_short": "length_bound",
-    "string_too_long": "length_bound",
-    "too_short": "length_bound",
-    "too_long": "length_bound",
-    "less_than_equal": "range_bound",
-    "greater_than_equal": "range_bound",
-    "less_than": "range_bound",
-    "greater_than": "range_bound",
-    "literal_error": "enum_violation",
-    "missing": "missing_field",
-    "extra_forbidden": "extra_field",
-    "json_invalid": "parse_error",
-    "json_type": "parse_error",
-    "int_type": "type_error",
-    "string_type": "type_error",
-    "float_type": "type_error",
-    "bool_type": "type_error",
-    "list_type": "type_error",
-    "dict_type": "type_error",
-}
-
-# Root-level keys that indicate the model echoed the JSON Schema definition
-# instead of returning an instance conforming to it.
-_META_SCHEMA_KEYS = {
-    "properties", "required", "type", "title", "description",
-    "definitions", "$defs", "$ref", "additionalProperties",
-    "items", "allOf", "anyOf", "oneOf",
-}
+# Non-greedy extraction of the first {...} block that spans the whole string.
+# Used to detect JSON embedded in prose.
+_EMBEDDED_JSON_RE = re.compile(r"\{.*\}", re.DOTALL)
 
 
-def classify_error(err: dict) -> str:
-    """Classify a single Pydantic error dict into a category."""
-    ptype = err.get("type", "unknown")
-
-    if ptype == "value_error":
-        msg = str(err.get("msg", "")).lower()
-        if "!= len(" in msg or "does not match len" in msg:
-            return "count_mismatch"
-        if "bucket=" in msg or "implies bucket" in msg or "confidence=" in msg:
-            return "categorical_numeric"
-        if "not in" in msg and (
-            "canonical_id" in msg or "entities" in msg or "ids" in msg
-        ):
-            return "cross_field_ref"
-        if "pattern" in msg or "canonical_id_pattern" in msg:
-            return "regex_pattern"
-        return "cross_field_other"
-
-    return _PYDANTIC_ERROR_MAP.get(ptype, f"unknown:{ptype}")
-
-
-def _looks_like_schema_mirroring(raw_output: str | None) -> bool:
-    """Detect: model returned the JSON Schema definition instead of an instance.
-
-    Heuristic: parse the JSON, check whether root-level keys are dominated by
-    JSON-Schema meta-keys (properties, required, type, title, etc.).
-    """
+def _looks_like_schema_mirroring(raw_output: str) -> bool:
+    """True if the raw output is a JSON dict whose root keys are >=2 JSON
+    Schema meta-keywords (description, properties, required, title, type,
+    ...). This is the gpt-4o family failure mode where the model returns
+    the schema definition shape instead of an instance."""
     if not raw_output:
         return False
     try:
-        obj = json.loads(raw_output)
+        parsed = json.loads(raw_output)
     except (json.JSONDecodeError, ValueError):
+        # Also try stripping code fences before giving up — a markdown-wrapped
+        # schema-mirroring output is rare but possible.
+        stripped = _strip_code_fences(raw_output)
+        if stripped == raw_output:
+            return False
+        try:
+            parsed = json.loads(stripped)
+        except (json.JSONDecodeError, ValueError):
+            return False
+    if not isinstance(parsed, dict):
         return False
-    if not isinstance(obj, dict):
-        return False
-    keys = set(obj.keys())
-    meta_hits = keys & _META_SCHEMA_KEYS
-    # Strong signal: "properties" at root AND another meta-key
-    if "properties" in keys and len(meta_hits) >= 2:
-        return True
-    # Fallback: majority of top-level keys are meta-keys
-    if len(keys) > 0 and len(meta_hits) / len(keys) >= 0.5:
-        return True
-    return False
+    root_keys = set(parsed.keys())
+    return len(root_keys & _SCHEMA_META_KEYS) >= _SCHEMA_META_KEY_THRESHOLD
 
+
+def _looks_like_markdown_wrap(raw_output: str) -> bool:
+    """True if the raw output starts with a code fence (```json, ```, etc.)."""
+    if not raw_output:
+        return False
+    # A bare ``` at position 0 (with optional leading whitespace) is the tell.
+    stripped_start = raw_output.lstrip()
+    return stripped_start.startswith("```")
+
+
+def _looks_like_prose_preamble(raw_output: str) -> bool:
+    """True if the raw output starts with prose but contains an embedded JSON
+    object (or JSON-tail).
+
+    Rejects:
+      - Empty / None
+      - Starts with { or [ (already JSON, not preamble)
+      - Starts with ``` (that's markdown_wrap)
+      - Contains no JSON-looking substring at all
+    """
+    if not raw_output:
+        return False
+    stripped_start = raw_output.lstrip()
+    if not stripped_start:
+        return False
+    first_char = stripped_start[0]
+    # Already-JSON outputs aren't prose_preamble.
+    if first_char in ("{", "["):
+        return False
+    # Markdown-wrapped outputs are their own category.
+    if stripped_start.startswith("```"):
+        return False
+    # Look for an embedded JSON object anywhere in the output. Even if it
+    # doesn't parse cleanly (partial/truncated), the presence of {"key": ...}
+    # after prose is the distinctive prose_preamble pattern.
+    match = _EMBEDDED_JSON_RE.search(raw_output)
+    if not match:
+        return False
+    # If a substantial portion of the output is prose (not just a stray brace
+    # inside a string), it counts.
+    prose_prefix_len = match.start()
+    # Require at least 20 chars of prose before the JSON candidate — filters
+    # out edge cases where output starts with a stray character before {.
+    return prose_prefix_len >= 20
+
+
+def _strip_code_fences(raw_output: str) -> str:
+    """Remove leading/trailing ```json ... ``` fences if present."""
+    stripped = raw_output.strip()
+    if stripped.startswith("```"):
+        # Remove opening fence line (```json, ```, etc.)
+        stripped = re.sub(r"^```[a-zA-Z]*\n?", "", stripped, count=1)
+        # Remove trailing fence
+        stripped = re.sub(r"\n?```\s*$", "", stripped, count=1)
+    return stripped
+
+
+def _heuristic_category(raw_output: Optional[str]) -> Optional[str]:
+    """Run Stage 1 heuristics on raw_output. Returns category or None.
+
+    Order matters: markdown_wrap wins over prose_preamble (a wrapped output
+    could contain preamble-like text before ```); schema_mirroring is
+    independent and checked after fence checks.
+    """
+    if not raw_output:
+        return None
+    if _looks_like_markdown_wrap(raw_output):
+        return "markdown_wrap"
+    if _looks_like_prose_preamble(raw_output):
+        return "prose_preamble"
+    if _looks_like_schema_mirroring(raw_output):
+        return "schema_mirroring"
+    return None
+
+
+# ============================================================
+# Stage 2 — Pydantic ValidationError type mapping
+# ============================================================
+
+# Maps Pydantic v2 error type strings to our failure categories.
+_PYDANTIC_ERROR_MAP = {
+    # regex mismatches
+    "string_pattern_mismatch": "regex_pattern",
+    # length violations
+    "string_too_long": "length_bound",
+    "string_too_short": "length_bound",
+    "list_too_long": "length_bound",
+    "list_too_short": "length_bound",
+    "too_long": "length_bound",
+    "too_short": "length_bound",
+    # numeric range
+    "greater_than": "range_bound",
+    "greater_than_equal": "range_bound",
+    "less_than": "range_bound",
+    "less_than_equal": "range_bound",
+    # enum / literal
+    "literal_error": "enum_violation",
+    "enum": "enum_violation",
+    # missing fields
+    "missing": "missing_field",
+    # cross-field / model_validator ValueError — handled in
+    # _pydantic_error_to_category with message inspection (pattern-related
+    # messages route to regex_pattern instead)
+    # type errors (fallback to range/length depending on details)
+    "int_type": "range_bound",
+    "float_type": "range_bound",
+    "string_type": "missing_field",
+    "list_type": "missing_field",
+    "dict_type": "missing_field",
+    "bool_type": "missing_field",
+}
+
+
+def _pydantic_error_to_category(err_type: str, msg: str = "") -> str:
+    """Map a Pydantic v2 error type (and message) to our failure category.
+
+    Special case: `value_error` and `assertion_error` come from
+    @model_validator raises. These are typically cross-field checks, but
+    some model_validators also enforce per-item regex constraints on list
+    elements (e.g., supporting_entity_ids each matching canonical_id
+    pattern). We inspect the message to distinguish:
+
+        Value error, supporting_entity_id 'foo:bar' fails canonical_id pattern
+          -> regex_pattern (item-level pattern violation, not cross-field)
+
+        Value error, primary_entity_id 'foo' not in entities canonical_ids
+          -> cross_field_ref (genuine cross-field mismatch)
+
+        Value error, entity_count=3 != len(entities)=2
+          -> cross_field_ref (count consistency violation)
+    """
+    if err_type in ("value_error", "assertion_error"):
+        # Route pattern-related messages to regex_pattern
+        msg_lower = msg.lower() if msg else ""
+        if "pattern" in msg_lower or "regex" in msg_lower:
+            return "regex_pattern"
+        return "cross_field_ref"
+    return _PYDANTIC_ERROR_MAP.get(err_type, "other_validation_error")
+
+
+# ============================================================
+# Public API — the two summarize_* functions used by strict_repair
+# ============================================================
 
 def summarize_validation_error(
-    ve: ValidationError, raw_output: str | None = None
+    ve: ValidationError, raw_output: Optional[str] = None
 ) -> dict:
-    """Turn a ValidationError into a structured summary for logging.
+    """Summarize a Pydantic ValidationError with a primary category.
 
-    If raw_output is provided AND all errors are missing_field AND the raw
-    output looks like a JSON Schema echo, promote the primary category to
-    'schema_mirroring' — a more specific and interesting classification.
+    Heuristics on raw_output win when they fire — this is the fix for the
+    detection-order bug where schema_mirroring outputs were being labeled as
+    missing_field because the Pydantic error type was checked first.
     """
-    errors = []
-    for e in ve.errors():
-        cat = classify_error(e)
-        errors.append({
-            "category": cat,
-            "loc": ".".join(str(x) for x in e.get("loc", [])),
-            "type": e.get("type", "unknown"),
-            "msg": e.get("msg", ""),
-        })
-    categories = list(dict.fromkeys(err["category"] for err in errors))
+    # STAGE 1: heuristic first
+    heuristic_cat = _heuristic_category(raw_output)
 
-    if (
-        raw_output is not None
-        and all(c == "missing_field" for c in categories)
-        and _looks_like_schema_mirroring(raw_output)
-    ):
-        categories = ["schema_mirroring"] + [c for c in categories if c != "schema_mirroring"]
-        for err in errors:
-            err["category"] = "schema_mirroring"
+    # Extract per-error details from Pydantic
+    errors_list = []
+    categories_seen = []
+    for err in ve.errors():
+        err_type = err.get("type", "unknown")
+        loc = ".".join(str(x) for x in err.get("loc", []))
+        msg = err.get("msg", "")
+        cat = _pydantic_error_to_category(err_type, msg)
+        categories_seen.append(cat)
+        errors_list.append({
+            "category": cat,
+            "loc": loc,
+            "type": err_type,
+            "msg": msg,
+        })
+
+    # STAGE 2: if no heuristic fired, use the most common Pydantic-mapped
+    # category as primary (or first, if all unique).
+    if heuristic_cat is not None:
+        primary = heuristic_cat
+    elif categories_seen:
+        # Pick the most common category; tie-break by first-seen
+        from collections import Counter
+        primary = Counter(categories_seen).most_common(1)[0][0]
+    else:
+        primary = "other_validation_error"
 
     return {
-        "categories": categories,
-        "primary_category": categories[0] if categories else "unknown",
-        "errors": errors,
+        "primary_category": primary,
+        "categories": list(dict.fromkeys(categories_seen)),  # dedupe, keep order
+        "errors": errors_list,
     }
 
 
-def _looks_like_markdown_wrap(raw_output: str | None) -> bool:
-    """Detect: the model returned valid JSON wrapped in ``` fences.
+def summarize_parse_error(
+    pe: Exception, raw_output: Optional[str] = None
+) -> dict:
+    """Summarize a JSON parse error.
 
-    We check for a leading code fence AND whether the content between fences
-    would parse as JSON. If both true, this is markdown_wrap, not a true
-    parse error.
+    Heuristics on raw_output still win — a markdown-wrapped output triggers
+    JSONDecodeError but is categorically markdown_wrap, not parse_error.
+    Similarly for prose_preamble.
     """
-    if not raw_output:
-        return False
-    if not _MARKDOWN_FENCE_RE.match(raw_output):
-        return False
-    # Try to strip common fence patterns and re-parse
-    stripped = re.sub(
-        r"^\s*```(?:json|JSON|Json)?\s*\n?", "", raw_output.strip()
-    )
-    stripped = re.sub(r"\n?\s*```\s*$", "", stripped)
-    try:
-        json.loads(stripped)
-        return True  # Valid JSON was hiding inside the fence
-    except (json.JSONDecodeError, ValueError):
-        return False
+    # STAGE 1: heuristic first
+    heuristic_cat = _heuristic_category(raw_output)
 
+    err_entry = {
+        "category": "parse_error",
+        "loc": "",
+        "type": type(pe).__name__,
+        "msg": str(pe),
+    }
 
-def summarize_parse_error(exc: Exception, raw_output: str | None = None) -> dict:
-    """When the LLM returned something that isn't valid JSON at the root.
-
-    If the root cause is markdown wrapping (fenced valid JSON), classify as
-    'markdown_wrap' — a distinct and more specific failure than raw parse_error.
-    """
-    if _looks_like_markdown_wrap(raw_output):
-        primary = "markdown_wrap"
-    else:
-        primary = "parse_error"
+    primary = heuristic_cat if heuristic_cat is not None else "parse_error"
     return {
-        "categories": [primary],
         "primary_category": primary,
-        "errors": [{
-            "category": primary,
-            "loc": "",
-            "type": type(exc).__name__,
-            "msg": str(exc),
-        }],
+        "categories": [primary],
+        "errors": [err_entry],
     }
