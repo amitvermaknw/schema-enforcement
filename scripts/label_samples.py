@@ -260,12 +260,78 @@ def _prompt_for_label(classifier_label: str) -> tuple[str | None, str | None]:
     return gt, notes
 
 
+def cmd_sample_additional(
+    conn: sqlite3.Connection, category: str, n: int
+) -> None:
+    """Add n additional samples of a specific category to the existing hand_labels
+    set. Uses a different random seed so we don't re-draw the same rows already
+    labeled. Never touches existing labels."""
+    init_labeling_table(conn)
+
+    # Rows already in hand_labels — exclude these from the new draw
+    existing_ids = {
+        row[0] for row in conn.execute(
+            "SELECT attempt_id FROM hand_labels"
+        ).fetchall()
+    }
+
+    # Candidate rows for this category not already in the label set
+    candidates = conn.execute(
+        """SELECT id FROM node_attempts
+           WHERE primary_category = ?
+             AND raw_output IS NOT NULL
+             AND length(raw_output) > 0""",
+        (category,),
+    ).fetchall()
+    candidate_ids = [row[0] for row in candidates if row[0] not in existing_ids]
+
+    n_available = len(candidate_ids)
+    if n_available == 0:
+        print(
+            f"No new candidates for '{category}' — all {len(candidates)} "
+            f"available rows are already in the hand_labels set."
+        )
+        return
+
+    n_to_sample = min(n, n_available)
+    # Different seed than initial draw, offset by category name so each
+    # additional draw is deterministic but distinct from initial sampling.
+    rng = random.Random(RANDOM_SEED + hash(category) % 10_000_000)
+    sampled_ids = rng.sample(candidate_ids, n_to_sample)
+
+    conn.executemany(
+        """INSERT INTO hand_labels
+           (attempt_id, classifier_label, ground_truth, notes, labeled_at)
+           VALUES (?, ?, NULL, NULL, NULL)""",
+        [(aid, category) for aid in sampled_ids],
+    )
+    conn.commit()
+
+    print(
+        f"Added {n_to_sample} additional '{category}' samples "
+        f"(available pool: {n_available}, already labeled: "
+        f"{len(candidates) - n_available})."
+    )
+    print("Next: `python scripts/label_samples.py label`")
+
+
 # ============================================================
 # Command: score
 # ============================================================
 
+def _wilson_ci(k: int, n: int, z: float = 1.96) -> tuple[float, float]:
+    """Wilson score 95% CI for proportion k/n. Returns (lower, upper)."""
+    if n == 0:
+        return (0.0, 1.0)
+    phat = k / n
+    denom = 1 + z**2 / n
+    center = (phat + z**2 / (2 * n)) / denom
+    half = (z * ((phat * (1 - phat) / n + z**2 / (4 * n**2)) ** 0.5)) / denom
+    return (max(0.0, center - half), min(1.0, center + half))
+
+
 def cmd_score(conn: sqlite3.Connection) -> None:
-    """Compute precision/recall per classifier category."""
+    """Compute precision/recall per classifier category, with Wilson 95% CIs."""
     init_labeling_table(conn)
 
     rows = conn.execute(
@@ -277,38 +343,72 @@ def cmd_score(conn: sqlite3.Connection) -> None:
         print("No labeled samples yet. Run `label` first.")
         return
 
-    # Per-category confusion counts
-    categories = sorted({r[0] for r in rows} | {r[1] for r in rows if r[1] != "ambiguous"})
+    categories = sorted(
+        {r[0] for r in rows} | {r[1] for r in rows if r[1] != "ambiguous"}
+    )
 
     print(f"\nScored on {len(rows)} labeled samples.\n")
 
-    # Overall agreement rate
     agree = sum(1 for cls, gt in rows if cls == gt)
     ambiguous = sum(1 for cls, gt in rows if gt == "ambiguous")
-    print(f"Overall classifier agreement: {agree}/{len(rows)} = {100*agree/len(rows):.1f}%")
-    print(f"Ambiguous cases:              {ambiguous}/{len(rows)} = {100*ambiguous/len(rows):.1f}%")
+    ov_lo, ov_hi = _wilson_ci(agree, len(rows))
+    print(
+        f"Overall classifier agreement: {agree}/{len(rows)} = "
+        f"{100*agree/len(rows):.1f}% "
+        f"[95% CI: {100*ov_lo:.1f}%-{100*ov_hi:.1f}%]"
+    )
+    print(
+        f"Ambiguous cases:              {ambiguous}/{len(rows)} = "
+        f"{100*ambiguous/len(rows):.1f}%"
+    )
     print()
 
-    # Per-category precision/recall
-    print(f"{'Category':<20} {'TP':>4} {'FP':>4} {'FN':>4} {'Precision':>10} {'Recall':>8} {'F1':>6}")
-    print("-" * 70)
+    print(
+        f"{'Category':<22} {'N':>4} {'TP':>4} {'FP':>4} {'FN':>4} "
+        f"{'Precision (95% CI)':>22} {'Recall (95% CI)':>22} {'F1':>6}"
+    )
+    print("-" * 92)
 
     for cat in categories:
         tp = sum(1 for cls, gt in rows if cls == cat and gt == cat)
-        fp = sum(1 for cls, gt in rows if cls == cat and gt != cat and gt != "ambiguous")
+        fp = sum(1 for cls, gt in rows
+                 if cls == cat and gt != cat and gt != "ambiguous")
         fn = sum(1 for cls, gt in rows if cls != cat and gt == cat)
+        n_support = tp + fn  # number of true-positive-eligible cases
 
-        prec = tp / (tp + fp) if (tp + fp) > 0 else 0.0
-        rec = tp / (tp + fn) if (tp + fn) > 0 else 0.0
-        f1 = 2 * prec * rec / (prec + rec) if (prec + rec) > 0 else 0.0
+        if (tp + fp) > 0:
+            prec = tp / (tp + fp)
+            p_lo, p_hi = _wilson_ci(tp, tp + fp)
+            prec_str = f"{prec:.2%} [{p_lo:.2%}, {p_hi:.2%}]"
+        else:
+            prec_str = "---"
+
+        if (tp + fn) > 0:
+            rec = tp / (tp + fn)
+            r_lo, r_hi = _wilson_ci(tp, tp + fn)
+            rec_str = f"{rec:.2%} [{r_lo:.2%}, {r_hi:.2%}]"
+        else:
+            rec_str = "---"
+
+        if (tp + fp) > 0 and (tp + fn) > 0 and (prec + rec) > 0:
+            f1 = 2 * prec * rec / (prec + rec)
+            f1_str = f"{f1:.3f}"
+        else:
+            f1_str = "---"
 
         print(
-            f"{cat:<20} {tp:>4} {fp:>4} {fn:>4} "
-            f"{prec:>9.2%} {rec:>7.2%} {f1:>6.3f}"
+            f"{cat:<22} {n_support:>4} {tp:>4} {fp:>4} {fn:>4} "
+            f"{prec_str:>22} {rec_str:>22} {f1_str:>6}"
         )
 
+    print(
+        "\nN = support (true count of this category in labeled set = TP + FN)."
+    )
+    print(
+        "Wilson 95% CIs: narrow interval = high confidence in the point estimate."
+    )
     print()
-    # Notable disagreements to inspect
+
     disagreements = conn.execute(
         """SELECT h.attempt_id, h.classifier_label, h.ground_truth, h.notes
            FROM hand_labels h
@@ -339,6 +439,16 @@ def main():
     sp_sample.add_argument("--force", action="store_true",
                            help="Rebuild even if samples exist (destroys labels!)")
 
+    sp_add = sub.add_parser(
+        "sample-additional",
+        help="Add more samples of a specific category (for tightening CIs)"
+    )
+    sp_add.add_argument("--category", required=True,
+                        choices=GROUND_TRUTH_CHOICES,
+                        help="Which category to draw additional samples from")
+    sp_add.add_argument("--n", type=int, default=20,
+                        help="Number of additional samples (default: 20)")
+
     sp_label = sub.add_parser("label", help="Label unlabeled samples interactively")
     sp_label.add_argument("--batch", type=int, default=25,
                           help="Max samples to label this session (default: 25)")
@@ -351,6 +461,8 @@ def main():
     try:
         if args.cmd == "sample":
             cmd_sample(conn, force=args.force)
+        elif args.cmd == "sample-additional":
+            cmd_sample_additional(conn, category=args.category, n=args.n)
         elif args.cmd == "label":
             cmd_label(conn, batch=args.batch)
         elif args.cmd == "score":

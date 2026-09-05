@@ -68,6 +68,12 @@ def reclassify_row(
         # Skip meta-entries like {"category": "api_error", ...}
         if not err_type:
             continue
+
+        stored_cat = err.get("category", "")
+        if stored_cat in ("parse_error", "api_error"):
+            pydantic_cats.append(stored_cat)
+            continue
+        
         # Re-map by err_type + msg; the stored "category" field may be stale
         pydantic_cats.append(_pydantic_error_to_category(err_type, msg))
 
