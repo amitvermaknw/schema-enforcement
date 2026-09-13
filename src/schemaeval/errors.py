@@ -195,6 +195,7 @@ _PYDANTIC_ERROR_MAP = {
     "list_type": "missing_field",
     "dict_type": "missing_field",
     "bool_type": "missing_field",
+    "json_invalid": "parse_error",
 }
 
 
