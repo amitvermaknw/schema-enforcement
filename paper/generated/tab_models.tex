@@ -1,0 +1,15 @@
+\begin{tabular}{@{}lrrrll@{}}
+\toprule
+Model & Att. & Fail & Rate & Wilson 95\% & Dominant category (share) \\
+\midrule
+\code{gpt-5.6-sol} & 255 & 9 & 3.5\% & [1.9, 6.6] & \cat{regex\_pattern} 88.9\% \\
+\code{gpt-5.6-luna} & 266 & 11 & 4.1\% & [2.3, 7.3] & \cat{regex\_pattern} 72.7\% \\
+\code{claude-opus-4-8} & 265 & 13 & 4.9\% & [2.9, 8.2] & \cat{length\_bound} 76.9\% \\
+\code{gpt-5.6-terra} & 266 & 14 & 5.3\% & [3.2, 8.6] & \cat{regex\_pattern} 85.7\% \\
+\code{gpt-4o-mini} & 242 & 33 & 13.6\% & [9.9, 18.5] & \cat{regex\_pattern} 66.7\% \\
+\code{claude-sonnet-4-6} & 178 & 28 & 15.7\% & [11.1, 21.8] & \cat{length\_bound} 64.3\% \\
+\code{gpt-4o} & 250 & 40 & 16.0\% & [12.0, 21.1] & \cat{schema\_mirroring} 72.5\% \\
+\code{claude-sonnet-5} & 313 & 67 & 21.4\% & [17.2, 26.3] & \cat{markdown\_wrap} 61.2\% \\
+\code{claude-haiku-4-5} & 1{,}329 & 878 & 66.1\% & [63.5, 68.6] & \cat{markdown\_wrap} 72.9\% \\
+\bottomrule
+\end{tabular}

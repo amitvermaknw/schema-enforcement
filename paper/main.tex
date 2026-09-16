@@ -1,0 +1,61 @@
+% =====================================================================
+% main.tex — TMLR submission, Paper #1
+% Build from repo root:  make paper   (numbers -> assets -> lint -> latexmk)
+% Requires tmlr.sty, tmlr.bst, fancyhdr.sty from the TMLR template in paper/.
+% Every result number comes from generated/numbers.tex via \pn{key}.
+% =====================================================================
+\documentclass[10pt]{article}
+\usepackage{tmlr}             % anonymous submission; [preprint] for arXiv
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage[capitalise,noabbrev]{cleveref}
+
+\lstset{basicstyle=\ttfamily\scriptsize,breaklines=true,columns=fullflexible,
+        showstringspaces=false,frame=single,
+        literate={—}{{---}}1 {–}{{--}}1 {’}{{'}}1}
+
+\newcommand{\cat}[1]{\texttt{\small #1}}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\idpattern}{\code{\^{}[a-z][a-z0-9\_]\{2,30\}\$}}
+\newcommand{\idpatternloose}{\code{\^{}[a-zA-Z0-9][a-zA-Z0-9\_\textbackslash-]\{2,30\}\$}}
+
+\input{generated/numbers}
+
+\title{When ``JSON Only'' Isn't Enough: A Fine-Grained Failure Taxonomy
+       for Prompt-Enforced Pydantic Schemas Across LLM Families}
+
+% Hidden automatically unless [accepted] or [preprint] is passed to tmlr.
+\author{\name Amit Verma \email TODO \\
+        \addr TODO}
+
+\def\month{MM}
+\def\year{2026}
+\def\openreview{\url{https://openreview.net/forum?id=XXXX}}
+
+\begin{document}
+\maketitle
+
+\input{abstract}
+
+\input{sections/01_introduction}
+\input{sections/02_related_work}
+\input{sections/03_setup}
+\input{sections/04_results}
+\input{sections/05_discussion}
+\input{sections/06_conclusion}
+
+\bibliography{references}
+\bibliographystyle{tmlr}
+
+\appendix
+\input{sections/appendix}
+
+\end{document}

@@ -1,0 +1,2781 @@
+{
+  "meta": {
+    "db": "results/archive/paper1_FINAL_DATA_locked_v4_20260913.db",
+    "sha256": "d0f406f00882dadb4c0aa0b1bea3a4a77b562c80ec46f19fe7d6ad7d4ebfbeb4",
+    "generated_utc": "2026-09-15T05:10:29.834589+00:00"
+  },
+  "numbers": {
+    "reported.attempts": {
+      "value": 3997,
+      "basis": "reported",
+      "note": ""
+    },
+    "reported.failures": {
+      "value": 1126,
+      "basis": "reported",
+      "note": ""
+    },
+    "reported.rate": {
+      "value": 0.281711,
+      "basis": "reported",
+      "note": ""
+    },
+    "reported.cells": {
+      "value": 18,
+      "basis": "reported",
+      "note": ""
+    },
+    "full.attempts": {
+      "value": 4396,
+      "basis": "full",
+      "note": ""
+    },
+    "full.failures": {
+      "value": 1326,
+      "basis": "full",
+      "note": ""
+    },
+    "full.rate": {
+      "value": 0.301638,
+      "basis": "full",
+      "note": ""
+    },
+    "full.cells": {
+      "value": 20,
+      "basis": "full",
+      "note": ""
+    },
+    "reported.models": {
+      "value": 9,
+      "basis": "reported",
+      "note": ""
+    },
+    "reported.categories_observed": {
+      "value": 7,
+      "basis": "reported",
+      "note": ""
+    },
+    "reported.cat.markdown_wrap": {
+      "value": 681,
+      "basis": "reported",
+      "note": ""
+    },
+    "reported.cat.length_bound": {
+      "value": 263,
+      "basis": "reported",
+      "note": ""
+    },
+    "reported.cat.regex_pattern": {
+      "value": 126,
+      "basis": "reported",
+      "note": ""
+    },
+    "reported.cat.schema_mirroring": {
+      "value": 38,
+      "basis": "reported",
+      "note": ""
+    },
+    "reported.cat.prose_preamble": {
+      "value": 9,
+      "basis": "reported",
+      "note": ""
+    },
+    "reported.cat.enum_violation": {
+      "value": 8,
+      "basis": "reported",
+      "note": ""
+    },
+    "reported.cat.parse_error": {
+      "value": 1,
+      "basis": "reported",
+      "note": ""
+    },
+    "manifest": {
+      "value": [
+        {
+          "model": "claude-haiku-4-5",
+          "tier": "medium",
+          "domain": "financebench",
+          "runs": 32,
+          "attempts": 263,
+          "failures": 186,
+          "excluded": false
+        },
+        {
+          "model": "claude-haiku-4-5",
+          "tier": "medium",
+          "domain": "hotpotqa",
+          "runs": 194,
+          "attempts": 1066,
+          "failures": 692,
+          "excluded": false
+        },
+        {
+          "model": "claude-opus-4-8",
+          "tier": "medium",
+          "domain": "financebench",
+          "runs": 30,
+          "attempts": 101,
+          "failures": 11,
+          "excluded": false
+        },
+        {
+          "model": "claude-opus-4-8",
+          "tier": "medium",
+          "domain": "hotpotqa",
+          "runs": 54,
+          "attempts": 164,
+          "failures": 2,
+          "excluded": false
+        },
+        {
+          "model": "claude-sonnet-4-6",
+          "tier": "medium",
+          "domain": "hotpotqa",
+          "runs": 50,
+          "attempts": 178,
+          "failures": 28,
+          "excluded": false
+        },
+        {
+          "model": "claude-sonnet-4-6",
+          "tier": "medium_v2",
+          "domain": "hotpotqa",
+          "runs": 100,
+          "attempts": 324,
+          "failures": 24,
+          "excluded": false
+        },
+        {
+          "model": "claude-sonnet-5",
+          "tier": "medium",
+          "domain": "financebench",
+          "runs": 30,
+          "attempts": 114,
+          "failures": 24,
+          "excluded": false
+        },
+        {
+          "model": "claude-sonnet-5",
+          "tier": "medium",
+          "domain": "hotpotqa",
+          "runs": 52,
+          "attempts": 199,
+          "failures": 43,
+          "excluded": false
+        },
+        {
+          "model": "gpt-4o",
+          "tier": "medium",
+          "domain": "hotpotqa",
+          "runs": 70,
+          "attempts": 250,
+          "failures": 40,
+          "excluded": false
+        },
+        {
+          "model": "gpt-4o-mini",
+          "tier": "medium",
+          "domain": "financebench",
+          "runs": 5,
+          "attempts": 28,
+          "failures": 13,
+          "excluded": true
+        },
+        {
+          "model": "gpt-4o-mini",
+          "tier": "medium",
+          "domain": "hotpotqa",
+          "runs": 70,
+          "attempts": 242,
+          "failures": 33,
+          "excluded": false
+        },
+        {
+          "model": "gpt-5.6-luna",
+          "tier": "medium",
+          "domain": "financebench",
+          "runs": 30,
+          "attempts": 97,
+          "failures": 7,
+          "excluded": false
+        },
+        {
+          "model": "gpt-5.6-luna",
+          "tier": "medium",
+          "domain": "hotpotqa",
+          "runs": 55,
+          "attempts": 169,
+          "failures": 4,
+          "excluded": false
+        },
+        {
+          "model": "gpt-5.6-luna",
+          "tier": "medium_v3_loose_regex",
+          "domain": "hotpotqa",
+          "runs": 2,
+          "attempts": 6,
+          "failures": 0,
+          "excluded": true
+        },
+        {
+          "model": "gpt-5.6-sol",
+          "tier": "medium",
+          "domain": "financebench",
+          "runs": 30,
+          "attempts": 96,
+          "failures": 6,
+          "excluded": false
+        },
+        {
+          "model": "gpt-5.6-sol",
+          "tier": "medium",
+          "domain": "hotpotqa",
+          "runs": 52,
+          "attempts": 159,
+          "failures": 3,
+          "excluded": false
+        },
+        {
+          "model": "gpt-5.6-sol",
+          "tier": "medium_v3_loose_regex",
+          "domain": "hotpotqa",
+          "runs": 50,
+          "attempts": 155,
+          "failures": 5,
+          "excluded": false
+        },
+        {
+          "model": "gpt-5.6-terra",
+          "tier": "medium",
+          "domain": "financebench",
+          "runs": 30,
+          "attempts": 98,
+          "failures": 8,
+          "excluded": false
+        },
+        {
+          "model": "gpt-5.6-terra",
+          "tier": "medium",
+          "domain": "hotpotqa",
+          "runs": 54,
+          "attempts": 168,
+          "failures": 6,
+          "excluded": false
+        },
+        {
+          "model": "gpt-5.6-terra",
+          "tier": "medium_v3_loose_regex",
+          "domain": "hotpotqa",
+          "runs": 50,
+          "attempts": 154,
+          "failures": 4,
+          "excluded": false
+        }
+      ],
+      "basis": "full",
+      "note": "baseline prompt; excluded = pilot"
+    },
+    "reported.exhaiku.attempts": {
+      "value": 2668,
+      "basis": "reported",
+      "note": ""
+    },
+    "reported.exhaiku.failures": {
+      "value": 248,
+      "basis": "reported",
+      "note": ""
+    },
+    "reported.exhaiku.rate": {
+      "value": 0.092954,
+      "basis": "reported",
+      "note": ""
+    },
+    "reported.haiku.failures": {
+      "value": 878,
+      "basis": "reported",
+      "note": ""
+    },
+    "groups": {
+      "value": [
+        {
+          "model": "claude-haiku-4-5",
+          "tier": "medium",
+          "attempts": 1329,
+          "failures": 878,
+          "rate": 0.6606471030850264,
+          "ci": [
+            0.6347602364031312,
+            0.6856079492912103
+          ],
+          "runs": 166,
+          "attempts_per_run": 8.006024096385541,
+          "dominant": "markdown_wrap",
+          "dominant_share": 0.7289293849658315,
+          "dominant_ci": [
+            0.6985767589688163,
+            0.7572874963928868
+          ],
+          "composition": {
+            "markdown_wrap": 640,
+            "length_bound": 216,
+            "regex_pattern": 22
+          }
+        },
+        {
+          "model": "claude-opus-4-8",
+          "tier": "medium",
+          "attempts": 265,
+          "failures": 13,
+          "rate": 0.04905660377358491,
+          "ci": [
+            0.028889986956007203,
+            0.08211022486203748
+          ],
+          "runs": 84,
+          "attempts_per_run": 3.1547619047619047,
+          "dominant": "length_bound",
+          "dominant_share": 0.7692307692307693,
+          "dominant_ci": [
+            0.49743623839480355,
+            0.918204713457304
+          ],
+          "composition": {
+            "length_bound": 10,
+            "regex_pattern": 3
+          }
+        },
+        {
+          "model": "claude-sonnet-4-6",
+          "tier": "medium",
+          "attempts": 178,
+          "failures": 28,
+          "rate": 0.15730337078651685,
+          "ci": [
+            0.11113168282760837,
+            0.21795421017746158
+          ],
+          "runs": 50,
+          "attempts_per_run": 3.56,
+          "dominant": "length_bound",
+          "dominant_share": 0.6428571428571429,
+          "dominant_ci": [
+            0.45830306373230584,
+            0.792941705856417
+          ],
+          "composition": {
+            "length_bound": 18,
+            "regex_pattern": 7,
+            "enum_violation": 2,
+            "prose_preamble": 1
+          }
+        },
+        {
+          "model": "claude-sonnet-4-6",
+          "tier": "medium_v2",
+          "attempts": 324,
+          "failures": 24,
+          "rate": 0.07407407407407407,
+          "ci": [
+            0.05027990124108445,
+            0.10784976014523406
+          ],
+          "runs": 100,
+          "attempts_per_run": 3.24,
+          "dominant": "regex_pattern",
+          "dominant_share": 0.5833333333333334,
+          "dominant_ci": [
+            0.38834665724338885,
+            0.7553239749980565
+          ],
+          "composition": {
+            "regex_pattern": 14,
+            "prose_preamble": 8,
+            "enum_violation": 2
+          }
+        },
+        {
+          "model": "claude-sonnet-5",
+          "tier": "medium",
+          "attempts": 313,
+          "failures": 67,
+          "rate": 0.21405750798722045,
+          "ci": [
+            0.17222796357484665,
+            0.26282071776877136
+          ],
+          "runs": 82,
+          "attempts_per_run": 3.817073170731707,
+          "dominant": "markdown_wrap",
+          "dominant_share": 0.6119402985074627,
+          "dominant_ci": [
+            0.4922308957805443,
+            0.7195095205925068
+          ],
+          "composition": {
+            "markdown_wrap": 41,
+            "regex_pattern": 13,
+            "length_bound": 12,
+            "parse_error": 1
+          }
+        },
+        {
+          "model": "gpt-4o",
+          "tier": "medium",
+          "attempts": 250,
+          "failures": 40,
+          "rate": 0.16,
+          "ci": [
+            0.11975380484485336,
+            0.21053683897193476
+          ],
+          "runs": 70,
+          "attempts_per_run": 3.5714285714285716,
+          "dominant": "schema_mirroring",
+          "dominant_share": 0.725,
+          "dominant_ci": [
+            0.5716504406714658,
+            0.8389198382222256
+          ],
+          "composition": {
+            "schema_mirroring": 29,
+            "regex_pattern": 8,
+            "enum_violation": 3
+          }
+        },
+        {
+          "model": "gpt-4o-mini",
+          "tier": "medium",
+          "attempts": 242,
+          "failures": 33,
+          "rate": 0.13636363636363635,
+          "ci": [
+            0.09877322551585319,
+            0.1853182340740396
+          ],
+          "runs": 70,
+          "attempts_per_run": 3.4571428571428573,
+          "dominant": "regex_pattern",
+          "dominant_share": 0.6666666666666666,
+          "dominant_ci": [
+            0.4960789429360725,
+            0.8024977240586366
+          ],
+          "composition": {
+            "regex_pattern": 22,
+            "schema_mirroring": 9,
+            "length_bound": 2
+          }
+        },
+        {
+          "model": "gpt-5.6-luna",
+          "tier": "medium",
+          "attempts": 266,
+          "failures": 11,
+          "rate": 0.041353383458646614,
+          "ci": [
+            0.02324544738191136,
+            0.0725198919711631
+          ],
+          "runs": 85,
+          "attempts_per_run": 3.1294117647058823,
+          "dominant": "regex_pattern",
+          "dominant_share": 0.7272727272727273,
+          "dominant_ci": [
+            0.4343546966810743,
+            0.9025394078669138
+          ],
+          "composition": {
+            "regex_pattern": 8,
+            "length_bound": 3
+          }
+        },
+        {
+          "model": "gpt-5.6-sol",
+          "tier": "medium",
+          "attempts": 255,
+          "failures": 9,
+          "rate": 0.03529411764705882,
+          "ci": [
+            0.018677483263435466,
+            0.06570412614215994
+          ],
+          "runs": 82,
+          "attempts_per_run": 3.1097560975609757,
+          "dominant": "regex_pattern",
+          "dominant_share": 0.8888888888888888,
+          "dominant_ci": [
+            0.565000291629209,
+            0.9801091125830901
+          ],
+          "composition": {
+            "regex_pattern": 8,
+            "length_bound": 1
+          }
+        },
+        {
+          "model": "gpt-5.6-sol",
+          "tier": "medium_v3_loose_regex",
+          "attempts": 155,
+          "failures": 5,
+          "rate": 0.03225806451612903,
+          "ci": [
+            0.013855877033378736,
+            0.07328421207673122
+          ],
+          "runs": 50,
+          "attempts_per_run": 3.1,
+          "dominant": "regex_pattern",
+          "dominant_share": 1.0,
+          "dominant_ci": [
+            0.5655175313406071,
+            1.0
+          ],
+          "composition": {
+            "regex_pattern": 5
+          }
+        },
+        {
+          "model": "gpt-5.6-terra",
+          "tier": "medium",
+          "attempts": 266,
+          "failures": 14,
+          "rate": 0.05263157894736842,
+          "ci": [
+            0.03160709420297304,
+            0.08639352369059958
+          ],
+          "runs": 84,
+          "attempts_per_run": 3.1666666666666665,
+          "dominant": "regex_pattern",
+          "dominant_share": 0.8571428571428571,
+          "dominant_ci": [
+            0.600586202762663,
+            0.959906079092351
+          ],
+          "composition": {
+            "regex_pattern": 12,
+            "enum_violation": 1,
+            "length_bound": 1
+          }
+        },
+        {
+          "model": "gpt-5.6-terra",
+          "tier": "medium_v3_loose_regex",
+          "attempts": 154,
+          "failures": 4,
+          "rate": 0.025974025974025976,
+          "ci": [
+            0.010146123815540038,
+            0.06487509662440355
+          ],
+          "runs": 50,
+          "attempts_per_run": 3.08,
+          "dominant": "regex_pattern",
+          "dominant_share": 1.0,
+          "dominant_ci": [
+            0.5101091596030786,
+            0.9999999999999999
+          ],
+          "composition": {
+            "regex_pattern": 4
+          }
+        }
+      ],
+      "basis": "reported",
+      "note": "model@tier, pooled over domains"
+    },
+    "reported.medium.macro_rate": {
+      "value": 0.167412,
+      "basis": "reported",
+      "note": "unweighted mean over models"
+    },
+    "reported.medium.median_rate": {
+      "value": 0.136364,
+      "basis": "reported",
+      "note": ""
+    },
+    "cells": {
+      "value": [
+        {
+          "model": "claude-haiku-4-5",
+          "tier": "medium",
+          "domain": "financebench",
+          "attempts": 263,
+          "failures": 186,
+          "rate": 0.7072243346007605,
+          "ci": [
+            0.6495628417945233,
+            0.7589194100151121
+          ],
+          "runs": 32,
+          "attempts_per_run": 8.21875,
+          "dominant": "markdown_wrap",
+          "dominant_share": 0.6344086021505376,
+          "dominant_ci": [
+            0.5631278446933924,
+            0.7002498194619594
+          ],
+          "composition": {
+            "markdown_wrap": 118,
+            "length_bound": 62,
+            "regex_pattern": 6
+          }
+        },
+        {
+          "model": "claude-haiku-4-5",
+          "tier": "medium",
+          "domain": "hotpotqa",
+          "attempts": 1066,
+          "failures": 692,
+          "rate": 0.649155722326454,
+          "ci": [
+            0.6200181666554079,
+            0.6772221369055738
+          ],
+          "runs": 134,
+          "attempts_per_run": 7.955223880597015,
+          "dominant": "markdown_wrap",
+          "dominant_share": 0.7543352601156069,
+          "dominant_ci": [
+            0.7209153594812399,
+            0.7849469968174352
+          ],
+          "composition": {
+            "markdown_wrap": 522,
+            "length_bound": 154,
+            "regex_pattern": 16
+          }
+        },
+        {
+          "model": "claude-opus-4-8",
+          "tier": "medium",
+          "domain": "financebench",
+          "attempts": 101,
+          "failures": 11,
+          "rate": 0.10891089108910891,
+          "ci": [
+            0.0619112806608893,
+            0.1845700174537651
+          ],
+          "runs": 30,
+          "attempts_per_run": 3.3666666666666667,
+          "dominant": "length_bound",
+          "dominant_share": 0.9090909090909091,
+          "dominant_ci": [
+            0.6226415608917041,
+            0.9837678272946745
+          ],
+          "composition": {
+            "length_bound": 10,
+            "regex_pattern": 1
+          }
+        },
+        {
+          "model": "claude-opus-4-8",
+          "tier": "medium",
+          "domain": "hotpotqa",
+          "attempts": 164,
+          "failures": 2,
+          "rate": 0.012195121951219513,
+          "ci": [
+            0.003350738063428692,
+            0.04336870142167364
+          ],
+          "runs": 54,
+          "attempts_per_run": 3.037037037037037,
+          "dominant": "regex_pattern",
+          "dominant_share": 1.0,
+          "dominant_ci": [
+            0.3423802239546494,
+            1.0
+          ],
+          "composition": {
+            "regex_pattern": 2
+          }
+        },
+        {
+          "model": "claude-sonnet-4-6",
+          "tier": "medium",
+          "domain": "hotpotqa",
+          "attempts": 178,
+          "failures": 28,
+          "rate": 0.15730337078651685,
+          "ci": [
+            0.11113168282760837,
+            0.21795421017746158
+          ],
+          "runs": 50,
+          "attempts_per_run": 3.56,
+          "dominant": "length_bound",
+          "dominant_share": 0.6428571428571429,
+          "dominant_ci": [
+            0.45830306373230584,
+            0.792941705856417
+          ],
+          "composition": {
+            "length_bound": 18,
+            "regex_pattern": 7,
+            "enum_violation": 2,
+            "prose_preamble": 1
+          }
+        },
+        {
+          "model": "claude-sonnet-4-6",
+          "tier": "medium_v2",
+          "domain": "hotpotqa",
+          "attempts": 324,
+          "failures": 24,
+          "rate": 0.07407407407407407,
+          "ci": [
+            0.05027990124108445,
+            0.10784976014523406
+          ],
+          "runs": 100,
+          "attempts_per_run": 3.24,
+          "dominant": "regex_pattern",
+          "dominant_share": 0.5833333333333334,
+          "dominant_ci": [
+            0.38834665724338885,
+            0.7553239749980565
+          ],
+          "composition": {
+            "regex_pattern": 14,
+            "prose_preamble": 8,
+            "enum_violation": 2
+          }
+        },
+        {
+          "model": "claude-sonnet-5",
+          "tier": "medium",
+          "domain": "financebench",
+          "attempts": 114,
+          "failures": 24,
+          "rate": 0.21052631578947367,
+          "ci": [
+            0.14575299726384547,
+            0.29417247016877435
+          ],
+          "runs": 30,
+          "attempts_per_run": 3.8,
+          "dominant": "length_bound",
+          "dominant_share": 0.4166666666666667,
+          "dominant_ci": [
+            0.24467602500194355,
+            0.6116533427566112
+          ],
+          "composition": {
+            "length_bound": 10,
+            "regex_pattern": 8,
+            "markdown_wrap": 6
+          }
+        },
+        {
+          "model": "claude-sonnet-5",
+          "tier": "medium",
+          "domain": "hotpotqa",
+          "attempts": 199,
+          "failures": 43,
+          "rate": 0.21608040201005024,
+          "ci": [
+            0.16456399546719888,
+            0.27835067975149863
+          ],
+          "runs": 52,
+          "attempts_per_run": 3.826923076923077,
+          "dominant": "markdown_wrap",
+          "dominant_share": 0.813953488372093,
+          "dominant_ci": [
+            0.6738299621842189,
+            0.9025824862073323
+          ],
+          "composition": {
+            "markdown_wrap": 35,
+            "regex_pattern": 5,
+            "length_bound": 2,
+            "parse_error": 1
+          }
+        },
+        {
+          "model": "gpt-4o",
+          "tier": "medium",
+          "domain": "hotpotqa",
+          "attempts": 250,
+          "failures": 40,
+          "rate": 0.16,
+          "ci": [
+            0.11975380484485336,
+            0.21053683897193476
+          ],
+          "runs": 70,
+          "attempts_per_run": 3.5714285714285716,
+          "dominant": "schema_mirroring",
+          "dominant_share": 0.725,
+          "dominant_ci": [
+            0.5716504406714658,
+            0.8389198382222256
+          ],
+          "composition": {
+            "schema_mirroring": 29,
+            "regex_pattern": 8,
+            "enum_violation": 3
+          }
+        },
+        {
+          "model": "gpt-4o-mini",
+          "tier": "medium",
+          "domain": "hotpotqa",
+          "attempts": 242,
+          "failures": 33,
+          "rate": 0.13636363636363635,
+          "ci": [
+            0.09877322551585319,
+            0.1853182340740396
+          ],
+          "runs": 70,
+          "attempts_per_run": 3.4571428571428573,
+          "dominant": "regex_pattern",
+          "dominant_share": 0.6666666666666666,
+          "dominant_ci": [
+            0.4960789429360725,
+            0.8024977240586366
+          ],
+          "composition": {
+            "regex_pattern": 22,
+            "schema_mirroring": 9,
+            "length_bound": 2
+          }
+        },
+        {
+          "model": "gpt-5.6-luna",
+          "tier": "medium",
+          "domain": "financebench",
+          "attempts": 97,
+          "failures": 7,
+          "rate": 0.07216494845360824,
+          "ci": [
+            0.035394158115352604,
+            0.14153167258189864
+          ],
+          "runs": 30,
+          "attempts_per_run": 3.2333333333333334,
+          "dominant": "regex_pattern",
+          "dominant_share": 0.5714285714285714,
+          "dominant_ci": [
+            0.25045836275303557,
+            0.8417801460075546
+          ],
+          "composition": {
+            "regex_pattern": 4,
+            "length_bound": 3
+          }
+        },
+        {
+          "model": "gpt-5.6-luna",
+          "tier": "medium",
+          "domain": "hotpotqa",
+          "attempts": 169,
+          "failures": 4,
+          "rate": 0.023668639053254437,
+          "ci": [
+            0.00924188100442051,
+            0.05926864278969113
+          ],
+          "runs": 55,
+          "attempts_per_run": 3.0727272727272728,
+          "dominant": "regex_pattern",
+          "dominant_share": 1.0,
+          "dominant_ci": [
+            0.5101091596030786,
+            0.9999999999999999
+          ],
+          "composition": {
+            "regex_pattern": 4
+          }
+        },
+        {
+          "model": "gpt-5.6-sol",
+          "tier": "medium",
+          "domain": "financebench",
+          "attempts": 96,
+          "failures": 6,
+          "rate": 0.0625,
+          "ci": [
+            0.028956674141654502,
+            0.12970946574448544
+          ],
+          "runs": 30,
+          "attempts_per_run": 3.2,
+          "dominant": "regex_pattern",
+          "dominant_share": 0.8333333333333334,
+          "dominant_ci": [
+            0.4364971749742326,
+            0.969946630588185
+          ],
+          "composition": {
+            "regex_pattern": 5,
+            "length_bound": 1
+          }
+        },
+        {
+          "model": "gpt-5.6-sol",
+          "tier": "medium",
+          "domain": "hotpotqa",
+          "attempts": 159,
+          "failures": 3,
+          "rate": 0.018867924528301886,
+          "ci": [
+            0.00643721091877426,
+            0.05399862003549134
+          ],
+          "runs": 52,
+          "attempts_per_run": 3.0576923076923075,
+          "dominant": "regex_pattern",
+          "dominant_share": 1.0,
+          "dominant_ci": [
+            0.43850296436068037,
+            1.0
+          ],
+          "composition": {
+            "regex_pattern": 3
+          }
+        },
+        {
+          "model": "gpt-5.6-sol",
+          "tier": "medium_v3_loose_regex",
+          "domain": "hotpotqa",
+          "attempts": 155,
+          "failures": 5,
+          "rate": 0.03225806451612903,
+          "ci": [
+            0.013855877033378736,
+            0.07328421207673122
+          ],
+          "runs": 50,
+          "attempts_per_run": 3.1,
+          "dominant": "regex_pattern",
+          "dominant_share": 1.0,
+          "dominant_ci": [
+            0.5655175313406071,
+            1.0
+          ],
+          "composition": {
+            "regex_pattern": 5
+          }
+        },
+        {
+          "model": "gpt-5.6-terra",
+          "tier": "medium",
+          "domain": "financebench",
+          "attempts": 98,
+          "failures": 8,
+          "rate": 0.08163265306122448,
+          "ci": [
+            0.04194405875209637,
+            0.15288287223700833
+          ],
+          "runs": 30,
+          "attempts_per_run": 3.2666666666666666,
+          "dominant": "regex_pattern",
+          "dominant_share": 0.875,
+          "dominant_ci": [
+            0.5291118149439162,
+            0.9775825088000281
+          ],
+          "composition": {
+            "regex_pattern": 7,
+            "length_bound": 1
+          }
+        },
+        {
+          "model": "gpt-5.6-terra",
+          "tier": "medium",
+          "domain": "hotpotqa",
+          "attempts": 168,
+          "failures": 6,
+          "rate": 0.03571428571428571,
+          "ci": [
+            0.016469091979866304,
+            0.07571738609373352
+          ],
+          "runs": 54,
+          "attempts_per_run": 3.111111111111111,
+          "dominant": "regex_pattern",
+          "dominant_share": 0.8333333333333334,
+          "dominant_ci": [
+            0.4364971749742326,
+            0.969946630588185
+          ],
+          "composition": {
+            "regex_pattern": 5,
+            "enum_violation": 1
+          }
+        },
+        {
+          "model": "gpt-5.6-terra",
+          "tier": "medium_v3_loose_regex",
+          "domain": "hotpotqa",
+          "attempts": 154,
+          "failures": 4,
+          "rate": 0.025974025974025976,
+          "ci": [
+            0.010146123815540038,
+            0.06487509662440355
+          ],
+          "runs": 50,
+          "attempts_per_run": 3.08,
+          "dominant": "regex_pattern",
+          "dominant_share": 1.0,
+          "dominant_ci": [
+            0.5101091596030786,
+            0.9999999999999999
+          ],
+          "composition": {
+            "regex_pattern": 4
+          }
+        }
+      ],
+      "basis": "reported",
+      "note": "per-domain"
+    },
+    "models": {
+      "value": [
+        {
+          "model": "claude-haiku-4-5",
+          "attempts": 1329,
+          "failures": 878,
+          "rate": 0.6606471030850264,
+          "ci": [
+            0.6347602364031312,
+            0.6856079492912103
+          ],
+          "runs": 166,
+          "attempts_per_run": 8.006024096385541,
+          "dominant": "markdown_wrap",
+          "dominant_share": 0.7289293849658315,
+          "dominant_ci": [
+            0.6985767589688163,
+            0.7572874963928868
+          ],
+          "composition": {
+            "markdown_wrap": 640,
+            "length_bound": 216,
+            "regex_pattern": 22
+          }
+        },
+        {
+          "model": "claude-opus-4-8",
+          "attempts": 265,
+          "failures": 13,
+          "rate": 0.04905660377358491,
+          "ci": [
+            0.028889986956007203,
+            0.08211022486203748
+          ],
+          "runs": 84,
+          "attempts_per_run": 3.1547619047619047,
+          "dominant": "length_bound",
+          "dominant_share": 0.7692307692307693,
+          "dominant_ci": [
+            0.49743623839480355,
+            0.918204713457304
+          ],
+          "composition": {
+            "length_bound": 10,
+            "regex_pattern": 3
+          }
+        },
+        {
+          "model": "claude-sonnet-4-6",
+          "attempts": 502,
+          "failures": 52,
+          "rate": 0.10358565737051793,
+          "ci": [
+            0.07987108165742718,
+            0.13332112903996204
+          ],
+          "runs": 150,
+          "attempts_per_run": 3.3466666666666667,
+          "dominant": "regex_pattern",
+          "dominant_share": 0.40384615384615385,
+          "dominant_ci": [
+            0.281597337866733,
+            0.5393242461975851
+          ],
+          "composition": {
+            "regex_pattern": 21,
+            "length_bound": 18,
+            "prose_preamble": 9,
+            "enum_violation": 4
+          }
+        },
+        {
+          "model": "claude-sonnet-5",
+          "attempts": 313,
+          "failures": 67,
+          "rate": 0.21405750798722045,
+          "ci": [
+            0.17222796357484665,
+            0.26282071776877136
+          ],
+          "runs": 82,
+          "attempts_per_run": 3.817073170731707,
+          "dominant": "markdown_wrap",
+          "dominant_share": 0.6119402985074627,
+          "dominant_ci": [
+            0.4922308957805443,
+            0.7195095205925068
+          ],
+          "composition": {
+            "markdown_wrap": 41,
+            "regex_pattern": 13,
+            "length_bound": 12,
+            "parse_error": 1
+          }
+        },
+        {
+          "model": "gpt-4o",
+          "attempts": 250,
+          "failures": 40,
+          "rate": 0.16,
+          "ci": [
+            0.11975380484485336,
+            0.21053683897193476
+          ],
+          "runs": 70,
+          "attempts_per_run": 3.5714285714285716,
+          "dominant": "schema_mirroring",
+          "dominant_share": 0.725,
+          "dominant_ci": [
+            0.5716504406714658,
+            0.8389198382222256
+          ],
+          "composition": {
+            "schema_mirroring": 29,
+            "regex_pattern": 8,
+            "enum_violation": 3
+          }
+        },
+        {
+          "model": "gpt-4o-mini",
+          "attempts": 242,
+          "failures": 33,
+          "rate": 0.13636363636363635,
+          "ci": [
+            0.09877322551585319,
+            0.1853182340740396
+          ],
+          "runs": 70,
+          "attempts_per_run": 3.4571428571428573,
+          "dominant": "regex_pattern",
+          "dominant_share": 0.6666666666666666,
+          "dominant_ci": [
+            0.4960789429360725,
+            0.8024977240586366
+          ],
+          "composition": {
+            "regex_pattern": 22,
+            "schema_mirroring": 9,
+            "length_bound": 2
+          }
+        },
+        {
+          "model": "gpt-5.6-luna",
+          "attempts": 266,
+          "failures": 11,
+          "rate": 0.041353383458646614,
+          "ci": [
+            0.02324544738191136,
+            0.0725198919711631
+          ],
+          "runs": 85,
+          "attempts_per_run": 3.1294117647058823,
+          "dominant": "regex_pattern",
+          "dominant_share": 0.7272727272727273,
+          "dominant_ci": [
+            0.4343546966810743,
+            0.9025394078669138
+          ],
+          "composition": {
+            "regex_pattern": 8,
+            "length_bound": 3
+          }
+        },
+        {
+          "model": "gpt-5.6-sol",
+          "attempts": 410,
+          "failures": 14,
+          "rate": 0.03414634146341464,
+          "ci": [
+            0.02044735051207002,
+            0.056493850515421114
+          ],
+          "runs": 132,
+          "attempts_per_run": 3.106060606060606,
+          "dominant": "regex_pattern",
+          "dominant_share": 0.9285714285714286,
+          "dominant_ci": [
+            0.6853129533326209,
+            0.9872777848933957
+          ],
+          "composition": {
+            "regex_pattern": 13,
+            "length_bound": 1
+          }
+        },
+        {
+          "model": "gpt-5.6-terra",
+          "attempts": 420,
+          "failures": 18,
+          "rate": 0.04285714285714286,
+          "ci": [
+            0.02727854693507859,
+            0.06672230655965772
+          ],
+          "runs": 134,
+          "attempts_per_run": 3.1343283582089554,
+          "dominant": "regex_pattern",
+          "dominant_share": 0.8888888888888888,
+          "dominant_ci": [
+            0.6720023466389031,
+            0.9689804776352089
+          ],
+          "composition": {
+            "regex_pattern": 16,
+            "enum_violation": 1,
+            "length_bound": 1
+          }
+        }
+      ],
+      "basis": "reported",
+      "note": "all tiers pooled"
+    },
+    "first_attempt_by_node": {
+      "value": [
+        {
+          "model": "claude-haiku-4-5",
+          "tier": "medium",
+          "node": "answer",
+          "reached": 143,
+          "first_attempt_valid": 0.0,
+          "composition": {
+            "markdown_wrap": 143
+          }
+        },
+        {
+          "model": "claude-haiku-4-5",
+          "tier": "medium",
+          "node": "gather",
+          "reached": 166,
+          "first_attempt_valid": 0.0,
+          "composition": {
+            "markdown_wrap": 166
+          }
+        },
+        {
+          "model": "claude-haiku-4-5",
+          "tier": "medium",
+          "node": "identify",
+          "reached": 166,
+          "first_attempt_valid": 0.0,
+          "composition": {
+            "markdown_wrap": 166
+          }
+        },
+        {
+          "model": "claude-opus-4-8",
+          "tier": "medium",
+          "node": "answer",
+          "reached": 84,
+          "first_attempt_valid": 0.8928571428571429,
+          "composition": {
+            "length_bound": 9
+          }
+        },
+        {
+          "model": "claude-opus-4-8",
+          "tier": "medium",
+          "node": "gather",
+          "reached": 84,
+          "first_attempt_valid": 1.0,
+          "composition": {}
+        },
+        {
+          "model": "claude-opus-4-8",
+          "tier": "medium",
+          "node": "identify",
+          "reached": 84,
+          "first_attempt_valid": 0.9642857142857143,
+          "composition": {
+            "regex_pattern": 3
+          }
+        },
+        {
+          "model": "claude-sonnet-4-6",
+          "tier": "medium",
+          "node": "answer",
+          "reached": 50,
+          "first_attempt_valid": 0.84,
+          "composition": {
+            "length_bound": 7,
+            "prose_preamble": 1
+          }
+        },
+        {
+          "model": "claude-sonnet-4-6",
+          "tier": "medium",
+          "node": "gather",
+          "reached": 50,
+          "first_attempt_valid": 0.82,
+          "composition": {
+            "length_bound": 9
+          }
+        },
+        {
+          "model": "claude-sonnet-4-6",
+          "tier": "medium",
+          "node": "identify",
+          "reached": 50,
+          "first_attempt_valid": 0.82,
+          "composition": {
+            "regex_pattern": 7,
+            "enum_violation": 2
+          }
+        },
+        {
+          "model": "claude-sonnet-4-6",
+          "tier": "medium_v2",
+          "node": "answer",
+          "reached": 100,
+          "first_attempt_valid": 0.96,
+          "composition": {
+            "prose_preamble": 4
+          }
+        },
+        {
+          "model": "claude-sonnet-4-6",
+          "tier": "medium_v2",
+          "node": "gather",
+          "reached": 100,
+          "first_attempt_valid": 0.96,
+          "composition": {
+            "prose_preamble": 4
+          }
+        },
+        {
+          "model": "claude-sonnet-4-6",
+          "tier": "medium_v2",
+          "node": "identify",
+          "reached": 100,
+          "first_attempt_valid": 0.84,
+          "composition": {
+            "regex_pattern": 14,
+            "enum_violation": 2
+          }
+        },
+        {
+          "model": "claude-sonnet-5",
+          "tier": "medium",
+          "node": "answer",
+          "reached": 82,
+          "first_attempt_valid": 0.8658536585365854,
+          "composition": {
+            "length_bound": 11
+          }
+        },
+        {
+          "model": "claude-sonnet-5",
+          "tier": "medium",
+          "node": "gather",
+          "reached": 82,
+          "first_attempt_valid": 0.7682926829268293,
+          "composition": {
+            "markdown_wrap": 17,
+            "length_bound": 1,
+            "parse_error": 1
+          }
+        },
+        {
+          "model": "claude-sonnet-5",
+          "tier": "medium",
+          "node": "identify",
+          "reached": 82,
+          "first_attempt_valid": 0.6463414634146342,
+          "composition": {
+            "markdown_wrap": 20,
+            "regex_pattern": 9
+          }
+        },
+        {
+          "model": "gpt-4o",
+          "tier": "medium",
+          "node": "answer",
+          "reached": 70,
+          "first_attempt_valid": 0.5857142857142857,
+          "composition": {
+            "schema_mirroring": 29
+          }
+        },
+        {
+          "model": "gpt-4o",
+          "tier": "medium",
+          "node": "gather",
+          "reached": 70,
+          "first_attempt_valid": 1.0,
+          "composition": {}
+        },
+        {
+          "model": "gpt-4o",
+          "tier": "medium",
+          "node": "identify",
+          "reached": 70,
+          "first_attempt_valid": 0.8428571428571429,
+          "composition": {
+            "regex_pattern": 8,
+            "enum_violation": 3
+          }
+        },
+        {
+          "model": "gpt-4o-mini",
+          "tier": "medium",
+          "node": "answer",
+          "reached": 70,
+          "first_attempt_valid": 0.8571428571428571,
+          "composition": {
+            "schema_mirroring": 8,
+            "length_bound": 2
+          }
+        },
+        {
+          "model": "gpt-4o-mini",
+          "tier": "medium",
+          "node": "gather",
+          "reached": 70,
+          "first_attempt_valid": 1.0,
+          "composition": {}
+        },
+        {
+          "model": "gpt-4o-mini",
+          "tier": "medium",
+          "node": "identify",
+          "reached": 70,
+          "first_attempt_valid": 0.7857142857142857,
+          "composition": {
+            "regex_pattern": 15
+          }
+        },
+        {
+          "model": "gpt-5.6-luna",
+          "tier": "medium",
+          "node": "answer",
+          "reached": 85,
+          "first_attempt_valid": 0.9647058823529412,
+          "composition": {
+            "length_bound": 3
+          }
+        },
+        {
+          "model": "gpt-5.6-luna",
+          "tier": "medium",
+          "node": "gather",
+          "reached": 85,
+          "first_attempt_valid": 1.0,
+          "composition": {}
+        },
+        {
+          "model": "gpt-5.6-luna",
+          "tier": "medium",
+          "node": "identify",
+          "reached": 85,
+          "first_attempt_valid": 0.9058823529411765,
+          "composition": {
+            "regex_pattern": 8
+          }
+        },
+        {
+          "model": "gpt-5.6-sol",
+          "tier": "medium",
+          "node": "answer",
+          "reached": 82,
+          "first_attempt_valid": 0.9878048780487805,
+          "composition": {
+            "length_bound": 1
+          }
+        },
+        {
+          "model": "gpt-5.6-sol",
+          "tier": "medium",
+          "node": "gather",
+          "reached": 82,
+          "first_attempt_valid": 1.0,
+          "composition": {}
+        },
+        {
+          "model": "gpt-5.6-sol",
+          "tier": "medium",
+          "node": "identify",
+          "reached": 82,
+          "first_attempt_valid": 0.9024390243902439,
+          "composition": {
+            "regex_pattern": 8
+          }
+        },
+        {
+          "model": "gpt-5.6-sol",
+          "tier": "medium_v3_loose_regex",
+          "node": "answer",
+          "reached": 50,
+          "first_attempt_valid": 0.98,
+          "composition": {
+            "regex_pattern": 1
+          }
+        },
+        {
+          "model": "gpt-5.6-sol",
+          "tier": "medium_v3_loose_regex",
+          "node": "gather",
+          "reached": 50,
+          "first_attempt_valid": 1.0,
+          "composition": {}
+        },
+        {
+          "model": "gpt-5.6-sol",
+          "tier": "medium_v3_loose_regex",
+          "node": "identify",
+          "reached": 50,
+          "first_attempt_valid": 0.92,
+          "composition": {
+            "regex_pattern": 4
+          }
+        },
+        {
+          "model": "gpt-5.6-terra",
+          "tier": "medium",
+          "node": "answer",
+          "reached": 84,
+          "first_attempt_valid": 0.9880952380952381,
+          "composition": {
+            "length_bound": 1
+          }
+        },
+        {
+          "model": "gpt-5.6-terra",
+          "tier": "medium",
+          "node": "gather",
+          "reached": 84,
+          "first_attempt_valid": 1.0,
+          "composition": {}
+        },
+        {
+          "model": "gpt-5.6-terra",
+          "tier": "medium",
+          "node": "identify",
+          "reached": 84,
+          "first_attempt_valid": 0.8452380952380952,
+          "composition": {
+            "regex_pattern": 12,
+            "enum_violation": 1
+          }
+        },
+        {
+          "model": "gpt-5.6-terra",
+          "tier": "medium_v3_loose_regex",
+          "node": "answer",
+          "reached": 50,
+          "first_attempt_valid": 1.0,
+          "composition": {}
+        },
+        {
+          "model": "gpt-5.6-terra",
+          "tier": "medium_v3_loose_regex",
+          "node": "gather",
+          "reached": 50,
+          "first_attempt_valid": 1.0,
+          "composition": {}
+        },
+        {
+          "model": "gpt-5.6-terra",
+          "tier": "medium_v3_loose_regex",
+          "node": "identify",
+          "reached": 50,
+          "first_attempt_valid": 0.92,
+          "composition": {
+            "regex_pattern": 4
+          }
+        }
+      ],
+      "basis": "reported",
+      "note": "denominator = runs that reached the node"
+    },
+    "ablation.aggressive.attempts": {
+      "value": 189,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.aggressive.failures": {
+      "value": 99,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.aggressive.failure_rate": {
+      "value": 0.52381,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.aggressive.markdown_wrap": {
+      "value": 0.338624,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.aggressive.markdown_wrap_n": {
+      "value": 64,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.aggressive.length_bound": {
+      "value": 0.164021,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.aggressive.length_bound_n": {
+      "value": 31,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.aggressive.regex_pattern": {
+      "value": 0.021164,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.aggressive.regex_pattern_n": {
+      "value": 4,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.baseline.attempts": {
+      "value": 1066,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.baseline.failures": {
+      "value": 692,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.baseline.failure_rate": {
+      "value": 0.649156,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.baseline.markdown_wrap": {
+      "value": 0.489681,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.baseline.markdown_wrap_n": {
+      "value": 522,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.baseline.length_bound": {
+      "value": 0.144465,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.baseline.length_bound_n": {
+      "value": 154,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.baseline.regex_pattern": {
+      "value": 0.015009,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.baseline.regex_pattern_n": {
+      "value": 16,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.few_shot.attempts": {
+      "value": 176,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.few_shot.failures": {
+      "value": 88,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.few_shot.failure_rate": {
+      "value": 0.5,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.few_shot.markdown_wrap": {
+      "value": 0.25,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.few_shot.markdown_wrap_n": {
+      "value": 44,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.few_shot.length_bound": {
+      "value": 0.227273,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.few_shot.length_bound_n": {
+      "value": 40,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.few_shot.regex_pattern": {
+      "value": 0.022727,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.few_shot.regex_pattern_n": {
+      "value": 4,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.delta.markdown_wrap_pp": {
+      "value": 23.9681,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.delta.markdown_wrap_rel": {
+      "value": 0.489464,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.delta.failure_rate_pp": {
+      "value": 14.9156,
+      "basis": "ablation",
+      "note": ""
+    },
+    "fence.table.rows": {
+      "value": 789,
+      "basis": "full",
+      "note": ""
+    },
+    "fence.table.outcomes": {
+      "value": {
+        "pure_formatting": 379,
+        "compound_length_bound": 378,
+        "compound_regex_pattern": 31,
+        "compound_missing_field": 1
+      },
+      "basis": "full",
+      "note": ""
+    },
+    "fence.table.missing_rows": {
+      "value": 0,
+      "basis": "full",
+      "note": ""
+    },
+    "fence.claude-haiku-4-5.n": {
+      "value": 640,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.claude-haiku-4-5.pure": {
+      "value": 290,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.claude-haiku-4-5.compound": {
+      "value": 350,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.claude-haiku-4-5.pure_share": {
+      "value": 0.453125,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.claude-haiku-4-5.compound_share": {
+      "value": 0.546875,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.claude-haiku-4-5.compound_ci": {
+      "value": [
+        0.5081429476559945,
+        0.5850476960534875
+      ],
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.claude-haiku-4-5.concealed.length_bound": {
+      "value": 327,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.claude-haiku-4-5.concealed.regex_pattern": {
+      "value": 22,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.claude-haiku-4-5.concealed.missing_field": {
+      "value": 1,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.claude-haiku-4-5.concealed_length_share": {
+      "value": 0.510938,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.claude-sonnet-5.n": {
+      "value": 41,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.claude-sonnet-5.pure": {
+      "value": 37,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.claude-sonnet-5.compound": {
+      "value": 4,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.claude-sonnet-5.pure_share": {
+      "value": 0.902439,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.claude-sonnet-5.compound_share": {
+      "value": 0.097561,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.claude-sonnet-5.compound_ci": {
+      "value": [
+        0.038597084629737835,
+        0.2254768143181673
+      ],
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.claude-sonnet-5.concealed.regex_pattern": {
+      "value": 4,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.claude-sonnet-5.concealed_length_share": {
+      "value": 0.0,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.reported.n": {
+      "value": 681,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.reported.pure": {
+      "value": 327,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.reported.compound": {
+      "value": 354,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.reported.pure_share": {
+      "value": 0.480176,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.reported.compound_share": {
+      "value": 0.519824,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.reported.compound_ci": {
+      "value": [
+        0.4822943490771991,
+        0.5571308341529534
+      ],
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.reported.concealed.length_bound": {
+      "value": 327,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.reported.concealed.regex_pattern": {
+      "value": 26,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.reported.concealed.missing_field": {
+      "value": 1,
+      "basis": "reported",
+      "note": ""
+    },
+    "fence.reported.concealed_length_share": {
+      "value": 0.480176,
+      "basis": "reported",
+      "note": ""
+    },
+    "reported.length_bound_incl_concealed": {
+      "value": 590,
+      "basis": "reported",
+      "note": ""
+    },
+    "ablation.aggressive.length_bound_incl_concealed": {
+      "value": 0.301587,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.baseline.length_bound_incl_concealed": {
+      "value": 0.378049,
+      "basis": "ablation",
+      "note": ""
+    },
+    "ablation.few_shot.length_bound_incl_concealed": {
+      "value": 0.369318,
+      "basis": "ablation",
+      "note": ""
+    },
+    "calib.medium.attempts": {
+      "value": 178,
+      "basis": "reported",
+      "note": ""
+    },
+    "calib.medium.failures": {
+      "value": 28,
+      "basis": "reported",
+      "note": ""
+    },
+    "calib.medium.rate": {
+      "value": 0.157303,
+      "basis": "reported",
+      "note": ""
+    },
+    "calib.medium.length_bound": {
+      "value": 18,
+      "basis": "reported",
+      "note": ""
+    },
+    "calib.medium.regex_pattern": {
+      "value": 7,
+      "basis": "reported",
+      "note": ""
+    },
+    "calib.medium.prose_preamble": {
+      "value": 1,
+      "basis": "reported",
+      "note": ""
+    },
+    "calib.medium.enum_violation": {
+      "value": 2,
+      "basis": "reported",
+      "note": ""
+    },
+    "calib.medium_v2.attempts": {
+      "value": 324,
+      "basis": "reported",
+      "note": ""
+    },
+    "calib.medium_v2.failures": {
+      "value": 24,
+      "basis": "reported",
+      "note": ""
+    },
+    "calib.medium_v2.rate": {
+      "value": 0.074074,
+      "basis": "reported",
+      "note": ""
+    },
+    "calib.medium_v2.length_bound": {
+      "value": 0,
+      "basis": "reported",
+      "note": ""
+    },
+    "calib.medium_v2.regex_pattern": {
+      "value": 14,
+      "basis": "reported",
+      "note": ""
+    },
+    "calib.medium_v2.prose_preamble": {
+      "value": 8,
+      "basis": "reported",
+      "note": ""
+    },
+    "calib.medium_v2.enum_violation": {
+      "value": 2,
+      "basis": "reported",
+      "note": ""
+    },
+    "calib.field.unparsed": {
+      "value": 0,
+      "basis": "reported",
+      "note": "must be 0"
+    },
+    "calib.field.coverage_notes": {
+      "value": {
+        "n": 8,
+        "min": 251,
+        "max": 315,
+        "cap": 250,
+        "mean_overrun": 0.0905,
+        "max_overrun": 0.26
+      },
+      "basis": "reported",
+      "note": "sonnet-4-6 @ medium"
+    },
+    "calib.field.answer": {
+      "value": {
+        "n": 9,
+        "min": 417,
+        "max": 500,
+        "cap": 400,
+        "mean_overrun": 0.1522222222222222,
+        "max_overrun": 0.25
+      },
+      "basis": "reported",
+      "note": "sonnet-4-6 @ medium"
+    },
+    "calib.field.fact": {
+      "value": {
+        "n": 1,
+        "min": 480,
+        "max": 480,
+        "cap": 400,
+        "mean_overrun": 0.2,
+        "max_overrun": 0.2
+      },
+      "basis": "reported",
+      "note": "sonnet-4-6 @ medium"
+    },
+    "calib.counterfactual_pass": {
+      "value": 18,
+      "basis": "reported",
+      "note": "of 18 stored medium length_bound failures"
+    },
+    "pert.medium.failures": {
+      "value": 9,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium.regex_failures": {
+      "value": 8,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium.identifiers": {
+      "value": 8,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium.multi_subcause": {
+      "value": 0,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium.unparsed": {
+      "value": 0,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium.leading_digit": {
+      "value": 4,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium.length_overflow": {
+      "value": 4,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium.unicode": {
+      "value": 0,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium.invalid_char": {
+      "value": 0,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium.other": {
+      "value": 0,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium.examples": {
+      "value": [
+        {
+          "attempt": 1682,
+          "model": "gpt-5.6-terra",
+          "identifier": "2014_ss",
+          "length": 7,
+          "subcauses": [
+            "leading_digit"
+          ]
+        },
+        {
+          "attempt": 1707,
+          "model": "gpt-5.6-terra",
+          "identifier": "888_7th_avenue",
+          "length": 14,
+          "subcauses": [
+            "leading_digit"
+          ]
+        },
+        {
+          "attempt": 1747,
+          "model": "gpt-5.6-terra",
+          "identifier": "virginia_commonwealth_university",
+          "length": 32,
+          "subcauses": [
+            "length_overflow"
+          ]
+        },
+        {
+          "attempt": 1784,
+          "model": "gpt-5.6-terra",
+          "identifier": "gerald_r_ford_international_airport",
+          "length": 35,
+          "subcauses": [
+            "length_overflow"
+          ]
+        },
+        {
+          "attempt": 1803,
+          "model": "gpt-5.6-terra",
+          "identifier": "committee_employment_minority_news_media",
+          "length": 40,
+          "subcauses": [
+            "length_overflow"
+          ]
+        },
+        {
+          "attempt": 1838,
+          "model": "gpt-5.6-sol",
+          "identifier": "2014_ss",
+          "length": 7,
+          "subcauses": [
+            "leading_digit"
+          ]
+        },
+        {
+          "attempt": 1863,
+          "model": "gpt-5.6-sol",
+          "identifier": "888_7th_avenue",
+          "length": 14,
+          "subcauses": [
+            "leading_digit"
+          ]
+        },
+        {
+          "attempt": 1879,
+          "model": "gpt-5.6-sol",
+          "identifier": "assistant_health_scientific_affairs",
+          "length": 35,
+          "subcauses": [
+            "length_overflow"
+          ]
+        }
+      ],
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium.gpt-5.6-sol.attempts": {
+      "value": 159,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium.gpt-5.6-sol.failures": {
+      "value": 3,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium.gpt-5.6-terra.attempts": {
+      "value": 168,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium.gpt-5.6-terra.failures": {
+      "value": 6,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium_v3_loose_regex.failures": {
+      "value": 9,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium_v3_loose_regex.regex_failures": {
+      "value": 9,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium_v3_loose_regex.identifiers": {
+      "value": 11,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium_v3_loose_regex.multi_subcause": {
+      "value": 0,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium_v3_loose_regex.unparsed": {
+      "value": 0,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium_v3_loose_regex.leading_digit": {
+      "value": 0,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium_v3_loose_regex.length_overflow": {
+      "value": 10,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium_v3_loose_regex.unicode": {
+      "value": 1,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium_v3_loose_regex.invalid_char": {
+      "value": 0,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium_v3_loose_regex.other": {
+      "value": 0,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium_v3_loose_regex.examples": {
+      "value": [
+        {
+          "attempt": 3526,
+          "model": "gpt-5.6-sol",
+          "identifier": "gُنs_n_roses",
+          "length": 12,
+          "subcauses": [
+            "unicode"
+          ]
+        },
+        {
+          "attempt": 3543,
+          "model": "gpt-5.6-sol",
+          "identifier": "assistant_secretary_health_scientific_affairs",
+          "length": 45,
+          "subcauses": [
+            "length_overflow"
+          ]
+        },
+        {
+          "attempt": 3568,
+          "model": "gpt-5.6-sol",
+          "identifier": "virginia_commonwealth_university",
+          "length": 32,
+          "subcauses": [
+            "length_overflow"
+          ]
+        },
+        {
+          "attempt": 3568,
+          "model": "gpt-5.6-sol",
+          "identifier": "vcu_rams_mens_basketball_2011_12",
+          "length": 32,
+          "subcauses": [
+            "length_overflow"
+          ]
+        },
+        {
+          "attempt": 3605,
+          "model": "gpt-5.6-sol",
+          "identifier": "gerald_r_ford_international_airport",
+          "length": 35,
+          "subcauses": [
+            "length_overflow"
+          ]
+        },
+        {
+          "attempt": 3624,
+          "model": "gpt-5.6-sol",
+          "identifier": "minority_groups_news_media_committee",
+          "length": 36,
+          "subcauses": [
+            "length_overflow"
+          ]
+        },
+        {
+          "attempt": 3697,
+          "model": "gpt-5.6-terra",
+          "identifier": "assistant_secretary_health_scientific_affairs",
+          "length": 45,
+          "subcauses": [
+            "length_overflow"
+          ]
+        },
+        {
+          "attempt": 3722,
+          "model": "gpt-5.6-terra",
+          "identifier": "virginia_commonwealth_university",
+          "length": 32,
+          "subcauses": [
+            "length_overflow"
+          ]
+        },
+        {
+          "attempt": 3722,
+          "model": "gpt-5.6-terra",
+          "identifier": "vcu_rams_mens_basketball_2011_12",
+          "length": 32,
+          "subcauses": [
+            "length_overflow"
+          ]
+        },
+        {
+          "attempt": 3759,
+          "model": "gpt-5.6-terra",
+          "identifier": "gerald_r_ford_international_airport",
+          "length": 35,
+          "subcauses": [
+            "length_overflow"
+          ]
+        },
+        {
+          "attempt": 3778,
+          "model": "gpt-5.6-terra",
+          "identifier": "committee_employment_minority_news_media",
+          "length": 40,
+          "subcauses": [
+            "length_overflow"
+          ]
+        }
+      ],
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium_v3_loose_regex.gpt-5.6-sol.attempts": {
+      "value": 155,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium_v3_loose_regex.gpt-5.6-sol.failures": {
+      "value": 5,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium_v3_loose_regex.gpt-5.6-terra.attempts": {
+      "value": 154,
+      "basis": "reported",
+      "note": ""
+    },
+    "pert.medium_v3_loose_regex.gpt-5.6-terra.failures": {
+      "value": 4,
+      "basis": "reported",
+      "note": ""
+    },
+    "robust.cell.attempts": {
+      "value": 1066,
+      "basis": "reported",
+      "note": ""
+    },
+    "robust.cell.failures": {
+      "value": 692,
+      "basis": "reported",
+      "note": ""
+    },
+    "robust.cell.rate": {
+      "value": 0.649156,
+      "basis": "reported",
+      "note": ""
+    },
+    "robust.cell.runs": {
+      "value": 134,
+      "basis": "reported",
+      "note": ""
+    },
+    "robust.cell.questions": {
+      "value": 50,
+      "basis": "reported",
+      "note": ""
+    },
+    "robust.cell.runs_per_question": {
+      "value": {
+        "3": 28,
+        "2": 20,
+        "5": 2
+      },
+      "basis": "reported",
+      "note": ""
+    },
+    "robust.one_run.attempts": {
+      "value": 404,
+      "basis": "reported",
+      "note": ""
+    },
+    "robust.one_run.failures": {
+      "value": 260,
+      "basis": "reported",
+      "note": ""
+    },
+    "robust.one_run.rate": {
+      "value": 0.643564,
+      "basis": "reported",
+      "note": ""
+    },
+    "validation.n": {
+      "value": 144,
+      "basis": "full",
+      "note": "frame = all failures in DB (incl. pilot cells and prompt variants)"
+    },
+    "validation.blind_agree": {
+      "value": 140,
+      "basis": "full",
+      "note": "frame = all failures in DB (incl. pilot cells and prompt variants)"
+    },
+    "validation.blind_rate": {
+      "value": 0.972222,
+      "basis": "full",
+      "note": "frame = all failures in DB (incl. pilot cells and prompt variants)"
+    },
+    "validation.blind_ci": {
+      "value": [
+        0.9307584602021989,
+        0.989145882118965
+      ],
+      "basis": "full",
+      "note": "frame = all failures in DB (incl. pilot cells and prompt variants)"
+    },
+    "validation.adjudicated_agree": {
+      "value": 144,
+      "basis": "full",
+      "note": "frame = all failures in DB (incl. pilot cells and prompt variants)"
+    },
+    "validation.classifier_label_stale": {
+      "value": 0,
+      "basis": "full",
+      "note": "expect 0"
+    },
+    "validation.cat.enum_violation": {
+      "value": {
+        "tp": 8,
+        "predicted": 8,
+        "human": 11
+      },
+      "basis": "full",
+      "note": "against blind human labels (pre-adjudication)"
+    },
+    "validation.cat.length_bound": {
+      "value": {
+        "tp": 30,
+        "predicted": 30,
+        "human": 30
+      },
+      "basis": "full",
+      "note": "against blind human labels (pre-adjudication)"
+    },
+    "validation.cat.markdown_wrap": {
+      "value": {
+        "tp": 25,
+        "predicted": 25,
+        "human": 26
+      },
+      "basis": "full",
+      "note": "against blind human labels (pre-adjudication)"
+    },
+    "validation.cat.prose_preamble": {
+      "value": {
+        "tp": 8,
+        "predicted": 9,
+        "human": 8
+      },
+      "basis": "full",
+      "note": "against blind human labels (pre-adjudication)"
+    },
+    "validation.cat.regex_pattern": {
+      "value": {
+        "tp": 27,
+        "predicted": 30,
+        "human": 27
+      },
+      "basis": "full",
+      "note": "against blind human labels (pre-adjudication)"
+    },
+    "validation.cat.schema_mirroring": {
+      "value": {
+        "tp": 42,
+        "predicted": 42,
+        "human": 42
+      },
+      "basis": "full",
+      "note": "against blind human labels (pre-adjudication)"
+    },
+    "crossfield.validated": {
+      "value": 2871,
+      "basis": "reported",
+      "note": ""
+    },
+    "crossfield.violations": {
+      "value": 0,
+      "basis": "reported",
+      "note": ""
+    },
+    "modellevel.violations": {
+      "value": 4,
+      "basis": "reported",
+      "note": ""
+    },
+    "crossfield.reached": {
+      "value": 2875,
+      "basis": "reported",
+      "note": ""
+    },
+    "crossfield.not_reached": {
+      "value": 1122,
+      "basis": "reported",
+      "note": ""
+    },
+    "crossfield.value_errors_unmatched": {
+      "value": 0,
+      "basis": "reported",
+      "note": ""
+    },
+    "zero_length.n": {
+      "value": 1,
+      "basis": "reported",
+      "note": ""
+    },
+    "zero_length.output_tokens": {
+      "value": 4096,
+      "basis": "reported",
+      "note": ""
+    },
+    "zero_length.model": {
+      "value": "claude-sonnet-5",
+      "basis": "reported",
+      "note": ""
+    },
+    "zero_length.node": {
+      "value": "gather",
+      "basis": "reported",
+      "note": ""
+    },
+    "zero_length.attempt": {
+      "value": 2451,
+      "basis": "reported",
+      "note": ""
+    },
+    "screen.fence_any.matches": {
+      "value": 790,
+      "basis": "full",
+      "note": ""
+    },
+    "screen.fence_any.markdown_wrap": {
+      "value": 789,
+      "basis": "full",
+      "note": ""
+    },
+    "screen.fence_any.prose_preamble": {
+      "value": 1,
+      "basis": "full",
+      "note": ""
+    },
+    "screen.properties.matches": {
+      "value": 42,
+      "basis": "full",
+      "note": ""
+    },
+    "screen.properties.schema_mirroring": {
+      "value": 42,
+      "basis": "full",
+      "note": ""
+    },
+    "screen.nonjson_opener.matches": {
+      "value": 9,
+      "basis": "full",
+      "note": ""
+    },
+    "screen.nonjson_opener.prose_preamble": {
+      "value": 9,
+      "basis": "full",
+      "note": ""
+    },
+    "screen.empty.matches": {
+      "value": 1,
+      "basis": "full",
+      "note": ""
+    },
+    "versions.gpt-4o.precapture": {
+      "value": 72,
+      "basis": "reported",
+      "note": ""
+    },
+    "versions.gpt-4o.attempts": {
+      "value": 250,
+      "basis": "reported",
+      "note": ""
+    },
+    "versions.gpt-4o.resolved": {
+      "value": {
+        "gpt-4o-2024-08-06": 178
+      },
+      "basis": "reported",
+      "note": ""
+    },
+    "versions.gpt-4o-mini.precapture": {
+      "value": 69,
+      "basis": "reported",
+      "note": ""
+    },
+    "versions.gpt-4o-mini.attempts": {
+      "value": 242,
+      "basis": "reported",
+      "note": ""
+    },
+    "versions.gpt-4o-mini.resolved": {
+      "value": {
+        "gpt-4o-mini-2024-07-18": 173
+      },
+      "basis": "reported",
+      "note": ""
+    },
+    "divergence.groups_total": {
+      "value": 12,
+      "basis": "reported",
+      "note": ""
+    },
+    "divergence.groups_qualifying": {
+      "value": 6,
+      "basis": "reported",
+      "note": ">= 20 failures"
+    },
+    "divergence.pairs": {
+      "value": 15,
+      "basis": "reported",
+      "note": ""
+    },
+    "divergence.top": {
+      "value": [
+        {
+          "pp": 72.89293849658314,
+          "category": "markdown_wrap",
+          "a": "claude-haiku-4-5@medium",
+          "b": "claude-sonnet-4-6@medium"
+        },
+        {
+          "pp": 72.89293849658314,
+          "category": "markdown_wrap",
+          "a": "claude-haiku-4-5@medium",
+          "b": "claude-sonnet-4-6@medium_v2"
+        },
+        {
+          "pp": 72.89293849658314,
+          "category": "markdown_wrap",
+          "a": "claude-haiku-4-5@medium",
+          "b": "gpt-4o@medium"
+        },
+        {
+          "pp": 72.89293849658314,
+          "category": "markdown_wrap",
+          "a": "claude-haiku-4-5@medium",
+          "b": "gpt-4o-mini@medium"
+        },
+        {
+          "pp": 72.5,
+          "category": "schema_mirroring",
+          "a": "claude-haiku-4-5@medium",
+          "b": "gpt-4o@medium"
+        },
+        {
+          "pp": 72.5,
+          "category": "schema_mirroring",
+          "a": "claude-sonnet-4-6@medium",
+          "b": "gpt-4o@medium"
+        },
+        {
+          "pp": 72.5,
+          "category": "schema_mirroring",
+          "a": "claude-sonnet-4-6@medium_v2",
+          "b": "gpt-4o@medium"
+        },
+        {
+          "pp": 72.5,
+          "category": "schema_mirroring",
+          "a": "claude-sonnet-5@medium",
+          "b": "gpt-4o@medium"
+        },
+        {
+          "pp": 64.28571428571429,
+          "category": "length_bound",
+          "a": "claude-sonnet-4-6@medium",
+          "b": "claude-sonnet-4-6@medium_v2"
+        },
+        {
+          "pp": 64.28571428571429,
+          "category": "length_bound",
+          "a": "claude-sonnet-4-6@medium",
+          "b": "gpt-4o@medium"
+        },
+        {
+          "pp": 64.16097190584662,
+          "category": "regex_pattern",
+          "a": "claude-haiku-4-5@medium",
+          "b": "gpt-4o-mini@medium"
+        },
+        {
+          "pp": 61.19402985074627,
+          "category": "markdown_wrap",
+          "a": "claude-sonnet-4-6@medium",
+          "b": "claude-sonnet-5@medium"
+        }
+      ],
+      "basis": "reported",
+      "note": ""
+    },
+    "divergence.runner_up_category_pp": {
+      "value": 72.5,
+      "basis": "reported",
+      "note": ""
+    },
+    "divergence.gap_pp": {
+      "value": 0.392938,
+      "basis": "reported",
+      "note": ""
+    },
+    "divergence.unrestricted.top": {
+      "value": [
+        {
+          "pp": 97.49430523917995,
+          "category": "regex_pattern",
+          "a": "claude-haiku-4-5@medium",
+          "b": "gpt-5.6-sol@medium_v3_loose_regex"
+        },
+        {
+          "pp": 97.49430523917995,
+          "category": "regex_pattern",
+          "a": "claude-haiku-4-5@medium",
+          "b": "gpt-5.6-terra@medium_v3_loose_regex"
+        },
+        {
+          "pp": 86.38319412806884,
+          "category": "regex_pattern",
+          "a": "claude-haiku-4-5@medium",
+          "b": "gpt-5.6-sol@medium"
+        }
+      ],
+      "basis": "reported",
+      "note": ""
+    }
+  }
+}

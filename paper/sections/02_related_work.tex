@@ -1,0 +1,51 @@
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Constrained decoding and the scope of this study.}
+The main technical alternative to prompt enforcement is constrained
+decoding, which masks tokens so that only grammar-conformant
+continuations remain. \citet{willard2023outlines} compile regular
+expressions into finite-state machines and \citet{dong2024xgrammar} use
+pushdown automata for context-free grammars; \citet{geng2025jsonschemabench}
+evaluate six frameworks over ten thousand real-world JSON Schemas and find
+that support for schema features varies substantially between
+implementations. Our exclusion of this paradigm is a statement about what
+is deployed, not about what is enforceable: character classes, string
+lengths and enumerations are expressible in these formalisms, and we make
+no claim that decoder enforcement could not prevent the failures we
+report. Vendor structured-output facilities are excluded for the same
+reason. They differ by vendor and version in how, and how strictly, they
+enforce a schema, and none is the prompt-only configuration we study.
+
+\paragraph{Structured-output benchmarks.}
+\citet{tenckhoff2026llmstructbench} evaluate open-weight models under
+five prompting configurations on email-to-JSON extraction. Three of the
+configurations set the inference API's format parameter and so engage
+grammar-level enforcement; only their prompt-only condition is comparable
+to ours. They recover JSON from surrounding text as preprocessing, which
+makes wrapping visible in their pipeline but not a category.
+\citet{ferguson2026extractbench} score extracted values against gold
+labels with field-dependent correctness. Their unit is the fidelity of a
+value; ours is the conformance failure, and we do not evaluate whether
+extracted content is correct.
+
+\paragraph{Format adherence.}
+\citet{liu2026paraconsist} show that content-preserving paraphrases can
+push a model out of a requested response mode into conversational prose
+even at temperature zero, the phenomenon our \cat{prose\_preamble} and
+\cat{markdown\_wrap} categories measure under a schema.
+\citet{xia2024fofo} and \citet{zhou2023ifeval} measure format-following
+separately from content quality, and \citet{tam2024speak} find that
+format restrictions degrade reasoning even when parse errors are rare.
+Their question is what adherence costs; ours is how adherence fails.
+
+\paragraph{Repair and failure taxonomies.}
+\citet{huang2024selfcorrect} find that self-correction without an
+external signal does not reliably improve reasoning. A Pydantic
+validation error is an external, localised signal naming the field and
+constraint, so our repair loop is not intrinsic self-correction.
+\citet{cemri2025mast} build an empirically grounded taxonomy of
+multi-agent system failures validated by multiple annotators. We work at
+the level of a single node attempt, with categories assigned by
+deterministic predicates and human labels used only to check the
+classifier.

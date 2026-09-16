@@ -36,3 +36,18 @@ clean:
 clean-db:
 	rm -f results/experiments.db results/experiments.db-journal
 	@echo "Deleted results/experiments.db"
+
+
+PY ?= python
+
+numbers:
+	$(PY) scripts/make_paper_numbers.py
+	$(PY) scripts/render_paper_assets.py
+
+lint:
+	$(PY) scripts/lint_numbers.py
+
+paper: numbers lint
+	cd paper && latexmk -pdf main.tex
+
+.PHONY: numbers lint paper

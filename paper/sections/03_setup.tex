@@ -1,0 +1,117 @@
+\section{Study Design}
+\label{sec:setup}
+
+\subsection{Pipeline, schemas and enforcement}
+\label{sec:setup:pipeline}
+
+Each run processes one question through a three-node sequential pipeline.
+\textbf{identify} extracts entities with canonical identifiers and types
+and designates a primary entity; \textbf{gather} produces facts keyed to
+those identifiers with a coverage summary; \textbf{answer} returns the
+answer, a numeric confidence, its categorical bucket and supporting
+identifiers. Each node has its own Pydantic model. The system prompt
+states the schema and asks for JSON only; the completion is validated
+with \code{model\_validate\_json}; on failure the node is retried with the
+validation error appended, up to three further times. An \emph{attempt} is
+one generation against one node's schema, including retries, so attempts
+per run vary with failure rate: from
+\pn{c.claude-opus-4-8@medium@hotpotqa.attempts_per_run} for Opus~4.8 to
+\pn{c.claude-haiku-4-5@medium@hotpotqa.attempts_per_run} for Haiku~4.5,
+both on HotpotQA.
+
+The \emph{medium} schema tier carries the constraints analysed
+throughout: the identifier pattern \idpattern{} on entity and fact
+identifiers, enumerations on entity and question type, character caps
+on free text (\code{coverage\_notes} 250, \code{answer} 400, \code{fact}
+400), list-length bounds and numeric ranges. Model-level validators add
+four cross-field checks---primary-entity membership and entity-count
+agreement in identify, fact-count agreement in gather, and
+confidence-bucket coherence in answer---and, in answer, a per-item
+identifier pattern check on \code{supporting\_entity\_ids}. Two ablation
+tiers change one constraint family each. \emph{medium\_v2} raises the
+caps to 1000, 1200 and 800 and is run on Sonnet~4.6 only;
+\emph{medium\_v3\_loose\_regex} loosens the identifier pattern to
+\idpatternloose{}, keeping the 31-character ceiling, and is run on
+gpt-5.6-sol and gpt-5.6-terra only. The design is therefore not fully
+crossed; \cref{app:manifest} lists every cell.
+
+\subsection{Models, data and reporting basis}
+\label{sec:setup:basis}
+
+Nine models from two vendors: \code{gpt-4o}, \code{gpt-4o-mini},
+\code{gpt-5.6-luna}, \code{gpt-5.6-sol}, \code{gpt-5.6-terra},
+\code{claude-haiku-4-5}, \code{claude-sonnet-4-6}, \code{claude-sonnet-5}
+and \code{claude-opus-4-8}. HotpotQA questions are the first records of
+the validation split (distractor configuration) and FinanceBench
+questions the first records of the train split with evidence truncated
+to 2{,}000 characters; neither is shuffled, so results describe these
+fixed question sets. Claude Sonnet~4.6 and gpt-4o were run on HotpotQA
+only. We request \code{temperature=0} where supported; the GPT-5.6 family,
+Sonnet~5 and Opus~4.8 reject the parameter and run at provider defaults.
+The Anthropic branch sets \code{max\_tokens} to 4{,}096 and the OpenAI
+branch sets none. Resolved model versions and sampling details are in
+\cref{app:manifest}.
+
+Two conventions define the reporting basis. Cells with fewer than 30
+runs are excluded as pilots, and prompt-variant runs, which were written
+into the Haiku HotpotQA cell, are excluded everywhere except
+\cref{sec:results:concealment}. The basis contains
+\pn{reported.attempts} attempts and \pn{reported.failures} failures in
+\pn{reported.cells} configurations, from a full corpus of
+\pn{full.attempts} attempts in \pn{full.cells} cells. Classifier
+validation (\cref{sec:setup:taxonomy}) uses the full corpus and says so.
+
+\subsection{Taxonomy and classifier}
+\label{sec:setup:taxonomy}
+
+The classifier runs only on attempts that failed validation and assigns
+one primary category in two stages. \emph{Stage~1} applies behavioural
+predicates to the raw completion $y$, in order: \cat{markdown\_wrap} if
+$y$ begins, after leading whitespace, with a triple-backtick fence;
+\cat{prose\_preamble} if $y$ begins with neither a brace, a bracket nor a
+fence, contains a brace-delimited span, and has at least 20 characters of
+prose before it; and \cat{schema\_mirroring} if $y$ parses to an object
+whose root keys include at least two JSON~Schema meta-keywords such as
+\code{properties} and \code{required}. \emph{Stage~2}, reached only if no
+predicate fires, maps Pydantic error types: pattern mismatches to
+\cat{regex\_pattern}, length violations to \cat{length\_bound}, literal
+errors to \cat{enum\_violation}, missing fields to \cat{missing\_field},
+numeric bounds to \cat{range\_bound} and \code{json\_invalid} to
+\cat{parse\_error}. Validator errors arrive as \code{value\_error}; the
+supporting-identifier check routes to \cat{regex\_pattern} and cross-field
+messages to \cat{cross\_field\_ref}. With several errors, the primary
+category is the plurality, ties broken by first occurrence.
+
+The Stage-1 predicates must precede Stage~2 because the behaviours they
+detect are invisible to Pydantic, which sees only downstream symptoms. The
+precedence has a consequence we exploit in
+\cref{sec:results:concealment}: a fenced output that also violates a
+constraint is labelled \cat{markdown\_wrap}, so that category measures
+strict-parsing failure, not the absence of a further defect.
+\Cref{tab:categories} gives the observed distribution;
+\pn{reported.categories_observed} of the classifier's eleven categories
+occur, and \cat{cross\_field\_ref}, \cat{missing\_field},
+\cat{range\_bound} and the catch-all category do not.
+
+\begin{table}[t]
+\centering\small
+\caption{Primary categories on the reporting basis.}
+\label{tab:categories}
+\input{generated/tab_categories}
+\end{table}
+
+\paragraph{Validation.}
+We hand-labelled \pn{validation.n} failing attempts stratified by
+predicted category, blind to the classifier's output, drawn from the full
+corpus of \pn{full.failures} failures so that rare categories had
+support. Labelling surfaced a detection-order defect in an earlier
+classifier, in which Pydantic mapping preceded the behavioural
+predicates; we corrected the order and reclassified the corpus. Against
+the corrected classifier, blind agreement is \pn{validation.blind_agree}
+of \pn{validation.n} (\pn{validation.blind_rate}, Wilson 95\% CI
+\pn{validation.blind_ci}). On adjudication all four disagreements were
+labelling errors. Because these samples also surfaced the defect, this is
+development-set agreement, not held-out validation, and a single labeller
+who also wrote the classifier produced every label.
+\Cref{app:classifier} gives per-category precision and recall and
+over-broad corpus screens for the Stage-1 categories.

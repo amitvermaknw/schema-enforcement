@@ -1,0 +1,43 @@
+\section{Introduction}
+\label{sec:intro}
+
+A practitioner building an entity-extraction pipeline needs canonical
+identifiers and writes an unremarkable constraint: \idpattern, meaning
+lowercase snake\_case that starts with a letter. Asked for the identifier
+of an entity whose name is a street address, a GPT-5.6 model in our study
+returns \code{888\_7th\_avenue}. The rendering is faithful to the name and
+fails the anchor \code{\^{}[a-z]}. A conforming identifier exists
+(\code{building\_888\_7th\_avenue}), but reaching it requires a
+normalisation convention the task never states.
+
+Under the evaluation practice common for structured output, this failure
+is indistinguishable from a model that emitted no JSON, a model that
+returned the schema definition instead of an instance, and a model that
+produced a conformant object inside a markdown fence. All four increment
+the same counter, although they have different causes and call for
+different remedies.
+
+We study this problem in the prompt-and-validate paradigm: the schema is
+stated in the prompt, the completion is validated with Pydantic, and
+failures are retried with the validation error appended. We do not study
+constrained decoding (\cref{sec:related}). Within that scope we define a
+taxonomy of conformance failures, assign each failing attempt a category
+with a deterministic classifier, and apply it to \pn{reported.attempts}
+attempts across \pn{reported.cells} configurations of
+\pn{reported.models} models, three schema tiers and two task domains.
+
+\paragraph{Contributions.}
+\begin{enumerate}[leftmargin=1.4em,itemsep=1pt,topsep=2pt]
+  \item A failure taxonomy for prompt-and-validate Pydantic pipelines with
+  a mechanical predicate for each category and an explicit precedence
+  rule, validated against blind hand labels
+  (\cref{sec:setup:taxonomy}).
+  \item Observed dominant-category profiles across \pn{reported.models}
+  models, showing that similar failure rates hide different failure
+  modes and that a profile shifts with the constraint surface
+  (\cref{sec:results:profiles,sec:results:surface}).
+  \item A layered analysis showing that markdown wrapping frequently
+  conceals a content violation, and that ignoring this concealment makes
+  a prompt ablation appear to move failures between modes
+  (\cref{sec:results:concealment}).
+\end{enumerate}

@@ -1,0 +1,179 @@
+\section{Cell Manifest, Versions and Sampling}
+\label{app:manifest}
+
+\begin{table}[h]
+\centering\scriptsize
+\caption{All cells, baseline prompt. Pilot cells (fewer than 30 runs) are
+excluded from the reporting basis.}
+\input{generated/tab_manifest}
+\end{table}
+
+\paragraph{Sampling.}
+HotpotQA questions are the first records of the validation split in the
+distractor configuration, in dataset order; FinanceBench questions are the
+first records of the train split, with evidence truncated to 2{,}000
+characters and a truncation marker inserted. There is no shuffle and no
+seed.
+
+\paragraph{Resolved versions.}
+Anthropic models and the GPT-5.6 family return the requested alias
+unchanged. \code{gpt-4o} resolves to \code{gpt-4o-2024-08-06} and
+\code{gpt-4o-mini} to \code{gpt-4o-mini-2024-07-18}. Version capture was
+added after the first sweeps: \pn{versions.gpt-4o.precapture} of
+\pn{versions.gpt-4o.attempts} \code{gpt-4o} attempts and
+\pn{versions.gpt-4o-mini.precapture} of \pn{versions.gpt-4o-mini.attempts}
+\code{gpt-4o-mini} attempts on the reporting basis predate it.
+
+\paragraph{Repeated questions.}
+The Haiku~4.5 HotpotQA baseline cell contains \pn{robust.cell.runs} runs
+over \pn{robust.cell.questions} distinct questions. Restricting it to the
+earliest run of each question gives a failure rate of
+\pn{robust.one_run.rate} (\pn{robust.one_run.failures} of
+\pn{robust.one_run.attempts}) against \pn{robust.cell.rate}
+(\pn{robust.cell.failures} of \pn{robust.cell.attempts}) for the full cell.
+
+\paragraph{Zero-length completion.}
+One attempt (\pn{zero_length.model}, \pn{zero_length.node} node) returned
+an empty completion with \pn{zero_length.output_tokens} output tokens,
+equal to the configured ceiling. It is classified \cat{parse\_error}. The
+stop reason was not logged; the record is consistent with the output
+budget being exhausted before any text block was emitted.
+
+\section{Schemas and Prompts}
+\label{app:schemas}
+
+The three schema tiers and three prompt variants are reproduced from the
+released code.
+
+\IfFileExists{code/medium.py}{\lstinputlisting[language=Python,caption={Medium tier schema}]{code/medium.py}}{\emph{[Copy src/schemaeval/schemas/medium.py to paper/code/medium.py.]}}
+
+\IfFileExists{code/prompts.py}{\lstinputlisting[language=Python,caption={Prompt variants}]{code/prompts.py}}{\emph{[Copy src/schemaeval/prompts.py to paper/code/prompts.py.]}}
+
+The medium\_v2 tier differs only in the three character caps and the
+medium\_v3\_loose\_regex tier only in \code{CANONICAL\_ID\_PATTERN}.
+
+\section{Classifier Validation}
+\label{app:classifier}
+
+\paragraph{Provenance.}
+Hand labelling was performed against an earlier classifier in which
+Pydantic error-type mapping preceded the behavioural predicates.
+Schema-mirrored outputs were consequently labelled \cat{missing\_field}
+and prose-preamble outputs \cat{parse\_error}. We corrected the order and
+reclassified the full corpus from stored completions and error details;
+the released \code{errors.py} and \code{reclassify\_all.py} reproduce
+every label.
+
+\paragraph{Agreement.}
+The sample was drawn from all \pn{full.failures} failures in the corpus,
+including pilot cells and prompt variants. \Cref{tab:validation} reports
+precision and recall of the corrected classifier against the \emph{blind}
+human labels. The four disagreements were adjudicated as labelling
+errors: three outputs labelled \cat{enum\_violation} carried a
+\code{string\_pattern\_mismatch} on an identifier, and one labelled
+\cat{markdown\_wrap} contained no fence. We headline blind agreement
+because adjudication uses evidence the labeller did not consult.
+
+\begin{table}[h]
+\centering\small
+\caption{Corrected classifier against blind human labels
+($n=\pn{validation.n}$), full corpus frame.}
+\label{tab:validation}
+\input{generated/tab_validation}
+\end{table}
+
+\paragraph{Corpus screens.}
+Because the sample is stratified by predicted label, it cannot establish
+corpus recall. For the Stage-1 categories we screened every failure in
+the full corpus with predicates broader than the detectors. A fence at
+any position matches \pn{screen.fence_any.matches} failures, of which
+\pn{screen.fence_any.markdown_wrap} are classified \cat{markdown\_wrap}
+and \pn{screen.fence_any.prose_preamble} \cat{prose\_preamble} (prose
+before a later fence). A \code{"properties"} key matches
+\pn{screen.properties.matches} failures, of which
+\pn{screen.properties.schema_mirroring} are classified
+\cat{schema\_mirroring}; this screen tests one meta-keyword where the
+detector requires two, so it bounds recall only among failures containing
+that key. An opening character other than a brace, bracket or fence
+matches \pn{screen.nonjson_opener.matches} non-empty failures, of which
+\pn{screen.nonjson_opener.prose_preamble} are \cat{prose\_preamble}.
+
+\section{Identifier Perturbation}
+\label{app:perturbation}
+
+\begin{table}[h]
+\centering\small
+\caption{Sub-causes of violating identifiers in \cat{regex\_pattern}
+failures, gpt-5.6-sol and gpt-5.6-terra, HotpotQA. Counts are
+identifiers, not attempts.}
+\label{tab:perturbation}
+\input{generated/tab_perturbation}
+\end{table}
+
+The baseline tier uses \idpattern{} and the perturbed tier \idpatternloose{};
+both retain the 31-character ceiling, and the loosened pattern also
+governs the supporting-identifier check inside the answer validator.
+Sub-causes are assigned mechanically per identifier: non-ASCII characters,
+a leading digit not admitted by the first-character class, other
+characters outside the class, and length outside 3--31. The cells hold
+\pn{pert.medium.gpt-5.6-sol.failures} and
+\pn{pert.medium.gpt-5.6-terra.failures} failures under the baseline
+pattern and \pn{pert.medium_v3_loose_regex.gpt-5.6-sol.failures} and
+\pn{pert.medium_v3_loose_regex.gpt-5.6-terra.failures} under the loosened
+pattern, too few to support rates or shares. The single Unicode case
+under the loosened pattern is an otherwise lowercase band name with a
+non-Latin combining mark inserted.
+
+\section{Per-Domain and First-Attempt Breakdowns}
+\label{app:breakdowns}
+
+\begin{table}[h]
+\centering\scriptsize
+\caption{Per-cell results, reporting basis.}
+\input{generated/tab_domains}
+\end{table}
+
+\begin{table}[h]
+\centering\scriptsize
+\caption{First-attempt validity by node. The denominator is the number of
+runs that reached the node, which depends on upstream success; the
+identify node is the only unconditioned comparison.}
+\input{generated/tab_first_attempt}
+\end{table}
+
+\section{Model-Level Constraints}
+\label{app:crossfield}
+
+Model validators run only after every field-level constraint passes.
+On the reporting basis, \pn{crossfield.reached} attempts reached them:
+\pn{crossfield.validated} that validated and \pn{modellevel.violations}
+that passed field validation and failed the per-item
+supporting-identifier check in the answer validator. That check follows
+the confidence-bucket check in the same method, so those attempts also
+passed it. No attempt matched any of the four cross-field messages
+(\pn{crossfield.violations} violations). The remaining
+\pn{crossfield.not_reached} failures did not reach the validators; many
+failed during JSON parsing. Each node tests only its own checks: two
+cross-field checks in identify, one in gather, and one cross-field plus
+one per-item pattern check in answer.
+
+\section{Divergence Metric}
+\label{app:divergence}
+
+For each pair of model--tier groups and each category we take the
+absolute difference in the share of the group's failures held by that
+category. Groups pool task domains and use the reporting basis; of
+\pn{divergence.groups_total} groups with any failure,
+\pn{divergence.groups_qualifying} have at least 20 failures, giving
+\pn{divergence.pairs} pairs. The two largest values arise on different
+categories from opposite vendors, \pn{divergence.top.0.pp} and
+\pn{divergence.runner_up_category_pp} points, and differ by
+\pn{divergence.gap_pp} points, so we attach no significance to their order. Without the threshold the maximum
+is \pn{divergence.unrestricted.top.0.pp} points, but it involves a group
+with very few failures.
+
+\begin{table}[h]
+\centering\small
+\caption{Largest category-share differences among qualifying groups.}
+\input{generated/tab_divergence}
+\end{table}
