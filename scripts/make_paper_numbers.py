@@ -523,6 +523,16 @@ def main() -> int:
 
     meta = {"db": str(DB), "sha256": hashlib.sha256(DB.read_bytes()).hexdigest(),
             "generated_utc": datetime.now(timezone.utc).isoformat()}
+
+    for _name in ("review3_numbers.json", "cf_numbers.json", "review3_derived.json"):
+        _p = OUT.parent / _name
+        if not _p.exists():
+            print(f"merge: {_name} missing, skipped", file=sys.stderr)
+            continue
+        _extra = json.loads(_p.read_text())["numbers"]
+        N.update(_extra)
+        print(f"merge: {_name} -> {len(_extra)} records", file=sys.stderr)
+        
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps({"meta": meta, "numbers": N}, indent=2, default=float, ensure_ascii=False))
 

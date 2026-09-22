@@ -1,0 +1,121 @@
+{
+  "meta": {
+    "derived_from": "paper/generated/paper_numbers.json"
+  },
+  "numbers": {
+    "pert.pooled.failures": {
+      "value": 18,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "pert.pooled.regex_failures": {
+      "value": 17,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "pert.pooled.identifiers": {
+      "value": 19,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "pert.pooled.multi_subcause": {
+      "value": 0,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "pert.pooled.leading_digit": {
+      "value": 4,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "pert.pooled.length_overflow": {
+      "value": 14,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "pert.pooled.unicode": {
+      "value": 1,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "pert.pooled.invalid_char": {
+      "value": 0,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "pert.pooled.other": {
+      "value": 0,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "pert.subcause_labeling": {
+      "value": "multilabel",
+      "basis": "reported",
+      "note": "sub-causes counted independently; non-ASCII characters excluded from invalid_char",
+      "fmt": "str"
+    },
+    "divergence.unrestricted.max.pp": {
+      "value": 97.49430523917995,
+      "basis": "reported",
+      "note": "",
+      "fmt": "pp"
+    },
+    "divergence.unrestricted.max.category": {
+      "value": "regex_pattern",
+      "basis": "reported",
+      "note": "",
+      "fmt": "str"
+    },
+    "divergence.unrestricted.max.n_tied": {
+      "value": 2,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "divergence.unrestricted.max.pairs": {
+      "value": "claude-haiku-4-5@medium vs gpt-5.6-sol@medium_v3_loose_regex; claude-haiku-4-5@medium vs gpt-5.6-terra@medium_v3_loose_regex",
+      "basis": "reported",
+      "note": "",
+      "fmt": "str"
+    },
+    "divergence.unrestricted.max.0.a": {
+      "value": "claude-haiku-4-5@medium",
+      "basis": "reported",
+      "note": "",
+      "fmt": "str"
+    },
+    "divergence.unrestricted.max.0.b": {
+      "value": "gpt-5.6-sol@medium_v3_loose_regex",
+      "basis": "reported",
+      "note": "",
+      "fmt": "str"
+    },
+    "divergence.unrestricted.max.1.a": {
+      "value": "claude-haiku-4-5@medium",
+      "basis": "reported",
+      "note": "",
+      "fmt": "str"
+    },
+    "divergence.unrestricted.max.1.b": {
+      "value": "gpt-5.6-terra@medium_v3_loose_regex",
+      "basis": "reported",
+      "note": "",
+      "fmt": "str"
+    },
+    "divergence.top.n_tied": {
+      "value": 4,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    }
+  }
+}

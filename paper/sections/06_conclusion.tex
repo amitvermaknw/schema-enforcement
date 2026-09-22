@@ -1,14 +1,16 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-A validity rate for prompt-enforced structured output hides most of what
-a practitioner needs. Across \pn{reported.models} models, models with
-similar rates fail in different ways; a model's dominant category moves
-when the constraints that bind it change; and the most common failure,
-markdown wrapping, conceals a length or pattern violation often enough
-that reading primary labels alone misreads a prompt ablation. Whether a
-relaxation removes a failure depends on the sub-cause beneath the label,
-not on the label. We release the classifier, raw completions and
-annotation record so the corpus can be relabelled under other
-definitions; the distribution over categories will move as models
-change, and the vocabulary is meant to outlast it.
+A validity rate for prompt-enforced structured output does not tell a
+practitioner what failed or what a fix will change. Across
+\pn{reported.models} models, models with similar rates fail in different
+ways; the dominant category moves when the binding constraints change and
+differs between task domains for the same model; and the most common
+failure, markdown wrapping, conceals a length or pattern violation often
+enough that reading primary labels alone misreads a prompt ablation and
+misattributes what a repair loop leaves unrepaired. Whether a relaxation
+removes a failure depends on the sub-cause beneath the label, not on the
+label. We release the classifier, raw completions and annotation record
+so the corpus can be relabelled under other definitions; the distribution
+over categories will move as models change, and the vocabulary is meant
+to outlast it.

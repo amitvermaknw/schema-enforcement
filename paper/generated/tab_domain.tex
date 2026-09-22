@@ -1,0 +1,24 @@
+\begin{tabular}{lllrlrrr}
+\toprule
+Model & Tier & Domain & Rate \% & Dominant & Share \% & Pure/wrapped & Compound \\
+\midrule
+\code{claude-haiku-4-5} & medium & financebench & 70.7 & markdown\_wrap & 63.4 & 34/118 & 84 \\
+\code{claude-haiku-4-5} & medium & hotpotqa & 64.9 & markdown\_wrap & 75.4 & 256/522 & 266 \\
+\code{claude-opus-4-8} & medium & financebench & 10.9 & length\_bound & 90.9 & -- & -- \\
+\code{claude-opus-4-8} & medium & hotpotqa & 1.2 & regex\_pattern & 100.0 & -- & -- \\
+\code{claude-sonnet-4-6} & medium & hotpotqa & 15.7 & length\_bound & 64.3 & -- & -- \\
+\code{claude-sonnet-4-6} & medium\_v2 & hotpotqa & 7.4 & regex\_pattern & 58.3 & -- & -- \\
+\code{claude-sonnet-5} & medium & financebench & 21.1 & length\_bound & 41.7 & 5/6 & 1 \\
+\code{claude-sonnet-5} & medium & hotpotqa & 21.6 & markdown\_wrap & 81.4 & 32/35 & 3 \\
+\code{gpt-4o} & medium & hotpotqa & 16.0 & schema\_mirroring & 72.5 & -- & -- \\
+\code{gpt-4o-mini} & medium & hotpotqa & 13.6 & regex\_pattern & 66.7 & -- & -- \\
+\code{gpt-5.6-luna} & medium & financebench & 7.2 & regex\_pattern & 57.1 & -- & -- \\
+\code{gpt-5.6-luna} & medium & hotpotqa & 2.4 & regex\_pattern & 100.0 & -- & -- \\
+\code{gpt-5.6-sol} & medium & financebench & 6.2 & regex\_pattern & 83.3 & -- & -- \\
+\code{gpt-5.6-sol} & medium & hotpotqa & 1.9 & regex\_pattern & 100.0 & -- & -- \\
+\code{gpt-5.6-sol} & medium\_v3\_loose\_regex & hotpotqa & 3.2 & regex\_pattern & 100.0 & -- & -- \\
+\code{gpt-5.6-terra} & medium & financebench & 8.2 & regex\_pattern & 87.5 & -- & -- \\
+\code{gpt-5.6-terra} & medium & hotpotqa & 3.6 & regex\_pattern & 83.3 & -- & -- \\
+\code{gpt-5.6-terra} & medium\_v3\_loose\_regex & hotpotqa & 2.6 & regex\_pattern & 100.0 & -- & -- \\
+\bottomrule
+\end{tabular}

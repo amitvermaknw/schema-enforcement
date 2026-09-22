@@ -3,47 +3,59 @@
 
 \paragraph{Implications for pipeline authors.}
 Three practices follow from the data, each at the scale of this corpus.
-First, strip fences before validating, then revalidate and record what
-remains: stripping alone recovers the pure-formatting share of wrapped
-failures and would report the compound share as solved. Second, do not
-express length bounds inside a regular expression. A \code{\{2,30\}}
-quantifier turns an over-long identifier into a pattern violation, and
-the natural remedy for a pattern violation, loosening the character
-class, leaves it untouched; a separate \code{max\_length} would separate
-the causes at validation time. Third, measure a field's observed length
-distribution before fixing its cap. Sonnet~4.6's dominant mode came from
-caps sitting modestly below its output lengths. Such a cap may still be a
-real downstream requirement; the measurement tells an author which side
-must move, not that the cap is wrong.
+First, remove fences before validating, then revalidate and record what
+remains. Fence removal is a partial repair: it recovers the
+pure-formatting share of wrapped failures, which ranged from most of
+Sonnet~5's to under half of Haiku~4.5's, and a pipeline that counts it as
+a fix would report the compound remainder as solved. Second, when
+diagnostic clarity matters, represent identifier length separately. A
+\code{\{2,30\}} quantifier turns an over-long identifier into a pattern
+violation, and the natural remedy for a pattern violation, loosening the
+character class, leaves it untouched; a separate \code{max\_length}
+separates the causes at validation time. Third, measure a field's
+observed length distribution before fixing its cap. Sonnet~4.6's
+dominant mode came from caps sitting modestly below its output lengths,
+and Haiku~4.5's incomplete runs all ended on length. Such a cap may still
+be a real downstream requirement; the measurement identifies the
+mismatch the application must resolve, not that the cap is wrong.
 
 \paragraph{Durability.}
 A reasonable objection is that providers are engineering these modes
-away. Our cross-generation data speaks to both directions:
-\cat{schema\_mirroring} dominates gpt-4o and was not observed in the
-GPT-5.6 configurations we tested, while \cat{markdown\_wrap} was not
-observed in Sonnet~4.6 and dominates Sonnet~5 and the current Haiku. What
-changed across generations is which category dominates. A vocabulary for
-the categories remains useful as the distribution moves, which is a
-weaker claim than predicting that any particular mode persists.
+away. Our cross-generation data are descriptive and do not isolate model
+generation from other configuration differences, including collection
+date, sampling parameters and endpoint. With that caveat, they point in
+both directions: \cat{schema\_mirroring} dominates gpt-4o and was not
+observed in the GPT-5.6 configurations we tested, while
+\cat{markdown\_wrap} was not observed in Sonnet~4.6 and dominates
+Sonnet~5 and Haiku~4.5. What differs across these models is which
+category dominates. A vocabulary for the categories remains useful as the
+distribution moves, which is a weaker claim than predicting that any
+particular mode persists.
 
 \paragraph{Scope and generality.}
 The schemas are ours, and one ablation showed that a cap we set was
 binding below the output lengths of one model; a different author would
-produce a different distribution over categories. We cover two vendors by
-design, trading breadth for several generations and capability tiers per
-vendor, which the within-family comparisons above require. A third vendor
-may exhibit modes our taxonomy lacks. Questions are fixed dataset
-prefixes, and the design is not fully crossed. We evaluate conformance
-only, not whether extracted content is correct.
+produce a different distribution over categories, and the domain
+comparison shows that a different task would too. We cover two vendors
+by design, trading breadth for several generations and capability tiers
+per vendor, which the within-family comparisons above require. A third
+vendor may exhibit modes our taxonomy lacks. Questions are fixed dataset
+prefixes, and the design is not fully crossed. Most endpoints returned an
+alias rather than a pinned version, so later calls to the same identifier
+may not reproduce these distributions. We evaluate conformance only, not
+whether extracted content is correct.
 
 \paragraph{Measurement.}
-Attempts within a run are not independent, and repair attempts, which are
-conditioned on a prior failure, make up a model-dependent share of each
-rate, so intervals over attempts are indicative. Five models reject an
-explicit temperature, the Anthropic and OpenAI branches use different
-token ceilings, and some questions were run more than once
-(\cref{app:manifest} shows this does not materially change the most
-affected cell). Classifier agreement is development-set agreement from a
+Repair attempts, which are conditioned on a prior failure, make up a
+model-dependent share of each attempt rate; first-attempt rates and run
+completion are reported separately for that reason (\cref{app:breakdowns}).
+Five models reject an explicit temperature, and the Anthropic and OpenAI
+branches use different token ceilings. Some questions were run more than
+once. Keeping only the earliest run per question changes any cell's
+failure rate by at most \pn{robust.within_cell.max_abs_delta_pp}
+percentage points (\cref{app:manifest}); the Haiku~4.5 FinanceBench cell
+rests on \pn{c.claude-haiku-4-5@medium@financebench.questions} distinct
+questions. Classifier agreement is development-set agreement from a
 single labeller who wrote the classifier. Primary categories are
 single-valued, and we quantify co-occurrence only beneath fences.
 
@@ -51,9 +63,9 @@ single-valued, and we quantify co-occurrence only beneath fences.
 Among attempts whose model-level validators ran, no cross-field
 violation occurred (\cref{app:crossfield}), but attempts rejected at an
 earlier stage, including during JSON parsing, never reached those checks,
-so the zero describes a filtered subset. Cross-node referential
-integrity---whether a later node's identifiers appear in an earlier
-node's entities---is not implemented in our schemas. It is expressible in
-Pydantic by passing the earlier output as validation context
-(\code{model\_validate\_json(data, context=\ldots)}), and is the natural
-next measurement.
+so the zero describes a filtered subset of the node-level validators we
+implemented. Cross-node referential integrity---whether a later node's
+identifiers appear in an earlier node's entities---is not implemented in
+our schemas. It is expressible in Pydantic by passing the earlier output
+as validation context (\code{model\_validate\_json(data, context=\ldots)}),
+and is the natural next measurement.

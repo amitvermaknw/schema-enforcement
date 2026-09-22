@@ -1,0 +1,1555 @@
+{
+  "numbers": {
+    "cf.n": {
+      "value": 178,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "cf.orig.failures": {
+      "value": 28,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "cf.orig.rate": {
+      "value": 0.15730337078651685,
+      "basis": "reported",
+      "note": "",
+      "fmt": "pct"
+    },
+    "cf.samev2.failures": {
+      "value": 10,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "cf.samev2.rate": {
+      "value": 0.056179775280898875,
+      "basis": "reported",
+      "note": "",
+      "fmt": "pct"
+    },
+    "cf.valid_to_invalid": {
+      "value": 0,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "cf.invalid_to_valid": {
+      "value": 18,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "cf.invalid_to_valid.length_bound": {
+      "value": 18,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "cf.drift_medium": {
+      "value": 0,
+      "basis": "reported",
+      "note": "stored outputs whose medium revalidation != stored validation_ok",
+      "fmt": "int"
+    },
+    "cf.samev2.remaining_by_orig_cat": {
+      "value": {
+        "regex_pattern": 7,
+        "enum_violation": 2,
+        "prose_preamble": 1
+      },
+      "basis": "reported",
+      "note": "",
+      "fmt": "dict"
+    },
+    "cf.samev2.error_types": {
+      "value": {
+        "string_pattern_mismatch": 7,
+        "literal_error": 2,
+        "json_invalid": 1
+      },
+      "basis": "reported",
+      "note": "",
+      "fmt": "dict"
+    }
+  },
+  "per_attempt": [
+    {
+      "attempt": 897,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 898,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 899,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 900,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 901,
+      "node": "gather",
+      "orig_ok": false,
+      "orig_cat": "length_bound",
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 902,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 903,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 904,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 905,
+      "node": "gather",
+      "orig_ok": false,
+      "orig_cat": "length_bound",
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 906,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 907,
+      "node": "answer",
+      "orig_ok": false,
+      "orig_cat": "length_bound",
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 908,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 909,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 910,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 911,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 912,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 913,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 914,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 915,
+      "node": "identify",
+      "orig_ok": false,
+      "orig_cat": "regex_pattern",
+      "v2_ok": false,
+      "v2_errors": [
+        [
+          "string_pattern_mismatch",
+          "entities.0.canonical_id"
+        ]
+      ]
+    },
+    {
+      "attempt": 916,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 917,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 918,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 919,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 920,
+      "node": "gather",
+      "orig_ok": false,
+      "orig_cat": "length_bound",
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 921,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 922,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 923,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 924,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 925,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 926,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 927,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 928,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 929,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 930,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 931,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 932,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 933,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 934,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 935,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 936,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 937,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 938,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 939,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 940,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 941,
+      "node": "identify",
+      "orig_ok": false,
+      "orig_cat": "regex_pattern",
+      "v2_ok": false,
+      "v2_errors": [
+        [
+          "string_pattern_mismatch",
+          "entities.1.canonical_id"
+        ]
+      ]
+    },
+    {
+      "attempt": 942,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 943,
+      "node": "gather",
+      "orig_ok": false,
+      "orig_cat": "length_bound",
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 944,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 945,
+      "node": "answer",
+      "orig_ok": false,
+      "orig_cat": "length_bound",
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 946,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 947,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 948,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 949,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 950,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 951,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 952,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 953,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 954,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 955,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 956,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 957,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 958,
+      "node": "answer",
+      "orig_ok": false,
+      "orig_cat": "length_bound",
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 959,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 960,
+      "node": "identify",
+      "orig_ok": false,
+      "orig_cat": "regex_pattern",
+      "v2_ok": false,
+      "v2_errors": [
+        [
+          "string_pattern_mismatch",
+          "entities.1.canonical_id"
+        ]
+      ]
+    },
+    {
+      "attempt": 961,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 962,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 963,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 964,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 965,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 966,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 967,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 968,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 969,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 970,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 971,
+      "node": "gather",
+      "orig_ok": false,
+      "orig_cat": "length_bound",
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 972,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 973,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 974,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 975,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 976,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 977,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 978,
+      "node": "gather",
+      "orig_ok": false,
+      "orig_cat": "length_bound",
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 979,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 980,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 981,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 982,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 983,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 984,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 985,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 986,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 987,
+      "node": "identify",
+      "orig_ok": false,
+      "orig_cat": "regex_pattern",
+      "v2_ok": false,
+      "v2_errors": [
+        [
+          "string_pattern_mismatch",
+          "entities.0.canonical_id"
+        ]
+      ]
+    },
+    {
+      "attempt": 988,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 989,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 990,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 991,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 992,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 993,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 994,
+      "node": "identify",
+      "orig_ok": false,
+      "orig_cat": "regex_pattern",
+      "v2_ok": false,
+      "v2_errors": [
+        [
+          "string_pattern_mismatch",
+          "entities.1.canonical_id"
+        ]
+      ]
+    },
+    {
+      "attempt": 995,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 996,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 997,
+      "node": "answer",
+      "orig_ok": false,
+      "orig_cat": "length_bound",
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 998,
+      "node": "answer",
+      "orig_ok": false,
+      "orig_cat": "length_bound",
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 999,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1000,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1001,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1002,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1003,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1004,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1005,
+      "node": "answer",
+      "orig_ok": false,
+      "orig_cat": "length_bound",
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1006,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1007,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1008,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1009,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1010,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1011,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1012,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1013,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1014,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1015,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1016,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1017,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1018,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1019,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1020,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1021,
+      "node": "answer",
+      "orig_ok": false,
+      "orig_cat": "length_bound",
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1022,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1023,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1024,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1025,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1026,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1027,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1028,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1029,
+      "node": "identify",
+      "orig_ok": false,
+      "orig_cat": "regex_pattern",
+      "v2_ok": false,
+      "v2_errors": [
+        [
+          "string_pattern_mismatch",
+          "entities.1.canonical_id"
+        ]
+      ]
+    },
+    {
+      "attempt": 1030,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1031,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1032,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1033,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1034,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1035,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1036,
+      "node": "identify",
+      "orig_ok": false,
+      "orig_cat": "enum_violation",
+      "v2_ok": false,
+      "v2_errors": [
+        [
+          "literal_error",
+          "question_type"
+        ]
+      ]
+    },
+    {
+      "attempt": 1037,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1038,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1039,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1040,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1041,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1042,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1043,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1044,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1045,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1046,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1047,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1048,
+      "node": "answer",
+      "orig_ok": false,
+      "orig_cat": "length_bound",
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1049,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1050,
+      "node": "identify",
+      "orig_ok": false,
+      "orig_cat": "regex_pattern",
+      "v2_ok": false,
+      "v2_errors": [
+        [
+          "string_pattern_mismatch",
+          "entities.1.canonical_id"
+        ]
+      ]
+    },
+    {
+      "attempt": 1051,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1052,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1053,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1054,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1055,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1056,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1057,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1058,
+      "node": "gather",
+      "orig_ok": false,
+      "orig_cat": "length_bound",
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1059,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1060,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1061,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1062,
+      "node": "gather",
+      "orig_ok": false,
+      "orig_cat": "length_bound",
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1063,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1064,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1065,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1066,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1067,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1068,
+      "node": "identify",
+      "orig_ok": false,
+      "orig_cat": "enum_violation",
+      "v2_ok": false,
+      "v2_errors": [
+        [
+          "literal_error",
+          "question_type"
+        ]
+      ]
+    },
+    {
+      "attempt": 1069,
+      "node": "identify",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1070,
+      "node": "gather",
+      "orig_ok": false,
+      "orig_cat": "length_bound",
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1071,
+      "node": "gather",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1072,
+      "node": "answer",
+      "orig_ok": false,
+      "orig_cat": "prose_preamble",
+      "v2_ok": false,
+      "v2_errors": [
+        [
+          "json_invalid",
+          ""
+        ]
+      ]
+    },
+    {
+      "attempt": 1073,
+      "node": "answer",
+      "orig_ok": false,
+      "orig_cat": "length_bound",
+      "v2_ok": true,
+      "v2_errors": []
+    },
+    {
+      "attempt": 1074,
+      "node": "answer",
+      "orig_ok": true,
+      "orig_cat": null,
+      "v2_ok": true,
+      "v2_errors": []
+    }
+  ],
+  "drift_attempts": []
+}

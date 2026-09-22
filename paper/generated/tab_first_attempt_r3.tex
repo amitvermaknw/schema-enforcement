@@ -1,0 +1,54 @@
+\begin{tabular}{lllrrp{5cm}}
+\toprule
+Model & Tier & Node & Valid/reached & After fence & First-attempt failure composition \\
+\midrule
+\code{claude-haiku-4-5} & medium & identify & 0/166 & 144/166 & markdown\_wrap 166 \\
+\code{claude-haiku-4-5} & medium & gather & 0/166 & 21/166 & markdown\_wrap 166 \\
+\code{claude-haiku-4-5} & medium & answer & 0/143 & 96/143 & markdown\_wrap 143 \\
+\code{claude-haiku-4-5} & medium & \emph{retry} & 451/475 &  & \emph{failed first attempts later valid} \\
+\code{claude-opus-4-8} & medium & identify & 81/84 & 81/84 & regex\_pattern 3 \\
+\code{claude-opus-4-8} & medium & gather & 84/84 & 84/84 & -- \\
+\code{claude-opus-4-8} & medium & answer & 75/84 & 75/84 & length\_bound 9 \\
+\code{claude-opus-4-8} & medium & \emph{retry} & 12/12 &  & \emph{failed first attempts later valid} \\
+\code{claude-sonnet-4-6} & medium & identify & 41/50 & 41/50 & regex\_pattern 7, enum\_violation 2 \\
+\code{claude-sonnet-4-6} & medium & gather & 41/50 & 41/50 & length\_bound 9 \\
+\code{claude-sonnet-4-6} & medium & answer & 42/50 & 42/50 & length\_bound 7, prose\_preamble 1 \\
+\code{claude-sonnet-4-6} & medium & \emph{retry} & 26/26 &  & \emph{failed first attempts later valid} \\
+\code{claude-sonnet-4-6} & medium\_v2 & identify & 84/100 & 84/100 & regex\_pattern 14, enum\_violation 2 \\
+\code{claude-sonnet-4-6} & medium\_v2 & gather & 96/100 & 96/100 & prose\_preamble 4 \\
+\code{claude-sonnet-4-6} & medium\_v2 & answer & 96/100 & 96/100 & prose\_preamble 4 \\
+\code{claude-sonnet-4-6} & medium\_v2 & \emph{retry} & 24/24 &  & \emph{failed first attempts later valid} \\
+\code{claude-sonnet-5} & medium & identify & 53/82 & 69/82 & markdown\_wrap 20, regex\_pattern 9 \\
+\code{claude-sonnet-5} & medium & gather & 63/82 & 80/82 & markdown\_wrap 17, length\_bound 1, parse\_error 1 \\
+\code{claude-sonnet-5} & medium & answer & 71/82 & 71/82 & length\_bound 11 \\
+\code{claude-sonnet-5} & medium & \emph{retry} & 59/59 &  & \emph{failed first attempts later valid} \\
+\code{gpt-4o} & medium & identify & 59/70 & 59/70 & regex\_pattern 8, enum\_violation 3 \\
+\code{gpt-4o} & medium & gather & 70/70 & 70/70 & -- \\
+\code{gpt-4o} & medium & answer & 41/70 & 41/70 & schema\_mirroring 29 \\
+\code{gpt-4o} & medium & \emph{retry} & 40/40 &  & \emph{failed first attempts later valid} \\
+\code{gpt-4o-mini} & medium & identify & 55/70 & 55/70 & regex\_pattern 15 \\
+\code{gpt-4o-mini} & medium & gather & 70/70 & 70/70 & -- \\
+\code{gpt-4o-mini} & medium & answer & 60/70 & 60/70 & schema\_mirroring 8, length\_bound 2 \\
+\code{gpt-4o-mini} & medium & \emph{retry} & 24/25 &  & \emph{failed first attempts later valid} \\
+\code{gpt-5.6-luna} & medium & identify & 77/85 & 77/85 & regex\_pattern 8 \\
+\code{gpt-5.6-luna} & medium & gather & 85/85 & 85/85 & -- \\
+\code{gpt-5.6-luna} & medium & answer & 82/85 & 82/85 & length\_bound 3 \\
+\code{gpt-5.6-luna} & medium & \emph{retry} & 11/11 &  & \emph{failed first attempts later valid} \\
+\code{gpt-5.6-sol} & medium & identify & 74/82 & 74/82 & regex\_pattern 8 \\
+\code{gpt-5.6-sol} & medium & gather & 82/82 & 82/82 & -- \\
+\code{gpt-5.6-sol} & medium & answer & 81/82 & 81/82 & length\_bound 1 \\
+\code{gpt-5.6-sol} & medium & \emph{retry} & 9/9 &  & \emph{failed first attempts later valid} \\
+\code{gpt-5.6-sol} & medium\_v3\_loose\_regex & identify & 46/50 & 46/50 & regex\_pattern 4 \\
+\code{gpt-5.6-sol} & medium\_v3\_loose\_regex & gather & 50/50 & 50/50 & -- \\
+\code{gpt-5.6-sol} & medium\_v3\_loose\_regex & answer & 49/50 & 49/50 & regex\_pattern 1 \\
+\code{gpt-5.6-sol} & medium\_v3\_loose\_regex & \emph{retry} & 5/5 &  & \emph{failed first attempts later valid} \\
+\code{gpt-5.6-terra} & medium & identify & 71/84 & 71/84 & regex\_pattern 12, enum\_violation 1 \\
+\code{gpt-5.6-terra} & medium & gather & 84/84 & 84/84 & -- \\
+\code{gpt-5.6-terra} & medium & answer & 83/84 & 83/84 & length\_bound 1 \\
+\code{gpt-5.6-terra} & medium & \emph{retry} & 14/14 &  & \emph{failed first attempts later valid} \\
+\code{gpt-5.6-terra} & medium\_v3\_loose\_regex & identify & 46/50 & 46/50 & regex\_pattern 4 \\
+\code{gpt-5.6-terra} & medium\_v3\_loose\_regex & gather & 50/50 & 50/50 & -- \\
+\code{gpt-5.6-terra} & medium\_v3\_loose\_regex & answer & 50/50 & 50/50 & -- \\
+\code{gpt-5.6-terra} & medium\_v3\_loose\_regex & \emph{retry} & 4/4 &  & \emph{failed first attempts later valid} \\
+\bottomrule
+\end{tabular}

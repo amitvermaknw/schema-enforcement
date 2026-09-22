@@ -27,8 +27,8 @@ on free text (\code{coverage\_notes} 250, \code{answer} 400, \code{fact}
 four cross-field checks---primary-entity membership and entity-count
 agreement in identify, fact-count agreement in gather, and
 confidence-bucket coherence in answer---and, in answer, a per-item
-identifier pattern check on \code{supporting\_entity\_ids}. Two ablation
-tiers change one constraint family each. \emph{medium\_v2} raises the
+identifier pattern check on \code{supporting\_entity\_ids}. Two targeted
+variants of the baseline schema change one constraint family each. \emph{medium\_v2} raises the
 caps to 1000, 1200 and 800 and is run on Sonnet~4.6 only;
 \emph{medium\_v3\_loose\_regex} loosens the identifier pattern to
 \idpatternloose{}, keeping the 31-character ceiling, and is run on
@@ -40,12 +40,22 @@ crossed; \cref{app:manifest} lists every cell.
 
 Nine models from two vendors: \code{gpt-4o}, \code{gpt-4o-mini},
 \code{gpt-5.6-luna}, \code{gpt-5.6-sol}, \code{gpt-5.6-terra},
-\code{claude-haiku-4-5}, \code{claude-sonnet-4-6}, \code{claude-sonnet-5}
-and \code{claude-opus-4-8}. HotpotQA questions are the first records of
-the validation split (distractor configuration) and FinanceBench
-questions the first records of the train split with evidence truncated
-to 2{,}000 characters; neither is shuffled, so results describe these
-fixed question sets. Claude Sonnet~4.6 and gpt-4o were run on HotpotQA
+\code{claude-haiku-4-5-20251001}, \code{claude-sonnet-4-6},
+\code{claude-sonnet-5} and \code{claude-opus-4-8}, all called through the
+vendors' own APIs between \pn{collection.date_min} and
+\pn{collection.date_max}. Only the Haiku request names a dated snapshot;
+the two gpt-4o models resolved to dated snapshots, and the remaining
+endpoints returned the requested alias, which identifies the endpoint but
+not an immutable model version (\cref{app:manifest}). HotpotQA
+\citep{yang2018hotpotqa} questions are the first records of the
+validation split (distractor configuration) and FinanceBench
+\citep{islam2023financebench} questions the first records of the train
+split with evidence truncated to 2{,}000 characters; neither is shuffled,
+so results describe these fixed question sets. Most cells contain about
+one run per question; the Haiku cells repeat questions, and its
+FinanceBench cell covers
+\pn{c.claude-haiku-4-5@medium@financebench.questions} distinct questions
+(\cref{app:manifest}). Claude Sonnet~4.6 and gpt-4o were run on HotpotQA
 only. We request \code{temperature=0} where supported; the GPT-5.6 family,
 Sonnet~5 and Opus~4.8 reject the parameter and run at provider defaults.
 The Anthropic branch sets \code{max\_tokens} to 4{,}096 and the OpenAI
@@ -53,13 +63,28 @@ branch sets none. Resolved model versions and sampling details are in
 \cref{app:manifest}.
 
 Two conventions define the reporting basis. Cells with fewer than 30
-runs are excluded as pilots, and prompt-variant runs, which were written
-into the Haiku HotpotQA cell, are excluded everywhere except
+baseline runs are excluded as pilots, a threshold fixed before analysis,
+and the \pn{excluded_variant.runs} prompt-variant runs, which share the
+Haiku HotpotQA configuration, are excluded everywhere except
 \cref{sec:results:concealment}. The basis contains
 \pn{reported.attempts} attempts and \pn{reported.failures} failures in
 \pn{reported.cells} configurations, from a full corpus of
 \pn{full.attempts} attempts in \pn{full.cells} cells. Classifier
 validation (\cref{sec:setup:taxonomy}) uses the full corpus and says so.
+
+\paragraph{Uncertainty.}
+Attempts are not independent: retries follow failures, questions repeat
+in some cells, and later nodes are reached only after earlier ones
+succeed. Intervals are therefore from a question-clustered bootstrap
+(\pn{meta.bootstrap_reps} replicates, percentile 95\%) that resamples
+questions within each dataset and carries every run and attempt of a
+selected question. They describe variability over the observed question
+set and do not make the fixed prefixes representative of the benchmarks.
+Because a failure adds an attempt under retry-until-valid, failures and
+attempts co-vary within a question, so for high-failure models the
+clustered interval on the failure rate can be narrower than a binomial
+interval over attempts. Where every replicate gives the same value, as for
+a share of 0 or 1, we report no interval.
 
 \subsection{Taxonomy and classifier}
 \label{sec:setup:taxonomy}
@@ -77,13 +102,16 @@ predicate fires, maps Pydantic error types: pattern mismatches to
 \cat{regex\_pattern}, length violations to \cat{length\_bound}, literal
 errors to \cat{enum\_violation}, missing fields to \cat{missing\_field},
 numeric bounds to \cat{range\_bound} and \code{json\_invalid} to
-\cat{parse\_error}. Validator errors arrive as \code{value\_error}; the
+\cat{parse\_error}.
+% TODO(review3 C): confirm in errors.py, then restore the type-error rule
+% (numeric type errors -> range_bound, non-numeric -> missing_field?);
+% put the 14-keyword vocabulary and detector pseudocode in App. C. Validator errors arrive as \code{value\_error}; the
 supporting-identifier check routes to \cat{regex\_pattern} and cross-field
 messages to \cat{cross\_field\_ref}. With several errors, the primary
 category is the plurality, ties broken by first occurrence.
 
-The Stage-1 predicates must precede Stage~2 because the behaviours they
-detect are invisible to Pydantic, which sees only downstream symptoms. The
+We give Stage-1 predicates precedence to preserve behaviours that are
+invisible to Pydantic, which sees only their downstream symptoms. The
 precedence has a consequence we exploit in
 \cref{sec:results:concealment}: a fenced output that also violates a
 constraint is labelled \cat{markdown\_wrap}, so that category measures
@@ -108,7 +136,7 @@ support. Labelling surfaced a detection-order defect in an earlier
 classifier, in which Pydantic mapping preceded the behavioural
 predicates; we corrected the order and reclassified the corpus. Against
 the corrected classifier, blind agreement is \pn{validation.blind_agree}
-of \pn{validation.n} (\pn{validation.blind_rate}, Wilson 95\% CI
+of \pn{validation.n} (\pn{validation.blind_rate}, Wilson 95\% CI over labelled attempts
 \pn{validation.blind_ci}). On adjudication all four disagreements were
 labelling errors. Because these samples also surfaced the defect, this is
 development-set agreement, not held-out validation, and a single labeller

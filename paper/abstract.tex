@@ -7,20 +7,25 @@ this paradigm, assigned by a deterministic classifier over the raw
 completion and the validator's error, and apply it to
 \pn{reported.attempts} generation attempts across \pn{reported.cells}
 configurations spanning \pn{reported.models} models from two vendors,
-three schema tiers and two task domains. Three findings follow that a
-rate cannot express. First, models with similar failure rates fail in
-different ways, and a model's dominant category is a joint property of
-the model and the constraint surface: relaxing length caps moves one
-model from a length-dominant to a pattern-dominant profile, and
-revalidating its stored completions shows the change is mechanical.
-Second, the most frequent category, markdown wrapping, conceals a
-further violation in \pn{fence.reported.compound_share} of cases, ranging
-from \pn{fence.claude-sonnet-5.compound_share} for one wrapping model to
-\pn{fence.claude-haiku-4-5.compound_share} for another, so
-fence-stripping alone is not a repair. Third, because wrapping takes
-precedence in classification, prompt variants that suppress fences
-raise the primary length-violation share without raising the combined
-rate of primary and concealed length violations; primary labels alone
-would suggest a migration between failure modes. We release the
-classifier, raw completions and annotation record.
+one baseline schema with two targeted variants, and two task domains.
+Three findings follow that a rate cannot express. First, models with
+similar failure rates fail in different ways, and the dominant category
+depends on the constraint surface and the task domain as well as the
+model: relaxing length caps moves one model from a length-dominant to a
+pattern-dominant profile, and revalidating its stored completions shows
+that relaxing the caps is sufficient to eliminate those observed
+violations. Second, the most frequent category, markdown wrapping,
+conceals a further violation in \pn{pooled.reported.fence_compound_share}
+of wrapped failures, from \pn{g.claude-sonnet-5@medium.fence_compound_share}
+for one wrapping model to \pn{g.claude-haiku-4-5@medium.fence_compound_share}
+for another, so fence removal is a partial repair whose effectiveness
+varies substantially across configurations. For one model every first
+attempt was fenced; retry feedback removed the fences, and every run that
+did not complete ended on a length violation the fence had concealed.
+Third, because wrapping takes precedence in classification, prompt
+variants that suppress fences raise the primary length-violation rate
+without raising the combined rate of primary and concealed length
+violations; primary labels alone would suggest a migration between
+failure modes. We release the classifier, raw completions and annotation
+record.
 \end{abstract}

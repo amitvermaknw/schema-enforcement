@@ -1,36 +1,83 @@
 \section{Cell Manifest, Versions and Sampling}
 \label{app:manifest}
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering\scriptsize
-\caption{All cells, baseline prompt. Pilot cells (fewer than 30 runs) are
-excluded from the reporting basis.}
-\input{generated/tab_manifest}
+\caption{Run manifest, one row per model, tier, domain and prompt variant.
+Runs, attempts and failures use the same prompt-variant filter. \emph{Qs}
+is the number of distinct questions; \emph{Collected} is the range of run
+timestamps (UTC). Pilot cells (fewer than 30 baseline runs) and
+prompt-variant rows are outside the reporting basis.}
+\label{tab:manifest}
+\resizebox{\linewidth}{!}{\input{generated/tab_manifest_r3}}
 \end{table}
+
+The full corpus of \pn{full.attempts} attempts decomposes into the
+\pn{reported.attempts} on the reporting basis, \pn{excluded_pilot.attempts}
+in pilot cells below the 30-run threshold, which was fixed before any
+results were examined, and \pn{excluded_variant.attempts} from the
+\pn{excluded_variant.runs} prompt-variant runs of \cref{tab:ablation}.
+Runs, attempts and failures are counted under one filter, so variant runs
+appear in their own rows rather than inflating the baseline cell whose
+configuration they share.
 
 \paragraph{Sampling.}
 HotpotQA questions are the first records of the validation split in the
 distractor configuration, in dataset order; FinanceBench questions are the
 first records of the train split, with evidence truncated to 2{,}000
 characters and a truncation marker inserted. There is no shuffle and no
-seed.
+seed. Collection ran from \pn{collection.date_min} to
+\pn{collection.date_max}; per-cell date ranges and distinct-question
+counts are in \cref{tab:manifest}. The Haiku~4.5 FinanceBench cell covers
+\pn{c.claude-haiku-4-5@medium@financebench.questions} distinct questions,
+fewer than the other FinanceBench cells. Exact question identities, as
+dataset record hashes, are in the released \code{question\_manifest.csv}.
 
-\paragraph{Resolved versions.}
-Anthropic models and the GPT-5.6 family return the requested alias
+\paragraph{Resolved versions and request parameters.}
+Only the Haiku request names a dated snapshot, which was returned
 unchanged. \code{gpt-4o} resolves to \code{gpt-4o-2024-08-06} and
-\code{gpt-4o-mini} to \code{gpt-4o-mini-2024-07-18}. Version capture was
+\code{gpt-4o-mini} to \code{gpt-4o-mini-2024-07-18}; the Anthropic models
+and the GPT-5.6 family return the requested alias, which identifies the
+endpoint but not an immutable model version, so later calls to the same
+identifier may not reproduce these distributions. Version capture was
 added after the first sweeps: \pn{versions.gpt-4o.precapture} of
 \pn{versions.gpt-4o.attempts} \code{gpt-4o} attempts and
 \pn{versions.gpt-4o-mini.precapture} of \pn{versions.gpt-4o-mini.attempts}
 \code{gpt-4o-mini} attempts on the reporting basis predate it.
+\Cref{tab:provenance} gives the requested and returned identifiers, the
+API route, the collection window and the sampling parameters sent by the
+client for each model.
+
+\begin{table}[htbp]
+\centering\scriptsize
+\caption{Model provenance. \emph{Returned ID} is the model identifier in
+the API response, with attempt counts; \emph{not captured} marks attempts
+logged before the response identifier was recorded. Temperature and
+\code{max\_tokens} are the values sent by the client.}
+\label{tab:provenance}
+\resizebox{\linewidth}{!}{\input{generated/tab_provenance}}
+\end{table}
+
+\paragraph{Analysis provenance.}
+The reported numbers were produced by the analysis scripts at commit
+\code{\pn{meta.git_head_short}} from the results database whose content
+hash begins \code{\pn{meta.db_sha256_short}}. Intervals are question-clustered
+bootstrap intervals with \pn{meta.bootstrap_reps} replicates
+(\cref{sec:setup:basis}).
 
 \paragraph{Repeated questions.}
 The Haiku~4.5 HotpotQA baseline cell contains \pn{robust.cell.runs} runs
 over \pn{robust.cell.questions} distinct questions. Restricting it to the
-earliest run of each question gives a failure rate of
-\pn{robust.one_run.rate} (\pn{robust.one_run.failures} of
-\pn{robust.one_run.attempts}) against \pn{robust.cell.rate}
-(\pn{robust.cell.failures} of \pn{robust.cell.attempts}) for the full cell.
+earliest run of each question by timestamp, ties broken by run identifier,
+gives a failure rate of \pn{robust.one_run.rate}
+(\pn{robust.one_run.failures} of \pn{robust.one_run.attempts}) against
+\pn{robust.cell.rate} (\pn{robust.cell.failures} of
+\pn{robust.cell.attempts}) for the full cell. Applied to every cell, the
+rule changes no cell's failure rate by more than
+\pn{robust.within_cell.max_abs_delta_pp} percentage points. We do not
+report a pooled rate under deduplication: it removes mostly Haiku~4.5
+attempts, so the pooled change reflects reweighting between models rather
+than sensitivity to repetition.
 
 \paragraph{Zero-length completion.}
 One attempt (\pn{zero_length.model}, \pn{zero_length.node} node) returned
@@ -42,15 +89,17 @@ budget being exhausted before any text block was emitted.
 \section{Schemas and Prompts}
 \label{app:schemas}
 
-The three schema tiers and three prompt variants are reproduced from the
-released code.
+The baseline schema, its two variants, the prompt variants, the retry
+message template and the Stage-1 predicates are reproduced below from the
+released code. The listings are generated from the repository at the
+commit recorded in \cref{app:manifest}, so they cannot drift from the code
+that produced the results.
 
-\IfFileExists{code/medium.py}{\lstinputlisting[language=Python,caption={Medium tier schema}]{code/medium.py}}{\emph{[Copy src/schemaeval/schemas/medium.py to paper/code/medium.py.]}}
+\IfFileExists{generated/app_code.tex}{\input{generated/app_code}}{\emph{[Run \code{review3.py appcode} to generate \code{generated/app\_code.tex}.]}}
 
-\IfFileExists{code/prompts.py}{\lstinputlisting[language=Python,caption={Prompt variants}]{code/prompts.py}}{\emph{[Copy src/schemaeval/prompts.py to paper/code/prompts.py.]}}
-
-The medium\_v2 tier differs only in the three character caps and the
-medium\_v3\_loose\_regex tier only in \code{CANONICAL\_ID\_PATTERN}.
+The medium\_v2 variant differs only in the three character caps and the
+medium\_v3\_loose\_regex variant only in \code{CANONICAL\_ID\_PATTERN}; the
+diffs above show both.
 
 \section{Classifier Validation}
 \label{app:classifier}
@@ -77,15 +126,17 @@ because adjudication uses evidence the labeller did not consult.
 \begin{table}[h]
 \centering\small
 \caption{Corrected classifier against blind human labels
-($n=\pn{validation.n}$), full corpus frame.}
+($n=\pn{validation.n}$), full corpus frame. Recall is computed within the
+label-stratified sample, not over the corpus.}
 \label{tab:validation}
 \input{generated/tab_validation}
 \end{table}
 
 \paragraph{Corpus screens.}
 Because the sample is stratified by predicted label, it cannot establish
-corpus recall. For the Stage-1 categories we screened every failure in
-the full corpus with predicates broader than the detectors. A fence at
+corpus recall. For the Stage-1 categories we screened every failure in the full corpus
+with relaxed screens for wrapping and preambles, and a keyword-restricted
+screen for mirroring. A fence at
 any position matches \pn{screen.fence_any.matches} failures, of which
 \pn{screen.fence_any.markdown_wrap} are classified \cat{markdown\_wrap}
 and \pn{screen.fence_any.prose_preamble} \cat{prose\_preamble} (prose
@@ -93,8 +144,8 @@ before a later fence). A \code{"properties"} key matches
 \pn{screen.properties.matches} failures, of which
 \pn{screen.properties.schema_mirroring} are classified
 \cat{schema\_mirroring}; this screen tests one meta-keyword where the
-detector requires two, so it bounds recall only among failures containing
-that key. An opening character other than a brace, bracket or fence
+detector requires two, so it checks for missed mirroring cases only among
+failures containing that key. An opening character other than a brace, bracket or fence
 matches \pn{screen.nonjson_opener.matches} non-empty failures, of which
 \pn{screen.nonjson_opener.prose_preamble} are \cat{prose\_preamble}.
 
@@ -120,25 +171,88 @@ characters outside the class, and length outside 3--31. The cells hold
 \pn{pert.medium.gpt-5.6-terra.failures} failures under the baseline
 pattern and \pn{pert.medium_v3_loose_regex.gpt-5.6-sol.failures} and
 \pn{pert.medium_v3_loose_regex.gpt-5.6-terra.failures} under the loosened
-pattern, too few to support rates or shares. The single Unicode case
-under the loosened pattern is an otherwise lowercase band name with a
-non-Latin combining mark inserted.
+pattern, too few failures for precise comparative inference. Pooled over
+the four cells, \pn{pert.pooled.regex_failures} of
+\pn{pert.pooled.failures} failing attempts were assigned
+\cat{regex\_pattern}, and these contained \pn{pert.pooled.identifiers}
+violating identifiers. Sub-causes are annotated as multilabel rather than
+by precedence, and no identifier carried more than one; non-ASCII
+characters are counted as \emph{unicode} and excluded from the
+invalid-character check. The single Unicode case under the loosened
+pattern is an otherwise lowercase band name with a non-Latin combining
+mark inserted.
 
 \section{Per-Domain and First-Attempt Breakdowns}
 \label{app:breakdowns}
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering\scriptsize
 \caption{Per-cell results, reporting basis.}
+\label{tab:domains}
 \input{generated/tab_domains}
 \end{table}
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering\scriptsize
-\caption{First-attempt validity by node. The denominator is the number of
-runs that reached the node, which depends on upstream success; the
-identify node is the only unconditioned comparison.}
-\input{generated/tab_first_attempt}
+\caption{Run completion and offline residual invalidity, reporting basis.
+\emph{Att./compl.} is attempts per completed run. \emph{Residual} counts
+pure-formatting \cat{markdown\_wrap} failures as recovered; it is computed
+on stored attempts and is not the outcome of rerunning the pipeline with
+fence removal enabled.}
+\label{tab:operational}
+\resizebox{\linewidth}{!}{\input{generated/tab_operational}}
+\end{table}
+
+Run completion and attempt failure diverge most where the repair loop does
+the most work: Haiku~4.5 fails \pn{g.claude-haiku-4-5@medium.rate} of
+attempts yet completes \pn{g.claude-haiku-4-5@medium.completion_rate} of
+runs, at \pn{g.claude-haiku-4-5@medium.attempts_per_completed_run}
+attempts per completed run against
+\pn{pooled.reported.attempts_per_completed_run} pooled.
+
+\begin{table}[htbp]
+\centering\scriptsize
+\caption{First attempts by node: valid first attempts over run-nodes
+reaching the node, the same after fence removal, and the composition of
+failed first attempts. The denominator depends on upstream success, so the
+identify node is the only unconditioned comparison. \emph{Retry} rows give
+failed first attempts that a later attempt repaired.}
+\label{tab:firstattempt}
+\resizebox{\linewidth}{!}{\input{generated/tab_first_attempt_r3}}
+\end{table}
+
+Pooled over the reporting basis, \pn{pooled.reported.fa.valid} of
+\pn{pooled.reported.fa.reached} first attempts validated
+(\pn{pooled.reported.fa.valid_rate}), rising to
+\pn{pooled.reported.fa.valid_after_fence_rate} if pure-formatting wrapped
+failures are counted as valid, and \pn{pooled.reported.fa.retry_success}
+of the \pn{pooled.reported.fa.failed} failed first attempts were repaired
+by a later attempt.
+
+\paragraph{Audit of first-attempt extraction.}
+Because every Haiku~4.5 first attempt failed, we checked the extraction
+directly against the database. Every run-node has exactly one attempt
+numbered zero; attempt numbers are contiguous from zero; no attempt is
+logged after a valid attempt in the same run-node; and the validation flag
+agrees with the stored category and error record for every attempt in the
+corpus. First-attempt validity is non-zero for every other model under the
+same query. All \pn{g.claude-haiku-4-5@medium.fa.reached} Haiku first
+attempts begin with a code fence in the raw completion, a check independent
+of the classifier, and this holds in each collection batch and in both
+domains. After the first validation error is returned, fences persist in
+\pn{g.claude-haiku-4-5@medium.att1.cat.markdown_wrap} of
+\pn{g.claude-haiku-4-5@medium.att1.n} second attempts and in none
+thereafter, while \cat{length\_bound} accounts for every failure from the
+third attempt onward.
+
+\begin{table}[htbp]
+\centering\scriptsize
+\caption{Dominant category and fence-strip outcome by cell.
+\emph{Pure/wrapped} is pure-formatting wrapped failures over all wrapped
+failures. Dominant shares for cells with few failures are descriptive
+only.}
+\label{tab:domain}
+\resizebox{\linewidth}{!}{\input{generated/tab_domain}}
 \end{table}
 
 \section{Model-Level Constraints}
@@ -168,9 +282,16 @@ category. Groups pool task domains and use the reporting basis; of
 \pn{divergence.pairs} pairs. The two largest values arise on different
 categories from opposite vendors, \pn{divergence.top.0.pp} and
 \pn{divergence.runner_up_category_pp} points, and differ by
-\pn{divergence.gap_pp} points, so we attach no significance to their order. Without the threshold the maximum
-is \pn{divergence.unrestricted.top.0.pp} points, but it involves a group
-with very few failures.
+\pn{divergence.gap_pp} points, so we attach no significance to their
+order. The maximum of \pn{divergence.top.0.pp} points is itself attained
+by \pn{divergence.top.n_tied} pairs, each setting Haiku~4.5 against a
+group with no \cat{markdown\_wrap} failures. Without the threshold the
+maximum is \pn{divergence.unrestricted.max.pp} points in
+\cat{regex\_pattern}, attained by \pn{divergence.unrestricted.max.n_tied}
+pairs, Haiku~4.5 at medium against each of gpt-5.6-sol and gpt-5.6-terra
+at medium\_v3, whose failures are all \cat{regex\_pattern}; those groups
+have very few failures. Maximum-gap statistics are selected to be extreme
+and do not summarise the distributions; we report them as secondary.
 
 \begin{table}[h]
 \centering\small
