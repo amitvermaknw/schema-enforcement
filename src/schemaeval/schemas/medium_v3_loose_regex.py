@@ -12,16 +12,6 @@ DIFF FROM medium.py:
 
     All other constraints — length caps, enums, cross-field validators,
     count consistency, categorical/numeric coherence — are IDENTICAL to medium.
-
-Purpose: distinguish schema-driven failures from model-driven failures.
-    - If model's dominant failure category disappears with loosened regex,
-      failures were a schema artifact.
-    - If failure rate stays similar but shifts to another category, model
-      behavior — not our specific constraint choice — drives the failures.
-
-Rationale: on the medium tier, gpt-5.6-sol shows regex_pattern as 88.9% of
-its failures. This ablation isolates whether that dominance is intrinsic
-(model choice) or extrinsic (schema calibration).
 """
 
 import re

@@ -6,12 +6,6 @@ DIFF FROM medium.py:
     answer:        max_length 400 -> 1200
     fact:          max_length 400 -> 800
 
-Rationale: crux experiment (Aug 2026) showed Sonnet's length_bound failures
-were dominated by coverage_notes (~64% of failures) with raw outputs
-1017-1977 chars against a 250-char cap. This ablation isolates whether
-Sonnet's dominant failure mode is truly verbosity-driven (surviving the
-relaxation) or whether it disappears when constraints are model-appropriate.
-
 All other constraints — regex on canonical_id, cross-field validators,
 count consistency, categorical-numeric coherence — are IDENTICAL to medium.
 This is the minimum-diff ablation.

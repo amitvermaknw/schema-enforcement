@@ -1,6 +1,4 @@
-"""Medium-complexity Pydantic schemas — strengthened for measurable failure rate.
-
-Design goal: 10-20% per-node failure rate on modern models at temperature=0.
+"""Medium-tier Pydantic schemas for the three-node pipeline.
 
 The constraints below are drawn from real production patterns so failures
 reflect realistic schema strictness, not contrived difficulty:
@@ -14,9 +12,6 @@ reflect realistic schema strictness, not contrived difficulty:
   4. Categorical coherence: confidence_bucket must match numeric confidence.
      Models often report confidence=0.85 with bucket="medium".
 
-Note: constrained decoding (Outlines, XGrammar, JSON mode) enforces only
-grammar. It cannot enforce constraints 2, 3, or 4 — that's exactly the gap
-this paper measures.
 """
 
 import re

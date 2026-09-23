@@ -44,8 +44,8 @@ completed run (\cref{app:breakdowns}).
 \centering
 \includegraphics[width=0.92\linewidth]{generated/fig_profiles.pdf}
 \caption{Composition of failures by model and schema tier, reporting
-basis, ordered by failure rate. Each bar is annotated with its number of
-failures and failure rate.}
+basis, ordered by failure rate. Failure counts and rates are in
+\cref{tab:models} and \cref{tab:operational}.}
 \label{fig:profiles}
 \end{figure}
 
@@ -63,7 +63,7 @@ overlapping intervals, under three different dominant categories.
 Dominant shares for low-rate models rest on few failures; Opus~4.8's
 \pn{g.claude-opus-4-8@medium.dominant_share} share, for example, rests on
 \pn{g.claude-opus-4-8@medium.failures} failures (95\% CI
-\pn{g.claude-opus-4-8@medium.dominant_ci}).
+\pn{g.claude-opus-4-8@medium.share.length_bound.ci}).
 
 Some categories are confined to particular models in our data.
 \cat{schema\_mirroring} accounts for \pn{g.gpt-4o@medium.dominant_share}

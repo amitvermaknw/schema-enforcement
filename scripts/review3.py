@@ -62,15 +62,15 @@ GOLDEN_SOFT = {  # inferred by the reviewer; must be verified, not forced
 # A2 sampling configuration as sent by the client code. NOT derivable from the DB.
 # Fill/confirm from the OpenAI and Anthropic client branches; values below are from §3.2 text.
 CLIENT_CONFIG = {
-    "claude-haiku-4-5":  {"route": "Anthropic Messages API (direct)", "temperature": "0", "max_tokens": "4096"},
-    "claude-sonnet-4-6": {"route": "Anthropic Messages API (direct)", "temperature": "0", "max_tokens": "4096"},
-    "claude-sonnet-5":   {"route": "Anthropic Messages API (direct)", "temperature": "omitted", "max_tokens": "4096"},
-    "claude-opus-4-8":   {"route": "Anthropic Messages API (direct)", "temperature": "omitted", "max_tokens": "4096"},
-    "gpt-4o":            {"route": "OpenAI API (direct)", "temperature": "0", "max_tokens": "not set"},
-    "gpt-4o-mini":       {"route": "OpenAI API (direct)", "temperature": "0", "max_tokens": "not set"},
-    "gpt-5.6-luna":      {"route": "OpenAI API (direct)", "temperature": "omitted", "max_tokens": "not set"},
-    "gpt-5.6-sol":       {"route": "OpenAI API (direct)", "temperature": "omitted", "max_tokens": "not set"},
-    "gpt-5.6-terra":     {"route": "OpenAI API (direct)", "temperature": "omitted", "max_tokens": "not set"},
+    "claude-haiku-4-5":  {"route": "Anthropic", "temperature": "0", "max_tokens": "4096"},
+    "claude-sonnet-4-6": {"route": "Anthropic", "temperature": "0", "max_tokens": "4096"},
+    "claude-sonnet-5":   {"route": "Anthropic", "temperature": "omitted", "max_tokens": "4096"},
+    "claude-opus-4-8":   {"route": "Anthropic", "temperature": "omitted", "max_tokens": "4096"},
+    "gpt-4o":            {"route": "OpenAI", "temperature": "0", "max_tokens": "not set"},
+    "gpt-4o-mini":       {"route": "OpenAI", "temperature": "0", "max_tokens": "not set"},
+    "gpt-5.6-luna":      {"route": "OpenAI", "temperature": "omitted", "max_tokens": "not set"},
+    "gpt-5.6-sol":       {"route": "OpenAI", "temperature": "omitted", "max_tokens": "not set"},
+    "gpt-5.6-terra":     {"route": "OpenAI", "temperature": "omitted", "max_tokens": "not set"},
 }
 
 ATTEMPT_PK_CANDS = ["attempt_id", "node_attempt_id", "id"]
@@ -488,6 +488,11 @@ def tabular(spec: str, header: list[str], rows: list[list[str]]) -> str:
 
 
 # ----------------------------------------------------------------------------- numbers
+def code_breakable(s: str) -> str:
+    r"""\code{} that may line-break after hyphens: long model ids overflow fixed columns."""
+    return r"\code{" + tex_esc(s).replace("-", r"-\allowbreak{}") + "}"
+
+
 def cmd_numbers(a):
     db = Path(a.db)
     con = connect_ro(db)
@@ -703,11 +708,15 @@ def write_tables(out: Path, N: Numbers, manifest, prov, groups, cells, pooled):
     # A2 provenance
     rows = []
     for p in prov:
-        ret = "; ".join(f"{tex_esc(k)} ({v})" for k, v in sorted(p["returned"].items()))
-        rows.append([", ".join(code(x) for x in p["requested"]), ret, tex_esc(p["route"]),
+        req = set(p["requested"])
+        ret = r" \newline ".join(
+            (r"\emph{not captured}" if k == "<not captured>"
+             else (r"\emph{as requested}" if k in req else code_breakable(k))) + f" ({v})"
+            for k, v in sorted(p["returned"].items(), key=lambda kv: kv[0] == "<not captured>"))
+        rows.append([", ".join(code_breakable(x) for x in p["requested"]), ret, tex_esc(p["route"]),
                      f"{p['date_min']}--{p['date_max']}", tex_esc(p["temperature"]), tex_esc(p["max_tokens"])])
-    (out / "tab_provenance.tex").write_text(tabular("p{3.2cm}p{4.2cm}p{2.4cm}lll",
-        ["Requested ID", "Returned ID (attempts)", "Route", "Collected", "Temp.", "max\\_tokens"], rows))
+    (out / "tab_provenance.tex").write_text(tabular("l>{\\raggedright\\arraybackslash}p{4.2cm}llll",
+        ["Requested ID", "Returned ID (attempts)", "API", "Collected", "Temp.", "max\\_tokens"], rows))
     # A3 models (replaces Wilson)
     rows = []
     for g in sorted([g for g in groups if g["tier"] == "medium"], key=lambda g: -g["rate"]):
@@ -988,9 +997,41 @@ def cmd_counterfactual(a):
 
 
 # ----------------------------------------------------------------------------- appcode (A12)
-def extract(spec: str, root: Path) -> str:
+def strip_code(src: str) -> str:
+    """Remove docstrings and full-line comments, preserving all other source text verbatim.
+
+    Listings in the paper show executable code only. Docstrings carry design notes and
+    working hypotheses that are not claims of the paper and can contradict it. Inline
+    trailing comments (e.g. "# was 400") are kept; string literals, including raw regex
+    patterns, are left byte-for-byte unchanged.
+    """
+    tree = ast.parse(src)
+    drop = set()
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)):
+            b = node.body
+            if b and isinstance(b[0], ast.Expr) and isinstance(getattr(b[0], "value", None), ast.Constant) \
+                    and isinstance(b[0].value.value, str):
+                drop.update(range(b[0].lineno, b[0].end_lineno + 1))
+    out, blank = [], False
+    for i, line in enumerate(src.splitlines(), 1):
+        if i in drop or line.lstrip().startswith("#"):
+            continue
+        if not line.strip():
+            if blank or not out:
+                continue
+            blank = True
+        else:
+            blank = False
+        out.append(line.rstrip())
+    return "\n".join(out).rstrip() + "\n"
+
+
+def extract(spec: str, root: Path, strip: bool = True) -> str:
     path, _, syms = spec.partition("::")
     src = (root / path).read_text()
+    if strip:
+        src = strip_code(src)
     if not syms:
         return src
     tree = ast.parse(src)
@@ -1019,13 +1060,14 @@ def cmd_appcode(a):
     chunks = [f"% generated by review3.py appcode at {datetime.now(timezone.utc).isoformat()}; do not edit\n"]
     for item in a.item or []:
         label, spec = item.split("=", 1)
-        body = extract(spec, root)
+        body = extract(spec, root, strip=not a.keep_docstrings)
         chunks.append(f"\\paragraph{{{tex_esc(label)}}} (\\code{{{tex_esc(spec)}}})\n"
                       f"\\begin{{lstlisting}}[language=Python]\n{body}\\end{{lstlisting}}\n")
     for item in a.diff or []:
         label, spec = item.split("=", 1)
         left, right = spec.split("..", 1)
-        diff = difflib.unified_diff(extract(left, root).splitlines(), extract(right, root).splitlines(),
+        diff = difflib.unified_diff(extract(left, root, not a.keep_docstrings).splitlines(),
+                                    extract(right, root, not a.keep_docstrings).splitlines(),
                                     fromfile=left, tofile=right, lineterm="", n=2)
         chunks.append(f"\\paragraph{{{tex_esc(label)}}}\n\\begin{{lstlisting}}\n" + "\n".join(diff) + "\n\\end{lstlisting}\n")
     text = "\n".join(chunks)
@@ -1076,6 +1118,7 @@ def main():
     s.add_argument("--repo", default=".")
     s.add_argument("--item", action="append", help="Label=path[::Sym,Sym]")
     s.add_argument("--diff", action="append", help="Label=pathA[::Sym]..pathB[::Sym]")
+    s.add_argument("--keep-docstrings", action="store_true", help="keep docstrings/comments (default: stripped)")
     s.add_argument("--out", default="paper/generated/app_code.tex")
     s.set_defaults(fn=cmd_appcode)
 

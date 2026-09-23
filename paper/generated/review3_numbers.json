@@ -2,7 +2,7 @@
   "meta": {
     "db": "results/archive/paper1_FINAL_DATA_locked_v4_20260913.db",
     "sha256": "d0f406f00882dadb4c0aa0b1bea3a4a77b562c80ec46f19fe7d6ad7d4ebfbeb4",
-    "generated_utc": "2026-09-22T04:30:15.898198+00:00",
+    "generated_utc": "2026-09-23T05:49:43.870471+00:00",
     "schema_resolution": {
       "attempt_pk": "id",
       "node": "node_name",
@@ -1304,7 +1304,7 @@
           },
           "date_min": "2026-08-09",
           "date_max": "2026-08-28",
-          "route": "Anthropic Messages API (direct)",
+          "route": "Anthropic",
           "temperature": "0",
           "max_tokens": "4096"
         },
@@ -1318,7 +1318,7 @@
           },
           "date_min": "2026-08-22",
           "date_max": "2026-08-26",
-          "route": "Anthropic Messages API (direct)",
+          "route": "Anthropic",
           "temperature": "omitted",
           "max_tokens": "4096"
         },
@@ -1332,7 +1332,7 @@
           },
           "date_min": "2026-08-09",
           "date_max": "2026-08-11",
-          "route": "Anthropic Messages API (direct)",
+          "route": "Anthropic",
           "temperature": "0",
           "max_tokens": "4096"
         },
@@ -1346,7 +1346,7 @@
           },
           "date_min": "2026-08-22",
           "date_max": "2026-08-26",
-          "route": "Anthropic Messages API (direct)",
+          "route": "Anthropic",
           "temperature": "omitted",
           "max_tokens": "4096"
         },
@@ -1361,7 +1361,7 @@
           },
           "date_min": "2026-08-09",
           "date_max": "2026-08-09",
-          "route": "OpenAI API (direct)",
+          "route": "OpenAI",
           "temperature": "0",
           "max_tokens": "not set"
         },
@@ -1376,7 +1376,7 @@
           },
           "date_min": "2026-08-09",
           "date_max": "2026-08-22",
-          "route": "OpenAI API (direct)",
+          "route": "OpenAI",
           "temperature": "0",
           "max_tokens": "not set"
         },
@@ -1390,7 +1390,7 @@
           },
           "date_min": "2026-08-22",
           "date_max": "2026-08-27",
-          "route": "OpenAI API (direct)",
+          "route": "OpenAI",
           "temperature": "omitted",
           "max_tokens": "not set"
         },
@@ -1404,7 +1404,7 @@
           },
           "date_min": "2026-08-22",
           "date_max": "2026-08-27",
-          "route": "OpenAI API (direct)",
+          "route": "OpenAI",
           "temperature": "omitted",
           "max_tokens": "not set"
         },
@@ -1418,7 +1418,7 @@
           },
           "date_min": "2026-08-22",
           "date_max": "2026-08-27",
-          "route": "OpenAI API (direct)",
+          "route": "OpenAI",
           "temperature": "omitted",
           "max_tokens": "not set"
         }
@@ -12602,13 +12602,13 @@
       "fmt": "str"
     },
     "meta.git_head": {
-      "value": "8f095f60e1a620e10bf7d712b1088b7dba994c51",
+      "value": "58123819b680c1082ee29c2a165cb8a4bb1e19f9",
       "basis": "meta",
       "note": "",
       "fmt": "str"
     },
     "meta.git_head_short": {
-      "value": "8f095f60e1",
+      "value": "58123819b6",
       "basis": "meta",
       "note": "",
       "fmt": "str"
@@ -12626,15 +12626,15 @@
           "dirty": false
         },
         "scripts/make_paper_numbers.py": {
-          "commit": "8f095f60e1a620e10bf7d712b1088b7dba994c51",
-          "dirty": true
+          "commit": "58123819b680c1082ee29c2a165cb8a4bb1e19f9",
+          "dirty": false
         },
         "scripts/render_paper_assets.py": {
           "commit": "8f095f60e1a620e10bf7d712b1088b7dba994c51",
           "dirty": false
         },
         "scripts/review3.py": {
-          "commit": "",
+          "commit": "58123819b680c1082ee29c2a165cb8a4bb1e19f9",
           "dirty": true
         }
       },
@@ -12645,7 +12645,7 @@
     "meta.dirty": {
       "value": true,
       "basis": "meta",
-      "note": "scripts/make_paper_numbers.py, scripts/review3.py",
+      "note": "scripts/review3.py",
       "fmt": "str"
     },
     "meta.bootstrap": {

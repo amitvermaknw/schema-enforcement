@@ -1,21 +1,8 @@
-"""Prompt variants for schema-strict paradigm.
+"""Prompt variants for the prompt-and-validate pipeline.
 
-Experiment E tests whether Anthropic Haiku's markdown_wrap behavior is
-prompt-driven or model-driven. Three variants of the system prompt:
-
-    baseline   The standard "return ONLY the JSON, no markdown" instruction
-               (control — all main experiments use this)
-    aggressive Multi-line, capitalized, explicit anti-markdown enforcement
-    few_shot   Baseline + CORRECT/INCORRECT format examples
-
-Interpretation of Experiment E results:
-    If markdown_wrap rate stays above ~40% across all three variants,
-        the behavior is a model property that cannot be fixed by
-        reasonable prompt engineering. This kills the reviewer
-        objection "better prompting would fix it."
-    If markdown_wrap drops below ~15% with aggressive or few_shot,
-        the behavior is prompt-mitigatable and the paper reports it as
-        a mitigation finding rather than an intrinsic model property.
+baseline    Standard "return ONLY the JSON, no markdown" instruction (all main runs).
+aggressive  Explicit, capitalised anti-markdown instructions.
+few_shot    Baseline plus one correct and one incorrect format example.
 """
 
 import json
