@@ -49,8 +49,10 @@ endpoints returned the requested alias, which identifies the endpoint but
 not an immutable model version (\cref{app:manifest}). HotpotQA
 \citep{yang2018hotpotqa} questions are the first records of the
 validation split (distractor configuration) and FinanceBench
-\citep{islam2023financebench} questions the first records of the train
-split with evidence truncated to 2{,}000 characters; neither is shuffled,
+\citep{islam2023financebench} questions the first records of the public
+150-example sample (the single \code{train} split of the
+\code{PatronusAI/financebench} release; the full 10{,}231-question set is
+not public), with evidence truncated to 2{,}000 characters; neither is shuffled,
 so results describe these fixed question sets. Most cells contain about
 one run per question; the Haiku cells repeat questions, and its
 FinanceBench cell covers

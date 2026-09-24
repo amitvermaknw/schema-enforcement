@@ -711,11 +711,16 @@ def write_tables(out: Path, N: Numbers, manifest, prov, groups, cells, pooled):
         req = set(p["requested"])
         ret = r" \newline ".join(
             (r"\emph{not captured}" if k == "<not captured>"
-             else (r"\emph{as requested}" if k in req else code_breakable(k))) + f" ({v})"
+             else (r"\emph{as requested}" if k in req
+                   else tex_esc(k).replace("-", r"-\allowbreak{}")))
+            + r"~(" + str(v) + ")"
             for k, v in sorted(p["returned"].items(), key=lambda kv: kv[0] == "<not captured>"))
+        span = (p["date_min"] if p["date_min"] == p["date_max"]
+                else f"{p['date_min']}--{p['date_max'][5:]}" if p["date_min"][:4] == p["date_max"][:4]
+                else f"{p['date_min']}--{p['date_max']}")
         rows.append([", ".join(code_breakable(x) for x in p["requested"]), ret, tex_esc(p["route"]),
-                     f"{p['date_min']}--{p['date_max']}", tex_esc(p["temperature"]), tex_esc(p["max_tokens"])])
-    (out / "tab_provenance.tex").write_text(tabular("l>{\\raggedright\\arraybackslash}p{4.2cm}llll",
+                     span, tex_esc(p["temperature"]), tex_esc(p["max_tokens"])])
+    (out / "tab_provenance.tex").write_text(tabular("l>{\\raggedright\\arraybackslash}p{4.8cm}llll",
         ["Requested ID", "Returned ID (attempts)", "API", "Collected", "Temp.", "max\\_tokens"], rows))
     # A3 models (replaces Wilson)
     rows = []

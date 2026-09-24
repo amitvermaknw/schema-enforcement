@@ -24,8 +24,11 @@ configuration they share.
 \paragraph{Sampling.}
 HotpotQA questions are the first records of the validation split in the
 distractor configuration, in dataset order; FinanceBench questions are the
-first records of the train split, with evidence truncated to 2{,}000
-characters and a truncation marker inserted. There is no shuffle and no
+first records of the public 150-example sample released as
+\code{PatronusAI/financebench} on HuggingFace, which has a single
+\code{train} split; the full 10{,}231-question set is not public. Evidence is
+truncated to 2{,}000 characters with a truncation marker inserted. The release
+is gated and requires accepting its licence before download. There is no shuffle and no
 seed. Collection ran from \pn{collection.date_min} to
 \pn{collection.date_max}; per-cell date ranges and distinct-question
 counts are in \cref{tab:manifest}. The Haiku~4.5 FinanceBench cell covers
