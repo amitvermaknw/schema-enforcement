@@ -24,11 +24,11 @@ configuration they share.
 \paragraph{Sampling.}
 HotpotQA questions are the first records of the validation split in the
 distractor configuration, in dataset order; FinanceBench questions are the
-first records of the public 150-example sample released as
-\code{PatronusAI/financebench} on HuggingFace, which has a single
-\code{train} split; the full 10{,}231-question set is not public. Evidence is
-truncated to 2{,}000 characters with a truncation marker inserted. The release
-is gated and requires accepting its licence before download. There is no shuffle and no
+first records, in dataset order, of the public sample released as
+\code{PatronusAI/financebench} on HuggingFace: a subset of the full
+FinanceBench question set, distributed as a single \code{train} split. Evidence
+is truncated to 2{,}000 characters with a truncation marker inserted. The
+release is gated and requires accepting its licence before download. There is no shuffle and no
 seed. Collection ran from \pn{collection.date_min} to
 \pn{collection.date_max}; per-cell date ranges and distinct-question
 counts are in \cref{tab:manifest}. The Haiku~4.5 FinanceBench cell covers
@@ -126,7 +126,7 @@ errors: three outputs labelled \cat{enum\_violation} carried a
 \cat{markdown\_wrap} contained no fence. We headline blind agreement
 because adjudication uses evidence the labeller did not consult.
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering\small
 \caption{Corrected classifier against blind human labels
 ($n=\pn{validation.n}$), full corpus frame. Recall is computed within the
@@ -155,7 +155,7 @@ matches \pn{screen.nonjson_opener.matches} non-empty failures, of which
 \section{Identifier Perturbation}
 \label{app:perturbation}
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering\small
 \caption{Sub-causes of violating identifiers in \cat{regex\_pattern}
 failures, gpt-5.6-sol and gpt-5.6-terra, HotpotQA. Counts are
@@ -296,7 +296,7 @@ at medium\_v3, whose failures are all \cat{regex\_pattern}; those groups
 have very few failures. Maximum-gap statistics are selected to be extreme
 and do not summarise the distributions; we report them as secondary.
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering\small
 \caption{Largest category-share differences among qualifying groups.}
 \input{generated/tab_divergence}
