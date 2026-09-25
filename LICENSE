@@ -24,9 +24,16 @@ SOFTWARE.
 
 Third-party data
 ----------------
-This licence covers the code and the analysis outputs in this repository.
+This licence covers the code and the analysis outputs in this repository,
+except for third-party dataset content included in the results database and
+in paper/generated/question_manifest.csv, which remains under its own licence:
 
-HotpotQA (Yang et al., EMNLP 2018) is distributed by its authors under
-CC BY-SA 4.0. FinanceBench (Islam et al., arXiv:2311.11944) is distributed
-under its own terms via a gated HuggingFace release; FinanceBench question
-text is not redistributed here and must be obtained from the original source.
+- HotpotQA (Yang et al., EMNLP 2018), distributed by its authors under
+  CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/).
+- FinanceBench (Islam et al., arXiv:2311.11944), public sample from HuggingFace
+  PatronusAI/financebench, distributed under CC BY-NC 4.0
+  (https://creativecommons.org/licenses/by-nc/4.0/). Non-commercial use only.
+
+Changes: questions were inserted into prompt templates, and FinanceBench
+evidence was truncated to 2,000 characters with a truncation marker. No other
+changes were made to the dataset content.

@@ -104,7 +104,8 @@ predicate fires, maps Pydantic error types: pattern mismatches to
 \cat{regex\_pattern}, length violations to \cat{length\_bound}, literal
 errors to \cat{enum\_violation}, missing fields to \cat{missing\_field},
 numeric bounds to \cat{range\_bound} and \code{json\_invalid} to
-\cat{parse\_error}. Validator errors arrive as \code{value\_error}; the
+\cat{parse\_error}. Type errors map to \cat{range\_bound} for numeric
+fields and to \cat{missing\_field} otherwise. Validator errors arrive as \code{value\_error}; the
 supporting-identifier check routes to \cat{regex\_pattern} and cross-field
 messages to \cat{cross\_field\_ref}. With several errors, the primary
 category is the plurality, ties broken by first occurrence.

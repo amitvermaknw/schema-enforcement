@@ -1098,7 +1098,7 @@ def main():
     s.add_argument("--out", default="paper/generated")
     s.add_argument("--repo", default=".")
     s.add_argument("--skip-golden", action="store_true", help="synthetic/test DBs only")
-    s.add_argument("--track", nargs="*", default=["errors.py", "scripts/make_paper_numbers.py",
+    s.add_argument("--track", nargs="*", default=["src/schemaeval/errors.py", "scripts/make_paper_numbers.py",
                                                   "scripts/render_paper_assets.py", "scripts/review3.py"])
     s.set_defaults(fn=cmd_numbers)
 
