@@ -2,7 +2,7 @@
   "meta": {
     "db": "results/archive/paper1_FINAL_DATA_locked_v4_20260913.db",
     "sha256": "d0f406f00882dadb4c0aa0b1bea3a4a77b562c80ec46f19fe7d6ad7d4ebfbeb4",
-    "generated_utc": "2026-09-24T21:23:46.402949+00:00",
+    "generated_utc": "2026-09-24T22:48:43.749928+00:00",
     "schema_resolution": {
       "attempt_pk": "id",
       "node": "node_name",
@@ -12183,14 +12183,14 @@
       "note": "",
       "fmt": "list"
     },
-    "domain_shift.claude-sonnet-5": {
-      "value": "financebench=length_bound, hotpotqa=markdown_wrap",
+    "domain_shift.claude-opus-4-8": {
+      "value": "financebench=length_bound, hotpotqa=regex_pattern",
       "basis": "reported",
       "note": "dominant category differs by domain",
       "fmt": "str"
     },
-    "domain_shift.claude-opus-4-8": {
-      "value": "financebench=length_bound, hotpotqa=regex_pattern",
+    "domain_shift.claude-sonnet-5": {
+      "value": "financebench=length_bound, hotpotqa=markdown_wrap",
       "basis": "reported",
       "note": "dominant category differs by domain",
       "fmt": "str"
@@ -12602,19 +12602,19 @@
       "fmt": "str"
     },
     "meta.git_head": {
-      "value": "96f7f36cce471aa1b5acb683c32b9875584c3720",
+      "value": "db940e62d1c49b607eba93f7ea1fc24013fa3263",
       "basis": "meta",
       "note": "",
       "fmt": "str"
     },
     "meta.git_head_short": {
-      "value": "96f7f36cce",
+      "value": "db940e62d1",
       "basis": "meta",
       "note": "",
       "fmt": "str"
     },
     "meta.git_tag": {
-      "value": "",
+      "value": "tmlr-submission",
       "basis": "meta",
       "note": "",
       "fmt": "str"
@@ -12634,8 +12634,8 @@
           "dirty": false
         },
         "scripts/review3.py": {
-          "commit": "96f7f36cce471aa1b5acb683c32b9875584c3720",
-          "dirty": true
+          "commit": "db940e62d1c49b607eba93f7ea1fc24013fa3263",
+          "dirty": false
         }
       },
       "basis": "meta",
@@ -12643,9 +12643,9 @@
       "fmt": "dict"
     },
     "meta.dirty": {
-      "value": true,
+      "value": false,
       "basis": "meta",
-      "note": "scripts/review3.py",
+      "note": "",
       "fmt": "str"
     },
     "meta.bootstrap": {

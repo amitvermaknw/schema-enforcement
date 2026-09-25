@@ -38,3 +38,5 @@ Thumbs.db
 *.swp
 artifact.zip
 paper.zip
+results/archive/*
+!results/archive/paper1_FINAL_DATA_locked_v4_20260913.db

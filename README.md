@@ -31,7 +31,7 @@ scripts below; none is typed by hand.
 shasum -a 256 results/archive/paper1_FINAL_DATA_locked_v4_20260913.db
 ```
 
-**Analysis version.** Commit `<FINAL_COMMIT_HASH>`, tagged `<TAG>`. The same
+**Analysis version.** Commit `95cea40992048a571bf3e6868efe767dcb214d09`, tagged `tmlr-submission`. The same
 hash is printed in Appendix A of the paper.
 
 ## Reproducing the paper's numbers

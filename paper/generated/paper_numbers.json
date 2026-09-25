@@ -2,7 +2,7 @@
   "meta": {
     "db": "results/archive/paper1_FINAL_DATA_locked_v4_20260913.db",
     "sha256": "d0f406f00882dadb4c0aa0b1bea3a4a77b562c80ec46f19fe7d6ad7d4ebfbeb4",
-    "generated_utc": "2026-09-22T04:30:22.680277+00:00"
+    "generated_utc": "2026-09-24T22:50:17.386904+00:00"
   },
   "numbers": {
     "reported.attempts": {
@@ -3865,7 +3865,7 @@
           },
           "date_min": "2026-08-09",
           "date_max": "2026-08-28",
-          "route": "Anthropic Messages API (direct)",
+          "route": "Anthropic",
           "temperature": "0",
           "max_tokens": "4096"
         },
@@ -3879,7 +3879,7 @@
           },
           "date_min": "2026-08-22",
           "date_max": "2026-08-26",
-          "route": "Anthropic Messages API (direct)",
+          "route": "Anthropic",
           "temperature": "omitted",
           "max_tokens": "4096"
         },
@@ -3893,7 +3893,7 @@
           },
           "date_min": "2026-08-09",
           "date_max": "2026-08-11",
-          "route": "Anthropic Messages API (direct)",
+          "route": "Anthropic",
           "temperature": "0",
           "max_tokens": "4096"
         },
@@ -3907,7 +3907,7 @@
           },
           "date_min": "2026-08-22",
           "date_max": "2026-08-26",
-          "route": "Anthropic Messages API (direct)",
+          "route": "Anthropic",
           "temperature": "omitted",
           "max_tokens": "4096"
         },
@@ -3922,7 +3922,7 @@
           },
           "date_min": "2026-08-09",
           "date_max": "2026-08-09",
-          "route": "OpenAI API (direct)",
+          "route": "OpenAI",
           "temperature": "0",
           "max_tokens": "not set"
         },
@@ -3937,7 +3937,7 @@
           },
           "date_min": "2026-08-09",
           "date_max": "2026-08-22",
-          "route": "OpenAI API (direct)",
+          "route": "OpenAI",
           "temperature": "0",
           "max_tokens": "not set"
         },
@@ -3951,7 +3951,7 @@
           },
           "date_min": "2026-08-22",
           "date_max": "2026-08-27",
-          "route": "OpenAI API (direct)",
+          "route": "OpenAI",
           "temperature": "omitted",
           "max_tokens": "not set"
         },
@@ -3965,7 +3965,7 @@
           },
           "date_min": "2026-08-22",
           "date_max": "2026-08-27",
-          "route": "OpenAI API (direct)",
+          "route": "OpenAI",
           "temperature": "omitted",
           "max_tokens": "not set"
         },
@@ -3979,7 +3979,7 @@
           },
           "date_min": "2026-08-22",
           "date_max": "2026-08-27",
-          "route": "OpenAI API (direct)",
+          "route": "OpenAI",
           "temperature": "omitted",
           "max_tokens": "not set"
         }
@@ -15111,19 +15111,19 @@
       "fmt": "str"
     },
     "meta.git_head": {
-      "value": "8f095f60e1a620e10bf7d712b1088b7dba994c51",
+      "value": "db940e62d1c49b607eba93f7ea1fc24013fa3263",
       "basis": "meta",
       "note": "",
       "fmt": "str"
     },
     "meta.git_head_short": {
-      "value": "8f095f60e1",
+      "value": "db940e62d1",
       "basis": "meta",
       "note": "",
       "fmt": "str"
     },
     "meta.git_tag": {
-      "value": "",
+      "value": "tmlr-submission",
       "basis": "meta",
       "note": "",
       "fmt": "str"
@@ -15135,16 +15135,16 @@
           "dirty": false
         },
         "scripts/make_paper_numbers.py": {
-          "commit": "8f095f60e1a620e10bf7d712b1088b7dba994c51",
-          "dirty": true
+          "commit": "58123819b680c1082ee29c2a165cb8a4bb1e19f9",
+          "dirty": false
         },
         "scripts/render_paper_assets.py": {
           "commit": "8f095f60e1a620e10bf7d712b1088b7dba994c51",
           "dirty": false
         },
         "scripts/review3.py": {
-          "commit": "",
-          "dirty": true
+          "commit": "db940e62d1c49b607eba93f7ea1fc24013fa3263",
+          "dirty": false
         }
       },
       "basis": "meta",
@@ -15152,9 +15152,9 @@
       "fmt": "dict"
     },
     "meta.dirty": {
-      "value": true,
+      "value": false,
       "basis": "meta",
-      "note": "scripts/make_paper_numbers.py, scripts/review3.py",
+      "note": "",
       "fmt": "str"
     },
     "meta.bootstrap": {
