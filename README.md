@@ -31,8 +31,10 @@ scripts below; none is typed by hand.
 shasum -a 256 results/archive/paper1_FINAL_DATA_locked_v4_20260913.db
 ```
 
-**Analysis version.** Commit `95cea40992048a571bf3e6868efe767dcb214d09`, tagged `tmlr-submission`. The same
-hash is printed in Appendix A of the paper.
+**Analysis version.** This archive is the repository at tag `<TAG>`. The commit
+hash recorded by the analysis scripts is printed in Appendix A of the paper
+(`paper/sections/appendix.tex`, "Analysis provenance"); resolve it with
+`git rev-parse <TAG>` in the source repository.
 
 ## Reproducing the paper's numbers
 
