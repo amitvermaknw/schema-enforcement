@@ -1,0 +1,5 @@
+# Files kept in the repository but excluded from `git archive` exports
+# (the anonymous review artifact). They describe work not reported in the paper.
+scripts/held_out_v1.py            export-ignore
+PREREGISTRATION_heldout.md        export-ignore
+doc/PREREGISTRATION_heldout.md    export-ignore
