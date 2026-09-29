@@ -2708,10 +2708,10 @@ meta.db_sha256_short
 meta.git_head
 meta.git_head_short
 meta.git_tag
-meta.tracked.errors.py.commit
 meta.tracked.scripts/make_paper_numbers.py.commit
 meta.tracked.scripts/render_paper_assets.py.commit
 meta.tracked.scripts/review3.py.commit
+meta.tracked.src/schemaeval/errors.py.commit
 meta.versions.numpy
 meta.versions.python
 modellevel.violations
