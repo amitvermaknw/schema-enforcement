@@ -20,7 +20,7 @@ of wrapped failures, from \pn{g.claude-sonnet-5@medium.fence_compound_share}
 for one wrapping model to \pn{g.claude-haiku-4-5@medium.fence_compound_share}
 for another, so fence removal is a partial repair whose effectiveness
 varies substantially across configurations. For one model every first
-attempt was fenced; retry feedback removed the fences, and every run that
+attempt was fenced and no attempt after the second was; every run that
 did not complete ended on a length violation the fence had concealed.
 Third, because wrapping takes precedence in classification, prompt
 variants that suppress fences raise the primary length-violation rate

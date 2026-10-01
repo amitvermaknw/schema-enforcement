@@ -200,7 +200,7 @@ count of \pn{reported.cat.length_bound}, so single-primary-label counts
 omit some detected co-occurring violations.
 
 \paragraph{What the repair loop repairs.}
-Concealment determines what retry feedback can fix. All
+Concealment shapes what retries leave unrepaired. All
 \pn{g.claude-haiku-4-5@medium.fa.reached} of Haiku~4.5's first attempts
 failed strict validation, every one of them fenced; we audited the
 extraction (one first attempt per run-node, contiguous attempt numbers,
@@ -213,9 +213,11 @@ was fenced. What remained was length: \cat{length\_bound} accounts for
 every failure from the third attempt onward, and all
 \pn{g.claude-haiku-4-5@medium.exhausted} run-nodes that exhausted their
 retries ended on \cat{length\_bound}, \pn{g.claude-haiku-4-5@medium.exhausted.node.gather}
-of them in gather. These are exactly the runs that did not complete. The
-loop therefore did nearly all of the strict-conformance work for this
-model (\pn{g.claude-haiku-4-5@medium.fa.retry_success} of
+of them in gather. These are exactly the runs that did not complete. Every retry
+carries the validation error and no condition retries without it, so the
+design does not separate the effect of the feedback from that of a
+further attempt. Within the loop, nearly all of this model's failures
+were repaired (\pn{g.claude-haiku-4-5@medium.fa.retry_success} of
 \pn{g.claude-haiku-4-5@medium.fa.failed} failed first attempts eventually
 validated), and its residual failures were the violations the fence had
 concealed. Offline on the stored attempts, counting pure-formatting
