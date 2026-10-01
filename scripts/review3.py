@@ -493,6 +493,100 @@ def code_breakable(s: str) -> str:
     return r"\code{" + tex_esc(s).replace("-", r"-\allowbreak{}") + "}"
 
 
+def concealment_and_hidden(con, sch, a, included, N):
+    # Tier 2: (F1) concealment linkage in Haiku's exhausted run-nodes and the feedback
+    # their fenced attempts returned; (F2) sensitivity to the supporting-identifier check,
+    # the one enforced constraint not stated in the prompt (App. F, Table 14).
+    sys.path.insert(0, str(Path(a.repo) / "src"))
+    from pydantic import ValidationError
+    from schemaeval.errors import _strip_code_fences
+    from schemaeval.schemas import get_schemas
+    edcol = pick(con, "node_attempts", ["error_details"])
+    S = dict(zip(("identify", "gather", "answer"), get_schemas("medium")))
+    FENCE = "`" * 3
+    LEN = ("string_too_long", "too_long")
+    HID = "fails canonical_id pattern"
+    b = "reported"
+
+    def len_errs(node, raw):
+        try:
+            S[node].model_validate_json(_strip_code_fences(raw or ""))
+            return set()
+        except ValidationError as e:
+            return {(".".join(map(str, d["loc"])), d["type"]) for d in e.errors() if d["type"] in LEN}
+
+    inc = {r.run_id: r for r in included}
+    haiku = {rid for rid, r in inc.items()
+             if r.requested.startswith("claude-haiku-4-5") and r.tier == "medium"}
+    ex = [(x["run_id"], x["node_name"]) for x in
+          con.execute("SELECT run_id, node_name FROM node_runs WHERE success=0") if x["run_id"] in haiku]
+    by_node, fb = Counter(), Counter()
+    n_same = n_persist = n_fenced = n_jinv = n_flen = 0
+    for rid, node in ex:
+        atts = con.execute(f"SELECT attempt_num, {sch.raw} raw, {edcol} ed FROM node_attempts "
+                           f"WHERE run_id=? AND {sch.node}=? ORDER BY attempt_num", (rid, node)).fetchall()
+        by_node[node] += 1
+        lens = [len_errs(node, x["raw"]) for x in atts]
+        n_same += bool(lens[0] & lens[-1])
+        n_persist += bool(set.intersection(*lens))
+        k = 0
+        for i, x in enumerate(atts):
+            ed = x["ed"] or ""
+            if (x["raw"] or "").lstrip().startswith(FENCE):
+                n_fenced += 1
+                n_jinv += "json_invalid" in ed
+                n_flen += any(t in ed for t in LEN)
+            if i < len(atts) - 1 and any(t in ed for t in LEN):
+                k += 1
+        fb[k] += 1
+    N.put("conceal.exh.n", len(ex), b, "int", "Haiku 4.5 medium baseline run-nodes with node_runs.success=0")
+    N.put("conceal.exh.gather", by_node["gather"], b, "int")
+    N.put("conceal.exh.answer", by_node["answer"], b, "int")
+    N.put("conceal.exh.same_field", n_same, b, "int",
+          "fence-stripped attempt 0 and final attempt share a length violation at the same loc")
+    N.put("conceal.exh.persist", n_persist, b, "int", "same loc violated on every attempt of the run-node")
+    N.put("conceal.exh.fenced", n_fenced, b, "int")
+    N.put("conceal.exh.fenced_json_invalid", n_jinv, b, "int", "stored (= returned) error is json_invalid")
+    N.put("conceal.exh.fenced_len_in_error", n_flen, b, "int")
+    N.put("conceal.exh.len_feedback", {str(k): v for k, v in sorted(fb.items())}, b, "dict",
+          "run-nodes by number of returned retry errors naming a length violation")
+    N.put("conceal.exh.len_feedback_once", fb[1], b, "int")
+    N.put("conceal.exh.len_feedback_twice", fb[2], b, "int")
+
+    edmap = {x["aid"]: x["ed"] for x in
+             con.execute(f"SELECT {sch.attempt_pk} aid, {edcol} ed FROM node_attempts")}
+    fails = [(r, x) for r in included for x in r.attempts if x.ok == 0]
+    hid = {x.aid for r, x in fails if HID in (edmap.get(x.aid) or "")}
+    N.put("hidden.n", len(hid), b, "int", "failures from the supporting-identifier check")
+    reds = {}
+    for label, keyf in (("cells", lambda r: (r.model, r.tier, r.dataset)),
+                        ("groups", lambda r: (r.model, r.tier))):
+        full, red = defaultdict(Counter), defaultdict(Counter)
+        for r, x in fails:
+            full[keyf(r)][x.cat] += 1
+            if x.aid not in hid:
+                red[keyf(r)][x.cat] += 1
+        top = lambda c: c.most_common(1)[0][0] if c else None
+        N.put(f"hidden.flips.{label}", sum(1 for k in full if top(full[k]) != top(red[k])), b, "int",
+              "dominant-category changes when hidden-constraint failures are excluded")
+        reds[label] = red
+    g = reds["groups"][(norm_model("gpt-4o-mini"), "medium")]
+    N.put("hidden.gpt4omini.n_without", sum(g.values()), b, "int")
+    N.put("hidden.gpt4omini.regex_without", g["regex_pattern"], b, "int")
+    N.put("hidden.gpt4omini.share_without", g["regex_pattern"] / sum(g.values()), b, "pct")
+    N.put("hidden.regex_pattern_without",
+          sum(1 for r, x in fails if x.cat == "regex_pattern" and x.aid not in hid), b, "int")
+    ex_all = [(x["run_id"], x["node_name"]) for x in
+              con.execute("SELECT run_id, node_name FROM node_runs WHERE success=0") if x["run_id"] in inc]
+    hid_ex = [(rid, node) for rid, node in ex_all
+              if any(x.aid in hid for x in inc[rid].attempts if x.node == node)]
+    N.put("hidden.exhausted_runnodes", len(hid_ex), b, "int")
+    N.put("hidden.exhausted_attempts",
+          sum(1 for rid, node in hid_ex for x in inc[rid].attempts if x.node == node and x.aid in hid), b, "int")
+    print("tier2:", {k: v["value"] for k, v in N.d.items()
+                     if k.startswith(("conceal.", "hidden."))}, file=sys.stderr)
+
+
 def cmd_numbers(a):
     db = Path(a.db)
     con = connect_ro(db)
@@ -531,6 +625,7 @@ def cmd_numbers(a):
 
     included = [r for r in allruns if r.variant == BASELINE and baseline_runs[(r.model, r.tier, r.dataset)] >= PILOT_MIN_RUNS]
     inc_ids = {id(r) for r in included}
+    concealment_and_hidden(con, sch, a, included, N)
 
     def tot(rs):
         at = [x for r in rs for x in r.attempts]

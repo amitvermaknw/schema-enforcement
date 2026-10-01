@@ -439,6 +439,79 @@ def s_cross_field(rep):
     put("crossfield.value_errors_unmatched", int((rep.failed & value_err & ~cross & ~model_level).sum()), "reported")
 
 
+def s_tier2(rep):
+    # Tier 2. F1: Haiku 4.5 run-nodes with no valid attempt -- does the fence-stripped first
+    # attempt carry the same length violation as the final one, and what did the returned
+    # error of each fenced attempt say? F2: sensitivity to the supporting-identifier check,
+    # the one enforced constraint absent from the prompt (Table 14).
+    from pydantic import ValidationError
+    from schemaeval.errors import _strip_code_fences
+    FENCE = "`" * 3
+    LEN = ("string_too_long", "too_long")
+    b = "reported"
+
+    def len_locs(node, raw):
+        try:
+            node_model("medium", node).model_validate_json(_strip_code_fences(raw or ""))
+            return set()
+        except ValidationError as e:
+            return {(".".join(map(str, d["loc"])), d["type"]) for d in e.errors() if d["type"] in LEN}
+
+    h = rep[(rep.model == HAIKU) & (rep.tier == "medium")]
+    ex = h[h.groupby(["run", "node"])["valid"].transform("max") == 0]
+    ex = ex.sort_values(["run", "node", "attempt_num"])
+    by_node, fb = Counter(), Counter()
+    n_same = n_persist = n_fenced = n_jinv = n_flen = 0
+    for (run, node), g in ex.groupby(["run", "node"], sort=False):
+        lens = [len_locs(node, r) for r in g.raw]
+        by_node[node] += 1
+        n_same += bool(lens[0] & lens[-1])
+        n_persist += bool(set.intersection(*lens))
+        raws, errs = g.raw.fillna("").tolist(), g.err.fillna("").tolist()
+        k = 0
+        for i, (raw, err) in enumerate(zip(raws, errs)):
+            if raw.lstrip().startswith(FENCE):
+                n_fenced += 1
+                n_jinv += "json_invalid" in err
+                n_flen += any(t in err for t in LEN)
+            if i < len(errs) - 1 and any(t in err for t in LEN):
+                k += 1
+        fb[k] += 1
+    put("conceal.exh.n", sum(by_node.values()), b, "Haiku 4.5 medium run-nodes with no valid attempt")
+    put("conceal.exh.gather", by_node["gather"], b)
+    put("conceal.exh.answer", by_node["answer"], b)
+    put("conceal.exh.same_field", n_same, b, "fence-stripped attempt 0 and final attempt share a length loc")
+    put("conceal.exh.persist", n_persist, b, "same length loc violated on every attempt")
+    put("conceal.exh.fenced", n_fenced, b)
+    put("conceal.exh.fenced_json_invalid", n_jinv, b, "returned error of a fenced attempt is json_invalid")
+    put("conceal.exh.fenced_len_in_error", n_flen, b)
+    put("conceal.exh.len_feedback", {str(k): v for k, v in sorted(fb.items())}, b,
+        "run-nodes by number of returned retry errors naming a length violation")
+    put("conceal.exh.len_feedback_once", fb[1], b)
+    put("conceal.exh.len_feedback_twice", fb[2], b)
+
+    fails = rep[rep.failed]
+    hid = fails.err.fillna("").str.contains("fails canonical_id pattern", regex=False)
+    kept = fails[~hid]
+    put("hidden.n", int(hid.sum()), b, "failures from the supporting-identifier check")
+    top = lambda s: Counter(s).most_common(1)[0][0] if len(s) else None
+    for label, keys in (("cells", ["model", "tier", "domain"]), ("groups", ["model", "tier"])):
+        full = fails.groupby(keys)["cat"].agg(top)
+        red = kept.groupby(keys)["cat"].agg(top).reindex(full.index)
+        put(f"hidden.flips.{label}", int((full != red).sum()), b,
+            "dominant-category changes when hidden-constraint failures are excluded")
+    g = kept[(kept.model == "gpt-4o-mini") & (kept.tier == "medium")]
+    put("hidden.gpt4omini.n_without", len(g), b)
+    put("hidden.gpt4omini.regex_without", int((g.cat == "regex_pattern").sum()), b)
+    put("hidden.gpt4omini.share_without", float((g.cat == "regex_pattern").mean()), b)
+    put("hidden.regex_pattern_without", int((kept.cat == "regex_pattern").sum()), b)
+    hid_ids = set(fails[hid].id)
+    exr = rep[rep.groupby(["run", "node"])["valid"].transform("max") == 0]
+    hrn = [g2 for _, g2 in exr.groupby(["run", "node"]) if g2.id.isin(hid_ids).any()]
+    put("hidden.exhausted_runnodes", len(hrn), b)
+    put("hidden.exhausted_attempts", int(sum(g2.id.isin(hid_ids).sum() for g2 in hrn)), b)
+
+
 def s_screens(df):
     """Over-broad corpus recall screens on the full basis (Appendix C)."""
     f = df[df.failed].copy()
@@ -516,6 +589,7 @@ def main() -> int:
     s_robustness(rep)
     s_validation(df, labels)
     s_cross_field(rep)
+    s_tier2(rep)
     s_zero_length(rep)
     s_screens(df)
     s_versions(rep)
