@@ -30,7 +30,7 @@ variants, and two task domains.
 
 \paragraph{Contributions.}
 \begin{enumerate}[leftmargin=1.4em,itemsep=1pt,topsep=2pt]
-  \item A failure taxonomy with deterministic detectors, an explicit
+  \item An operational failure taxonomy with deterministic detectors, an explicit
   precedence rule, and development-set checks against human labels
   (\cref{sec:setup:taxonomy}).
   % DECISION D1: if held-out, second-labeller validation is completed,
@@ -40,9 +40,9 @@ variants, and two task domains.
   modes and that a profile shifts with the constraint surface and the
   task domain (\cref{sec:results:profiles,sec:results:surface}).
   \item A layered analysis showing that markdown wrapping frequently
-  conceals underlying schema violations, that this concealment determines
-  what a retry loop can and cannot repair, and that ignoring it makes a
-  prompt ablation appear to move failures between modes
+  conceals underlying schema violations, that the parse error returned for a
+  fenced output says nothing about the violation beneath it, and that ignoring
+  concealment makes a prompt ablation appear to move failures between modes
   (\cref{sec:results:concealment}).
 \end{enumerate}
 

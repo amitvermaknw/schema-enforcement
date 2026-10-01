@@ -16,10 +16,9 @@ coercion allowed, extra fields ignored; no model sets
 \code{model\_config}); on failure the node is retried with the
 validation error appended, up to three further times. An \emph{attempt} is
 one generation against one node's schema, including retries, so attempts
-per run vary with failure rate: from
+per run vary with failure rate: on HotpotQA, from
 \pn{c.claude-opus-4-8@medium@hotpotqa.attempts_per_run} for Opus~4.8 to
-\pn{c.claude-haiku-4-5@medium@hotpotqa.attempts_per_run} for Haiku~4.5,
-both on HotpotQA.
+\pn{c.claude-haiku-4-5@medium@hotpotqa.attempts_per_run} for Haiku~4.5.
 
 The \emph{medium} schema tier carries the constraints analysed
 throughout: the identifier pattern \idpattern{} on entity and fact

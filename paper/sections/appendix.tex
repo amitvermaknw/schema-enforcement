@@ -140,9 +140,13 @@ including pilot cells and prompt variants. \Cref{tab:validation} reports
 precision and recall of the corrected classifier against the \emph{blind}
 human labels. The four disagreements were adjudicated as labelling
 errors: three outputs labelled \cat{enum\_violation} carried a
-\code{string\_pattern\_mismatch} on an identifier, and one labelled
-\cat{markdown\_wrap} contained no fence. We headline blind agreement
-because adjudication uses evidence the labeller did not consult.
+\code{string\_pattern\_mismatch} on an identifier, and one labelled \cat{markdown\_wrap} contained no fence. The first three
+are checkable against the stored error record and the fourth against the raw
+completion, without reference to the labeller. We headline blind agreement
+because adjudication uses evidence the labeller did not consult. The sample
+contains every \cat{enum\_violation}, \cat{prose\_preamble} and
+\cat{schema\_mirroring} failure in the corpus, so a held-out check with a
+frozen classifier can test only the remaining categories.
 
 \begin{table}[ht]
 \centering\small
@@ -290,7 +294,14 @@ passed it. No attempt matched any of the four cross-field messages
 \pn{crossfield.not_reached} failures did not reach the validators; many
 failed during JSON parsing. Each node tests only its own checks: two
 cross-field checks in identify, one in gather, and one cross-field plus
-one per-item pattern check in answer.
+one per-item pattern check in answer. \pn{hidden.exhausted_attempts} of the
+\pn{hidden.n} are the final attempts of one gpt-4o-mini answer node, which
+exhausted its retries although each returned error named the required
+pattern; it is that model's only incomplete run. Excluding all
+\pn{hidden.n} changes no cell's or group's dominant category; gpt-4o-mini's
+\cat{regex\_pattern} share moves from
+\pn{g.gpt-4o-mini@medium.dominant_share} to
+\pn{hidden.gpt4omini.share_without}.
 
 \paragraph{Prompt visibility.}
 The system prompt embeds each node's \code{model\_json\_schema()}

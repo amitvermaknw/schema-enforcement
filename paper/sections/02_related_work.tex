@@ -57,12 +57,15 @@ classifier.
 \paragraph{Relation to extract-then-validate practice.}
 A common engineering response to these failures is to extract the first
 JSON object from the completion, validate it, and report syntax errors
-separately from schema errors. That split is coarser than ours in two
-ways that matter for the results below. It counts a fenced payload that
-also violates a length cap as a schema error once extraction succeeds,
-so it cannot say how often the wrapper and the violation co-occur
-(\cref{sec:results:concealment}); and it reports schema errors as one
-class, so it cannot distinguish a pattern violation caused by length
-from one caused by the character class (\cref{sec:results:surface}).
+separately from schema errors. As usually reported, that split is coarser than ours in two ways that matter
+for the results below. When only the post-extraction result is kept, a fenced
+payload that also violates a length cap counts as a schema error and the
+extraction status is lost, so wrapper--constraint co-occurrence is not
+recorded (\cref{sec:results:concealment}); and when schema errors are
+reported as one class, a pattern violation caused by length cannot be told
+from one caused by the character class (\cref{sec:results:surface}). A
+pipeline that retains both is doing the layered analysis of
+\cref{sec:results:concealment}; what we add is evidence that discarding
+either changes the conclusions drawn.
 Our categories refine the schema-error class and keep the formatting
 layer visible beneath it.

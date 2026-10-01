@@ -30,7 +30,10 @@ Attempt failure and pipeline completion are different quantities. Under
 the repair loop, \pn{pooled.reported.completed} of
 \pn{pooled.reported.runs} runs complete all three nodes. Every run
 completes for seven of the nine models; gpt-4o-mini completes
-\pn{g.gpt-4o-mini@medium.completed} of \pn{g.gpt-4o-mini@medium.runs},
+\pn{g.gpt-4o-mini@medium.completed} of \pn{g.gpt-4o-mini@medium.runs}
+(its only incomplete run exhausted its retries on the supporting-identifier
+check, the one enforced constraint not stated in the prompt;
+\cref{app:crossfield}),
 and Haiku~4.5, whose attempt failure rate is
 \pn{g.claude-haiku-4-5@medium.rate}, completes
 \pn{g.claude-haiku-4-5@medium.completed} of
@@ -211,7 +214,7 @@ count of \pn{reported.cat.length_bound}, so single-primary-label counts
 omit some detected co-occurring violations.
 
 \paragraph{What the repair loop repairs.}
-Concealment shapes what retries leave unrepaired. All
+Concealment is visible in what retries left unrepaired. All
 \pn{g.claude-haiku-4-5@medium.fa.reached} of Haiku~4.5's first attempts
 failed strict validation, every one of them fenced; we audited the
 extraction (one first attempt per run-node, contiguous attempt numbers,
@@ -230,8 +233,15 @@ design does not separate the effect of the feedback from that of a
 further attempt. Within the loop, nearly all of this model's failures
 were repaired (\pn{g.claude-haiku-4-5@medium.fa.retry_success} of
 \pn{g.claude-haiku-4-5@medium.fa.failed} failed first attempts eventually
-validated), and its residual failures were the violations the fence had
-concealed. Offline on the stored attempts, counting pure-formatting
+validated), and its residual failures were the violations the fence had concealed. In
+\pn{conceal.exh.same_field} of the \pn{conceal.exh.n} exhausted run-nodes,
+the fence-stripped first attempt already violated the cap of the same field
+as the final attempt, and in \pn{conceal.exh.persist} that field exceeded
+its cap on every attempt. The error returned for each of their
+\pn{conceal.exh.fenced} fenced attempts was a JSON parse error that did not
+mention the cap, so \pn{conceal.exh.len_feedback_once} of these run-nodes
+received the length error once before exhausting their retries and
+\pn{conceal.exh.len_feedback_twice} received it twice. Offline on the stored attempts, counting pure-formatting
 failures as recovered leaves \pn{pooled.reported.residual_rate} of
 attempts invalid (95\% CI \pn{pooled.reported.residual_ci}) against
 \pn{pooled.reported.rate} strict, \pn{g.claude-haiku-4-5@medium.residual_rate}
