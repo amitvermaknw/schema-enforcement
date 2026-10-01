@@ -89,6 +89,17 @@ DB_PATH=/tmp/reclass_check.db python scripts/reclassify_all.py --dry-run
 # expected: Total rows examined: 1326, Rows to update: 0
 ```
 
+### Validator revalidation check (Appendix A)
+
+`scripts/revalidate_all.py` revalidates every stored completion against its
+node schema under the installed Pydantic and compares the result with the
+stored `validation_ok`. It opens the database read-only and makes no model calls.
+
+```bash
+python scripts/revalidate_all.py --db results/archive/paper1_FINAL_DATA_locked_v4_20260913.db
+# expected: checked: 4396, agree: 4396, exit 0
+```
+
 ## Database schema
 
 | Table | Contents |

@@ -11,7 +11,9 @@ those identifiers with a coverage summary; \textbf{answer} returns the
 answer, a numeric confidence, its categorical bucket and supporting
 identifiers. Each node has its own Pydantic model. The system prompt
 states the schema and asks for JSON only; the completion is validated
-with \code{model\_validate\_json}; on failure the node is retried with the
+with \code{model\_validate\_json} in Pydantic's default lax mode (type
+coercion allowed, extra fields ignored; no model sets
+\code{model\_config}); on failure the node is retried with the
 validation error appended, up to three further times. An \emph{attempt} is
 one generation against one node's schema, including retries, so attempts
 per run vary with failure rate: from

@@ -1,5 +1,5 @@
 # Core
-pydantic>=2.7.0,<3.0.0
+pydantic==2.13.4
 python-dotenv>=1.0.0
 
 # LLM providers

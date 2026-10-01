@@ -51,6 +51,16 @@ added after the first sweeps: \pn{versions.gpt-4o.precapture} of
 API route, the collection window and the sampling parameters sent by the
 client for each model.
 
+\paragraph{Validator version.}
+The Pydantic version used during collection was not recorded; the
+harness then required version 2.7 or later within major version 2.
+Analysis used pydantic 2.13.4 with pydantic-core 2.46.4, which the
+released requirements pin. Revalidating every stored completion against
+its node schema under these versions reproduces the stored validation
+outcome of all \pn{full.attempts} attempts
+(\code{scripts/revalidate\_all.py}), so every validity judgement in the
+corpus is reproducible under the released environment.
+
 \begin{table}[htbp]
 \centering\scriptsize
 \caption{Model provenance. \emph{Returned ID} is the model identifier in
