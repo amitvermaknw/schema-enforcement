@@ -37,6 +37,15 @@ and Haiku~4.5, whose attempt failure rate is
 \pn{g.claude-haiku-4-5@medium.attempts_per_completed_run} attempts per
 completed run (\cref{app:breakdowns}).
 
+First attempts, before any feedback, give a stricter view. Of the
+\pn{pooled.reported.att0.n} first attempts on the reporting basis,
+\pn{pooled.reported.att0.valid} validated
+(\pn{pooled.reported.fa.valid_rate}); counting pure-formatting failures
+as recovered raises this to \pn{pooled.reported.fa.valid_after_fence_rate}.
+None of Haiku~4.5's \pn{g.claude-haiku-4-5@medium.fa.reached} first
+attempts validated; per-model first-attempt breakdowns are in
+\cref{app:breakdowns}.
+
 \subsection{Dominant-category profiles}
 \label{sec:results:profiles}
 
