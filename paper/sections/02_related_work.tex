@@ -18,12 +18,16 @@ reason. They differ by vendor and version in how, and how strictly, they
 enforce a schema, and none is the prompt-only configuration we study.
 
 \paragraph{Structured-output benchmarks.}
-\citet{tenckhoff2026llmstructbench} evaluate open-weight models under
-five prompting configurations on email-to-JSON extraction. Three of the
-configurations set the inference API's format parameter and so engage
-grammar-level enforcement; only their prompt-only condition is comparable
+\citet{tenckhoff2026llmstructbench} evaluate open-weight models, with
+GPT-4o as a closed-weight reference, under five prompting configurations
+on email-to-JSON extraction. Four of the five set the inference API's
+format parameter, to \code{json} or to a JSON Schema, and so add
+API-level enforcement; only their prompt-only condition is comparable
 to ours. They recover JSON from surrounding text as preprocessing, which
 makes wrapping visible in their pipeline but not a category.
+\citet{singh2026sob} also draw on HotpotQA but score value accuracy
+behind a binary schema gate, grouping conformance failures into parse
+failures and schema violations rather than distinguishing them further.
 \citet{ferguson2026extractbench} score extracted values against gold
 labels with field-dependent correctness. Their unit is the fidelity of a
 value; ours is the conformance failure, and we do not evaluate whether
