@@ -208,6 +208,8 @@ def tab_divergence():
 
 
 def fig_profiles():
+    plt.rcParams["pdf.fonttype"] = 42   # TrueType, not Type 3
+    plt.rcParams["ps.fonttype"] = 42
     gs = sorted(V["groups"], key=lambda g: g["rate"])
     labels = [f'{g["model"]}@{g["tier"]}' for g in gs]
     fig, ax = plt.subplots(figsize=(6.5, 3.2))
@@ -222,7 +224,7 @@ def fig_profiles():
     ax.legend(fontsize=7, ncol=4, loc="upper center", bbox_to_anchor=(0.5, -0.18), frameon=False)
     ax.tick_params(axis="y", labelsize=7)
     fig.tight_layout()
-    fig.savefig(GEN / "fig_profiles.pdf")
+    fig.savefig(GEN / "fig_profiles.pdf", bbox_inches="tight", pad_inches=0.02)
 
 
 if __name__ == "__main__":
