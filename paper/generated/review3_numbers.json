@@ -2,7 +2,7 @@
   "meta": {
     "db": "results/archive/paper1_FINAL_DATA_locked_v4_20260913.db",
     "sha256": "d0f406f00882dadb4c0aa0b1bea3a4a77b562c80ec46f19fe7d6ad7d4ebfbeb4",
-    "generated_utc": "2026-10-01T17:10:27.267320+00:00",
+    "generated_utc": "2026-10-01T19:07:54.503508+00:00",
     "schema_resolution": {
       "attempt_pk": "id",
       "node": "node_name",
@@ -1075,6 +1075,129 @@
       "basis": "full",
       "note": "runs, attempts, failures counted with the same prompt_variant filter; one row per variant",
       "fmt": "list"
+    },
+    "conceal.exh.n": {
+      "value": 24,
+      "basis": "reported",
+      "note": "Haiku 4.5 medium baseline run-nodes with node_runs.success=0",
+      "fmt": "int"
+    },
+    "conceal.exh.gather": {
+      "value": 23,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "conceal.exh.answer": {
+      "value": 1,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "conceal.exh.same_field": {
+      "value": 24,
+      "basis": "reported",
+      "note": "fence-stripped attempt 0 and final attempt share a length violation at the same loc",
+      "fmt": "int"
+    },
+    "conceal.exh.persist": {
+      "value": 24,
+      "basis": "reported",
+      "note": "same loc violated on every attempt of the run-node",
+      "fmt": "int"
+    },
+    "conceal.exh.fenced": {
+      "value": 47,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "conceal.exh.fenced_json_invalid": {
+      "value": 47,
+      "basis": "reported",
+      "note": "stored (= returned) error is json_invalid",
+      "fmt": "int"
+    },
+    "conceal.exh.fenced_len_in_error": {
+      "value": 0,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "conceal.exh.len_feedback": {
+      "value": {
+        "1": 23,
+        "2": 1
+      },
+      "basis": "reported",
+      "note": "run-nodes by number of returned retry errors naming a length violation",
+      "fmt": "dict"
+    },
+    "conceal.exh.len_feedback_once": {
+      "value": 23,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "conceal.exh.len_feedback_twice": {
+      "value": 1,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "hidden.n": {
+      "value": 4,
+      "basis": "reported",
+      "note": "failures from the supporting-identifier check",
+      "fmt": "int"
+    },
+    "hidden.flips.cells": {
+      "value": 0,
+      "basis": "reported",
+      "note": "dominant-category changes when hidden-constraint failures are excluded",
+      "fmt": "int"
+    },
+    "hidden.flips.groups": {
+      "value": 0,
+      "basis": "reported",
+      "note": "dominant-category changes when hidden-constraint failures are excluded",
+      "fmt": "int"
+    },
+    "hidden.gpt4omini.n_without": {
+      "value": 30,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "hidden.gpt4omini.regex_without": {
+      "value": 19,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "hidden.gpt4omini.share_without": {
+      "value": 0.6333333333333333,
+      "basis": "reported",
+      "note": "",
+      "fmt": "pct"
+    },
+    "hidden.regex_pattern_without": {
+      "value": 122,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "hidden.exhausted_runnodes": {
+      "value": 1,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "hidden.exhausted_attempts": {
+      "value": 3,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
     },
     "full.attempts": {
       "value": 4396,
@@ -12183,14 +12306,14 @@
       "note": "",
       "fmt": "list"
     },
-    "domain_shift.claude-opus-4-8": {
-      "value": "financebench=length_bound, hotpotqa=regex_pattern",
+    "domain_shift.claude-sonnet-5": {
+      "value": "financebench=length_bound, hotpotqa=markdown_wrap",
       "basis": "reported",
       "note": "dominant category differs by domain",
       "fmt": "str"
     },
-    "domain_shift.claude-sonnet-5": {
-      "value": "financebench=length_bound, hotpotqa=markdown_wrap",
+    "domain_shift.claude-opus-4-8": {
+      "value": "financebench=length_bound, hotpotqa=regex_pattern",
       "basis": "reported",
       "note": "dominant category differs by domain",
       "fmt": "str"
@@ -12602,13 +12725,13 @@
       "fmt": "str"
     },
     "meta.git_head": {
-      "value": "eac63598df8981b4f61b12b08a1c2bbb99515d27",
+      "value": "b7240de8e652ffe17e20e8a2da822149872b2638",
       "basis": "meta",
       "note": "",
       "fmt": "str"
     },
     "meta.git_head_short": {
-      "value": "eac63598df",
+      "value": "b7240de8e6",
       "basis": "meta",
       "note": "",
       "fmt": "str"
@@ -12626,7 +12749,7 @@
           "dirty": false
         },
         "scripts/make_paper_numbers.py": {
-          "commit": "58123819b680c1082ee29c2a165cb8a4bb1e19f9",
+          "commit": "84c92532796aeb279774b6ddd9d081bee5138dc6",
           "dirty": false
         },
         "scripts/render_paper_assets.py": {
@@ -12634,7 +12757,7 @@
           "dirty": false
         },
         "scripts/review3.py": {
-          "commit": "9c2097422615637ad77319358a58a244fe127fb9",
+          "commit": "84c92532796aeb279774b6ddd9d081bee5138dc6",
           "dirty": false
         }
       },
