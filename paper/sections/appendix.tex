@@ -276,6 +276,41 @@ failed during JSON parsing. Each node tests only its own checks: two
 cross-field checks in identify, one in gather, and one cross-field plus
 one per-item pattern check in answer.
 
+\paragraph{Prompt visibility.}
+The system prompt embeds each node's \code{model\_json\_schema()}
+(\cref{app:schemas}), so a constraint is visible on the first attempt
+if it is a JSON Schema keyword or is stated in a field or model
+description. \Cref{tab:visibility} lists every constraint the medium
+tier enforces. The only enforced constraint absent from the prompt is
+the per-item identifier pattern on \code{supporting\_entity\_ids}, the
+check behind the \pn{modellevel.violations} model-level failures above;
+the four cross-field checks, each stated in a description, produced
+\pn{crossfield.violations} violations. Conversely, the description of
+\code{Fact.entity\_id} asks for a reference to an identify-step
+identifier, but only its pattern is enforced.
+
+\begin{table}[h]
+\centering
+\small
+\caption{Prompt visibility of the constraints enforced by the medium
+tier. The prompt carries each node's JSON Schema, including field and
+model descriptions.}
+\label{tab:visibility}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Constraint & Enforced by & Visible in prompt as \\
+\midrule
+Character caps, list-length bounds, numeric ranges & field & schema keyword \\
+Enumerations (entity type, question type, bucket) & field & schema keyword \\
+Identifier pattern on \code{canonical\_id}, \code{entity\_id} & field & keyword and description \\
+\code{primary\_entity\_id} among entity identifiers & validator & description \\
+\code{entity\_count}, \code{fact\_count} equal list lengths & validator & description \\
+Bucket coherent with \code{confidence} & validator & description with thresholds \\
+Identifier pattern on each \code{supporting\_entity\_ids} item & validator & \textbf{not visible} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \section{Divergence Metric}
 \label{app:divergence}
 

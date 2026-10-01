@@ -27,11 +27,19 @@ on free text (\code{coverage\_notes} 250, \code{answer} 400, \code{fact}
 four cross-field checks---primary-entity membership and entity-count
 agreement in identify, fact-count agreement in gather, and
 confidence-bucket coherence in answer---and, in answer, a per-item
-identifier pattern check on \code{supporting\_entity\_ids}. Two targeted
-variants of the baseline schema change one constraint family each. \emph{medium\_v2} raises the
-caps to 1000, 1200 and 800 and is run on Sonnet~4.6 only;
-\emph{medium\_v3\_loose\_regex} loosens the identifier pattern to
-\idpatternloose{}, keeping the 31-character ceiling, and is run on
+identifier pattern check on \code{supporting\_entity\_ids}. The system
+prompt carries each node's JSON Schema, so field-level constraints and
+field descriptions are visible from the first attempt. The four
+cross-field checks are stated in field descriptions; the
+supporting-identifier check is stated nowhere in the prompt and becomes
+visible only through retry feedback (\cref{tab:visibility}).
+Two targeted variants of the baseline schema each change one constraint
+family. \emph{medium\_v2} raises the caps to 1000, 1200 and 800 and is
+run on Sonnet~4.6 only; it also omits the three node-level docstrings,
+which the prompt carries as schema descriptions but which state no
+constraint. \emph{medium\_v3\_loose\_regex} loosens the identifier
+pattern to \idpatternloose{}, keeping the 31-character ceiling, rewords
+the \code{canonical\_id} description to match, and is run on
 gpt-5.6-sol and gpt-5.6-terra only. The design is therefore not fully
 crossed; \cref{app:manifest} lists every cell.
 
