@@ -20,8 +20,9 @@
 \usepackage[capitalise,noabbrev]{cleveref}
 
 \lstset{basicstyle=\ttfamily\scriptsize,breaklines=true,columns=fullflexible,
-        showstringspaces=false,frame=single,
-        literate={—}{{---}}1 {–}{{--}}1 {’}{{'}}1}
+        showstringspaces=false,frame=single,upquote=true,
+        framesep=3pt,xleftmargin=3.4pt,xrightmargin=3.4pt,
+        literate={—}{{\textemdash}}1 {–}{{\textendash}}1 {’}{{\textquotesingle}}1}
 
 \newcommand{\cat}[1]{\texttt{\small #1}}
 \newcommand{\code}[1]{\texttt{\small #1}}
