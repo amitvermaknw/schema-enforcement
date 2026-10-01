@@ -92,17 +92,23 @@ budget being exhausted before any text block was emitted.
 \section{Schemas and Prompts}
 \label{app:schemas}
 
-The baseline schema, its two variants, the prompt variants, the retry
-message template and the Stage-1 predicates are reproduced below from the
-released code. The listings are generated from the repository at the
-commit recorded in \cref{app:manifest}, so they cannot drift from the code
-that produced the results.
+The baseline schema, its two variants, the system-prompt variants, the
+per-node user prompts, the validation and retry loop (including the retry
+message) and the Stage-1 predicates are reproduced below from the released
+code by \code{scripts/make\_app\_code.sh}. Listings omit comments and
+module and function docstrings; class docstrings are kept because Pydantic
+emits them as schema descriptions in the prompt. The listings are
+generated from the repository at the commit recorded in
+\cref{app:manifest}, so they cannot drift from the code that produced the
+results.
 
 \IfFileExists{generated/app_code.tex}{\input{generated/app_code}}{\emph{[Run \code{review3.py appcode} to generate \code{generated/app\_code.tex}.]}}
 
-The medium\_v2 variant differs only in the three character caps and the
-medium\_v3\_loose\_regex variant only in \code{CANONICAL\_ID\_PATTERN}; the
-diffs above show both.
+The medium\_v2 variant changes the three character caps and omits the
+three class docstrings; the medium\_v3\_loose\_regex variant changes
+\code{CANONICAL\_ID\_PATTERN} and the \code{canonical\_id} description.
+The diffs above show every change, including those to prompt-visible
+text.
 
 \section{Classifier Validation}
 \label{app:classifier}

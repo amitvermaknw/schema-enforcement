@@ -1003,9 +1003,10 @@ def cmd_counterfactual(a):
 
 # ----------------------------------------------------------------------------- appcode (A12)
 def strip_code(src: str) -> str:
-    """Remove docstrings and full-line comments, preserving all other source text verbatim.
+    """Remove module/function docstrings and full-line comments; keep class docstrings.
 
-    Listings in the paper show executable code only. Docstrings carry design notes and
+    Class docstrings are kept because Pydantic emits them as the schema's top-level
+    description, so they reach the prompt. Other docstrings carry design notes and
     working hypotheses that are not claims of the paper and can contradict it. Inline
     trailing comments (e.g. "# was 400") are kept; string literals, including raw regex
     patterns, are left byte-for-byte unchanged.
@@ -1013,7 +1014,7 @@ def strip_code(src: str) -> str:
     tree = ast.parse(src)
     drop = set()
     for node in ast.walk(tree):
-        if isinstance(node, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)):
+        if isinstance(node, (ast.Module, ast.FunctionDef, ast.AsyncFunctionDef)):
             b = node.body
             if b and isinstance(b[0], ast.Expr) and isinstance(getattr(b[0], "value", None), ast.Constant) \
                     and isinstance(b[0].value.value, str):
@@ -1066,7 +1067,7 @@ def cmd_appcode(a):
     for item in a.item or []:
         label, spec = item.split("=", 1)
         body = extract(spec, root, strip=not a.keep_docstrings)
-        chunks.append(f"\\paragraph{{{tex_esc(label)}}} (\\code{{{tex_esc(spec)}}})\n"
+        chunks.append(f"\\paragraph{{{tex_esc(label)}}} (\\code{{{tex_esc(spec.partition('::')[0])}}})\n"
                       f"\\begin{{lstlisting}}[language=Python]\n{body}\\end{{lstlisting}}\n")
     for item in a.diff or []:
         label, spec = item.split("=", 1)
