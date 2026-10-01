@@ -2,7 +2,7 @@
   "meta": {
     "db": "results/archive/paper1_FINAL_DATA_locked_v4_20260913.db",
     "sha256": "d0f406f00882dadb4c0aa0b1bea3a4a77b562c80ec46f19fe7d6ad7d4ebfbeb4",
-    "generated_utc": "2026-10-01T06:04:09.549412+00:00"
+    "generated_utc": "2026-10-01T17:10:28.137797+00:00"
   },
   "numbers": {
     "reported.attempts": {
@@ -15111,13 +15111,13 @@
       "fmt": "str"
     },
     "meta.git_head": {
-      "value": "1794b29aaa629be1cd427589b85e0bac14a0e1c6",
+      "value": "eac63598df8981b4f61b12b08a1c2bbb99515d27",
       "basis": "meta",
       "note": "",
       "fmt": "str"
     },
     "meta.git_head_short": {
-      "value": "1794b29aaa",
+      "value": "eac63598df",
       "basis": "meta",
       "note": "",
       "fmt": "str"
