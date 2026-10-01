@@ -76,6 +76,19 @@ Building the PDF requires a LaTeX installation:
 cd paper && latexmk -pdf main.tex
 ```
 
+### Classifier reclassification check (Appendix C)
+
+`scripts/reclassify_all.py` re-runs the corrected two-stage classifier
+(`src/schemaeval/errors.py`) over every failed attempt's stored output and
+error details. It makes no model calls. `--apply` writes to the database, so
+run it on a copy only:
+
+```bash
+cp results/archive/paper1_FINAL_DATA_locked_v4_20260913.db /tmp/reclass_check.db
+DB_PATH=/tmp/reclass_check.db python scripts/reclassify_all.py --dry-run
+# expected: Total rows examined: 1326, Rows to update: 0
+```
+
 ## Database schema
 
 | Table | Contents |

@@ -112,9 +112,11 @@ Hand labelling was performed against an earlier classifier in which
 Pydantic error-type mapping preceded the behavioural predicates.
 Schema-mirrored outputs were consequently labelled \cat{missing\_field}
 and prose-preamble outputs \cat{parse\_error}. We corrected the order and
-reclassified the full corpus from stored completions and error details;
-the released \code{errors.py} and \code{reclassify\_all.py} reproduce
-every label.
+reclassified the full corpus from stored completions and error details,
+without new model calls. Running the released \code{reclassify\_all.py},
+which applies both stages of \code{errors.py}, in dry-run mode over the
+released database reproduces the stored primary label of all
+\pn{full.failures} failed attempts (zero changes).
 
 \paragraph{Agreement.}
 The sample was drawn from all \pn{full.failures} failures in the corpus,
