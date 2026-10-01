@@ -133,13 +133,14 @@ CC BY-SA 4.0.
 
 **FinanceBench** (Islam et al., arXiv:2311.11944), the public
 `PatronusAI/financebench` sample, first records in dataset order, evidence
-truncated to 2,000 characters. The release is gated and requires accepting its
-licence on HuggingFace before download.
+truncated to 2,000 characters.
 
-**FinanceBench question text is withheld from this artifact** under that
-licence: rows in `paper/generated/question_manifest.csv` carry the record hash
-but not the text. `src/schemaeval/data/financebench.py` regenerates the inputs
-from the original source once you have accepted the licence.
+**FinanceBench question text is included in this artifact**, in
+`paper/generated/question_manifest.csv` and in the `runs.question` column of
+the locked database (it may also appear in `node_attempts.raw_output`). It is
+redistributed under the dataset's CC BY-NC 4.0 licence; see `DATA_LICENSES.md`.
+`src/schemaeval/data/financebench.py` regenerates the inputs from the original
+source.
 
 ## Layout
 
