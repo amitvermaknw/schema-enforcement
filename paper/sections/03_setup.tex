@@ -74,6 +74,11 @@ The Anthropic branch sets \code{max\_tokens} to 4{,}096 and the OpenAI
 branch sets none. Resolved model versions and sampling details are in
 \cref{app:manifest}.
 
+A \emph{cell}, or configuration, is one combination of model, schema
+tier and task domain under the baseline prompt. \Cref{tab:manifest} has
+one row per cell plus one row for each of the two prompt variants,
+which share the Haiku HotpotQA cell and add no cells.
+
 Two conventions define the reporting basis. Cells with fewer than 30
 baseline runs are excluded as pilots, a threshold fixed before analysis,
 and the \pn{excluded_variant.runs} prompt-variant runs, which share the
