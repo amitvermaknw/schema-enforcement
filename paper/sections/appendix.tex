@@ -154,7 +154,7 @@ frozen classifier can test only the remaining categories.
 ($n=\pn{validation.n}$), full corpus frame. Recall is computed within the
 label-stratified sample, not over the corpus.}
 \label{tab:validation}
-\input{generated/tab_validation}
+\adjustbox{max width=\textwidth}{\input{generated/tab_validation}}
 \end{table}
 
 \paragraph{Corpus screens.}
@@ -183,7 +183,7 @@ matches \pn{screen.nonjson_opener.matches} non-empty failures, of which
 failures, gpt-5.6-sol and gpt-5.6-terra, HotpotQA. Counts are
 identifiers, not attempts.}
 \label{tab:perturbation}
-\input{generated/tab_perturbation}
+\adjustbox{max width=\textwidth}{\input{generated/tab_perturbation}}
 \end{table}
 
 The baseline tier uses \idpattern{} and the perturbed tier \idpatternloose{};
@@ -214,7 +214,7 @@ mark inserted.
 \centering\scriptsize
 \caption{Per-cell results, reporting basis.}
 \label{tab:domains}
-\input{generated/tab_domains}
+\adjustbox{max width=\textwidth}{\input{generated/tab_domains}}
 \end{table}
 
 \begin{table}[htbp]
@@ -323,6 +323,7 @@ identifier, but only its pattern is enforced.
 tier. The prompt carries each node's JSON Schema, including field and
 model descriptions.}
 \label{tab:visibility}
+\begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{@{}lll@{}}
 \toprule
 Constraint & Enforced by & Visible in prompt as \\
@@ -336,6 +337,7 @@ Bucket coherent with \code{confidence} & validator & description with thresholds
 Identifier pattern on each \code{supporting\_entity\_ids} item & validator & \textbf{not visible} \\
 \bottomrule
 \end{tabular}
+\end{adjustbox}
 \end{table}
 
 \section{Divergence Metric}
@@ -363,5 +365,5 @@ and do not summarise the distributions; we report them as secondary.
 \begin{table}[ht]
 \centering\small
 \caption{Largest category-share differences among qualifying groups.}
-\input{generated/tab_divergence}
+\adjustbox{max width=\textwidth}{\input{generated/tab_divergence}}
 \end{table}

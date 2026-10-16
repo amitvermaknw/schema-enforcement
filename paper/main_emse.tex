@@ -1,0 +1,112 @@
+% =====================================================================
+% main_emse.tex: Empirical Software Engineering (Springer) submission
+% Template: Springer Nature LaTeX template (sn-jnl.cls + sn-basic.bst
+%           must be in paper/ next to this file).
+% Every result number comes from generated/numbers.tex via \pn{key}.
+% DO NOT run `make paper` (it restamps git_head_short); compile this
+% file directly:  latexmk -pdf main_emse.tex   (from paper/)
+% main.tex is left as the TMLR build record and is not used here.
+% =====================================================================
+\documentclass[pdflatex,sn-basic]{sn-jnl}   % sn-basic = author-year (natbib)
+
+% ---- Review mode --------------------------------------------------------
+% Set to \anontrue ONLY if EMSE's guidelines say double-anonymous review.
+\newif\ifanon
+\anonfalse
+
+% ---- Packages ------------------------------------------------------------
+\usepackage[T1]{fontenc}      % needed for \textquotedbl in the code listings
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}  % sn-jnl calls \allowdisplaybreaks (amsmath)
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{adjustbox}     % shrink-to-fit for wide generated tables
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage[capitalise,noabbrev]{cleveref}
+
+\lstset{basicstyle=\ttfamily\scriptsize,breaklines=true,columns=fullflexible,
+        showstringspaces=false,frame=single,upquote=true,
+        framesep=3pt,xleftmargin=3.4pt,xrightmargin=3.4pt,
+        literate={—}{{\textrm{\textemdash}\ }}1 {–}{{\textrm{\textendash}}}1 {’}{{\textquotesingle{}}}1}
+
+% ---- Paper macros (unchanged from main.tex) -----------------------------
+\newcommand{\cat}[1]{\texttt{\small #1}}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\idpattern}{\code{\^{}[a-z][a-z0-9\_]\{2,30\}\$}}
+\newcommand{\idpatternloose}{\code{\^{}[a-zA-Z0-9][a-zA-Z0-9\_\textbackslash-]\{2,30\}\$}}
+
+\input{generated/numbers}
+
+% sn-jnl wraps every table in threeparttable, which breaks tables built
+% with \resizebox{...}{!}{\input{generated/...}}. Restore the standard
+% table environment that sn-jnl saves as "tableorg".
+\let\table\tableorg
+\let\endtable\endtableorg
+
+\begin{document}
+
+\title[When ``JSON Only'' Isn't Enough]{When ``JSON Only'' Isn't Enough:
+A Fine-Grained Failure Taxonomy for Prompt-Enforced Pydantic Schemas
+Across LLM Families}
+
+\ifanon
+  \author{\fnm{Anonymous} \sur{Author}}
+  \affil{\orgname{Anonymous}}
+\else
+  \author*[1]{\fnm{Amit} \sur{Verma}}\email{amitfromus@gmail.com}
+  \affil*[1]{\orgname{Independent Researcher},
+    \orgaddress{\city{Phoenix}, \state{AZ}, \country{USA}}}
+\fi
+
+% VERIFY the four hard-coded numbers against generated/numbers.tex:
+%   3,997 = reported.attempts ; 52% / 48% = fence compound / pure share.
+\abstract{Pipelines that need structured output from hosted language
+models often state a Pydantic schema in the prompt, validate the reply,
+and retry with the validation error. This prompt-and-validate loop
+persists because native structured-output modes differ in which schema
+features they support and cannot enforce application-level validators.
+Such pipelines are usually judged by a single validity rate, which does
+not tell an engineer why outputs fail, which repair will work, or whether
+a prompt change helped. We define a taxonomy of schema-conformance
+failures, assigned by a deterministic classifier, and apply it to 3,997
+generation attempts from nine OpenAI and Anthropic models on HotpotQA and
+FinanceBench questions. Models with similar validity rates fail in
+different ways, and the dominant failure shifts with the schema's
+constraints and the task, so a validity rate measured in one setting does
+not transfer to another. The most common failure, wrapping JSON in a
+markdown fence, conceals a second violation, usually an over-length
+field, in 52\% of cases, so fence stripping, a common fix, repairs at most
+48\% of fenced failures. An apparent prompt-induced shift from fencing to
+length violations is consistent with exposing violations that were
+already present, which shows how comparing aggregate validity rates can
+mislead. We derive three engineering practices for validation pipelines
+and release the classifier, completions and annotations.}
+
+\keywords{Large language models, Structured output, Schema validation,
+Pydantic, Failure taxonomy, Empirical study}
+
+\maketitle
+
+\input{sections/01_introduction}
+\input{sections/02_related_work}
+\input{sections/03_setup}
+\input{sections/04_results}
+\input{sections/05_implications}
+\input{sections/06_threats}
+\input{sections/07_conclusion}
+
+\ifanon\else
+\input{sections/declarations}
+\fi
+
+\begin{appendices}
+\input{sections/appendix}
+\end{appendices}
+
+\bibliography{references}
+
+\end{document}
