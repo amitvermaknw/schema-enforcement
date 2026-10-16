@@ -2,15 +2,22 @@
 \label{sec:conclusion}
 
 A validity rate for prompt-enforced structured output does not tell a
-practitioner what failed or what a fix will change. Across
-\pn{reported.models} models, models with similar rates fail in different
-ways (RQ1); the dominant category moves when the binding constraints
+practitioner what failed or what a fix will change. Diagnosing a failure
+requires keeping both the visible formatting failure and the schema
+violation it may conceal; in this corpus, dropping either layer changes
+the conclusion an engineer would draw about a repair, a schema change, or
+a prompt change. Across
+nine model configurations, those with similar rates fail
+in different ways (RQ1); the dominant category moves when the binding constraints
 change and differs between task domains for the same model (RQ2); and the
 most common failure, markdown wrapping, conceals a length or pattern
 violation often enough that reading primary labels alone misreads a
 prompt ablation and misattributes what a repair loop leaves unrepaired
-(RQ3). Whether a relaxation removes a failure depends on the sub-cause
-beneath the label, not on the label. We release the classifier, raw
+(RQ3). In both schema interventions we ran, whether a relaxation removed
+a failure tracked the sub-cause beneath the label rather than the label
+itself. Of the four practices we derive,
+three are supported by these data; the fourth, building retry feedback
+from the fence-stripped validation, follows from them but is untested. We release the classifier, raw
 completions and annotation record so the corpus can be relabelled under
 other definitions; the distribution over categories will move as models
 change, and the vocabulary is meant to outlast it.

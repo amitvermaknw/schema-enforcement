@@ -4,16 +4,6 @@
 \subsection{Failure rates and run completion}
 \label{sec:results:rates}
 
-\begin{table}[t]
-\centering\small
-\caption{Per-model results at the medium tier, baseline prompt, task
-domains pooled (gpt-4o, gpt-4o-mini and Sonnet~4.6 are HotpotQA only on
-the reporting basis). Intervals are question-clustered bootstrap 95\%
-intervals (\cref{sec:setup:basis}).}
-\label{tab:models}
-\setlength{\tabcolsep}{5pt}
-\adjustbox{max width=\textwidth}{\input{generated/tab_models_r3}}
-\end{table}
 
 \Cref{tab:models} gives per-model results. The attempt-weighted failure
 rate over the reporting basis is \pn{pooled.reported.rate} (95\% CI
@@ -25,6 +15,18 @@ unweighted mean of the nine medium-tier rates is
 corpus are therefore largely statements about one model, and we report
 per-model figures. No conclusion below depends on ordering models whose
 intervals overlap.
+
+\begin{table}[!htbp]
+\centering\small
+\caption{Per-model results at the medium tier, baseline prompt, task
+domains pooled (gpt-4o, gpt-4o-mini and Sonnet~4.6 are HotpotQA only on
+the reporting basis). Intervals are question-clustered bootstrap 95\%
+intervals (\cref{sec:setup:basis}). Rows are ordered by failure rate for
+readability; configurations with overlapping intervals are not ranked.}
+\label{tab:models}
+\setlength{\tabcolsep}{5pt}
+\adjustbox{max width=\textwidth}{\input{generated/tab_models_r3}}
+\end{table}
 
 Attempt failure and pipeline completion are different quantities. Under
 the repair loop, \pn{pooled.reported.completed} of
@@ -38,8 +40,10 @@ and Haiku~4.5, whose attempt failure rate is
 \pn{g.claude-haiku-4-5@medium.rate}, completes
 \pn{g.claude-haiku-4-5@medium.completed} of
 \pn{g.claude-haiku-4-5@medium.runs} at
+a cost of
 \pn{g.claude-haiku-4-5@medium.attempts_per_completed_run} attempts per
-completed run (\cref{app:breakdowns}).
+completed run, counting the attempts of its incomplete runs as well
+(\cref{app:breakdowns}).
 
 First attempts, before any feedback, give a stricter view. Of the
 \pn{pooled.reported.att0.n} first attempts on the reporting basis,
@@ -53,7 +57,7 @@ attempts validated; per-model first-attempt breakdowns are in
 \subsection{Dominant-category profiles}
 \label{sec:results:profiles}
 
-\begin{figure}[t]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.92\linewidth]{generated/fig_profiles.pdf}
 \caption{Composition of failures by model and schema tier, reporting
@@ -113,10 +117,15 @@ across domains, but its HotpotQA profile rests on
 \pn{c.claude-opus-4-8@medium@hotpotqa.failures} failures and we do not
 interpret it (\cref{app:breakdowns}).
 
+\rqanswer{RQ1}{No. Configurations with overlapping failure rates fall
+into four profiles with different dominant categories, and some categories
+occur only in particular configurations. A validity rate therefore does
+not identify which failure an engineer must fix.}
+
 \subsection{Profiles depend on the constraint surface}
 \label{sec:results:surface}
 
-\begin{table}[t]
+\begin{table}[!htbp]
 \centering\small
 \caption{Sonnet~4.6, HotpotQA. Top: composition at the medium and
 medium\_v2 tiers. Bottom: the stored medium outputs revalidated against
@@ -172,15 +181,29 @@ permits them. Length overflows against the retained 31-character ceiling
 occurred under both patterns (\pn{pert.medium.length_overflow} and
 \pn{pert.medium_v3_loose_regex.length_overflow}); with a handful of
 failures per cell we do not interpret that change or the cell rates
-(\cref{app:perturbation}). The relaxation removed the sub-cause it
-addressed and did not address length overflow, which the
-\cat{regex\_pattern} label conceals because the ceiling is written into
-the pattern's quantifier.
+(\cref{app:perturbation}). No leading-digit violations were observed
+under the loosened pattern, while length overflow, which the loosened
+class does not address, still occurred. Because these runs are fresh
+generations rather than a revalidation of fixed outputs, and the counts
+are small, we read this as consistent with a sub-cause-specific effect,
+not as an estimate of one. The \cat{regex\_pattern} label conceals the
+overflow because the ceiling is written into the pattern's quantifier.
+
+\rqanswer{RQ2}{No. Raising length caps changes the dominant category for
+the same model, and revalidating the same stored outputs attributes the
+removed length violations to the caps alone. Under a loosened identifier
+character class, no leading-digit violations were observed
+(\pn{pert.medium.leading_digit} to
+\pn{pert.medium_v3_loose_regex.leading_digit}) while length overflows
+remained; with counts this small and unmatched runs, this is an
+observation, not a measured effect. The same model
+also shows different profiles on the two task domains
+(\cref{sec:results:profiles}).}
 
 \subsection{Formatting failures conceal underlying schema violations}
 \label{sec:results:concealment}
 
-\begin{table}[t]
+\begin{table}[!htbp]
 \centering\small
 \caption{Fence-strip revalidation of \cat{markdown\_wrap} failures,
 reporting basis. \emph{Pure formatting} validates once the fence is
@@ -227,10 +250,7 @@ was fenced. What remained was length: \cat{length\_bound} accounts for
 every failure from the third attempt onward, and all
 \pn{g.claude-haiku-4-5@medium.exhausted} run-nodes that exhausted their
 retries ended on \cat{length\_bound}, \pn{g.claude-haiku-4-5@medium.exhausted.node.gather}
-of them in gather. These are exactly the runs that did not complete. Every retry
-carries the validation error and no condition retries without it, so the
-design does not separate the effect of the feedback from that of a
-further attempt. Within the loop, nearly all of this model's failures
+of them in gather. These are exactly the runs that did not complete. Within the loop, nearly all of this model's failures
 were repaired (\pn{g.claude-haiku-4-5@medium.fa.retry_success} of
 \pn{g.claude-haiku-4-5@medium.fa.failed} failed first attempts eventually
 validated), and its residual failures were the violations the fence had concealed. In
@@ -249,34 +269,49 @@ for Haiku~4.5 and \pn{g.claude-sonnet-5@medium.residual_rate} for
 Sonnet~5. These are not outcomes of rerunning the pipeline with fence
 removal enabled, which would change retries and downstream exposure.
 
-\begin{table}[t]
+\begin{table}[!htbp]
 \centering\small
-\caption{Prompt ablation on Haiku~4.5, HotpotQA, rates over attempts. The
-last row counts length violations that are primary or concealed beneath a
-fence.}
+\caption{Exploratory prompt ablation on Haiku~4.5, HotpotQA, rates over
+attempts. The last row counts length violations that are primary or
+concealed beneath a fence. Design limits are given in
+\cref{sec:results:concealment}.}
 \label{tab:ablation}
 \input{generated/tab_ablation}
 \end{table}
 
-Concealment also changes how a prompt ablation reads. We ran three
-system-prompt variants on Haiku~4.5 on HotpotQA: the baseline, an
+Concealment also changes how a prompt ablation reads. We use an
+exploratory ablation to show this, not to compare prompts: three
+system-prompt variants on Haiku~4.5 on HotpotQA, namely the baseline, an
 aggressive format instruction, and a few-shot prompt
-(\cref{tab:ablation}). The wrapping rate falls from
-\pn{ablation.baseline.markdown_wrap} of attempts to
-\pn{ablation.few_shot.markdown_wrap}, a relative reduction of
-\pn{ablation.delta.markdown_wrap_rel}, and the failure rate from
-\pn{ablation.baseline.failure_rate} to \pn{ablation.few_shot.failure_rate}.
-The primary \cat{length\_bound} rate rises from
-\pn{ablation.baseline.length_bound} to \pn{ablation.few_shot.length_bound},
-which read alone suggests failures migrating from wrapping to length. But
+(\cref{tab:ablation}). The variant cells are much smaller than the
+baseline cell, were run immediately after the final baseline batch rather
+than interleaved with it, and are not paired by question, so differences
+between conditions may reflect question composition or collection time as
+well as prompt wording. The wrapping rate is
+\pn{ablation.baseline.markdown_wrap} of attempts under the baseline and
+\pn{ablation.few_shot.markdown_wrap} under the few-shot prompt, and the
+failure rate \pn{ablation.baseline.failure_rate} and
+\pn{ablation.few_shot.failure_rate}. The primary \cat{length\_bound} rate
+is \pn{ablation.baseline.length_bound} and
+\pn{ablation.few_shot.length_bound}, which read alone suggests failures
+migrating from wrapping to length. But
 a suppressed fence can expose a length violation that was already
 present. Counting primary and concealed length violations together gives
 \pn{ablation.baseline.length_bound_incl_concealed},
 \pn{ablation.aggressive.length_bound_incl_concealed} and
 \pn{ablation.few_shot.length_bound_incl_concealed}: the combined rate does
 not rise as wrapping falls, so the rise in the primary rate requires no
-increase in over-long output. We do not interpret the differences among
-the combined rates, including the lower aggressive figure; the variant
-cells are much smaller than the baseline cell, were run immediately
-after the final baseline batch rather than interleaved with it, and are
-not paired by question.
+increase in over-long output. This is an
+accounting argument within the observed attempts, and it does not depend
+on the prompts having caused the differences between conditions. We do
+not interpret the differences among the combined rates, including the
+lower aggressive figure, and we draw no conclusion about which prompt is
+more effective.
+
+\rqanswer{RQ3}{Only \pn{fence.reported.pure_share} of fenced failures
+validate once the fence is removed; the rest conceal a length or pattern
+violation that the returned parse error never mentions. Counting concealed
+violations changes the reading of the repair loop, whose residual failures
+were the violations the fence had concealed, and of the exploratory prompt
+ablation, whose apparent shift towards length violations requires no
+increase in over-long output.}

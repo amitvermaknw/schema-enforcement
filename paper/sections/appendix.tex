@@ -51,7 +51,7 @@ added after the first sweeps: \pn{versions.gpt-4o.precapture} of
 API route, the collection window and the sampling parameters sent by the
 client for each model.
 
-\paragraph{Validator version.}
+\paragraph{Validator and client versions.}
 The Pydantic version used during collection was not recorded; the
 harness then required version 2.7 or later within major version 2.
 Analysis used pydantic 2.13.4 with pydantic-core 2.46.4, which the
@@ -60,6 +60,12 @@ its node schema under these versions reproduces the stored validation
 outcome of all \pn{full.attempts} attempts
 (\code{scripts/revalidate\_all.py}), so every validity judgement in the
 corpus is reproducible under the released environment.
+The client SDK versions used during collection were likewise not
+recorded; the harness required \code{openai}~$\geq$1.40.0,
+\code{anthropic}~$\geq$0.34.0 and \code{langgraph}~$\geq$0.2.0. The
+SDKs affect only how requests are sent: the request parameters sent by
+the client are given per model in \cref{tab:provenance}, and no validity judgement depends on an
+SDK, since validation and classification run on the stored completions.
 
 \begin{table}[htbp]
 \centering\scriptsize
@@ -220,7 +226,10 @@ mark inserted.
 \begin{table}[htbp]
 \centering\scriptsize
 \caption{Run completion and offline residual invalidity, reporting basis.
-\emph{Att./compl.} is attempts per completed run. \emph{Residual} counts
+\emph{Att./compl.} is the total number of attempts in the cell,
+including those of incomplete runs, divided by the number of completed
+runs: the attempt cost per completed run, not the mean number of attempts
+a completed run used. \emph{Residual} counts
 pure-formatting \cat{markdown\_wrap} failures as recovered; it is computed
 on stored attempts and is not the outcome of rerunning the pipeline with
 fence removal enabled.}
@@ -231,9 +240,11 @@ fence removal enabled.}
 Run completion and attempt failure diverge most where the repair loop does
 the most work: Haiku~4.5 fails \pn{g.claude-haiku-4-5@medium.rate} of
 attempts yet completes \pn{g.claude-haiku-4-5@medium.completion_rate} of
-runs, at \pn{g.claude-haiku-4-5@medium.attempts_per_completed_run}
-attempts per completed run against
-\pn{pooled.reported.attempts_per_completed_run} pooled.
+runs, at a cost of
+\pn{g.claude-haiku-4-5@medium.attempts_per_completed_run} attempts per
+completed run against \pn{pooled.reported.attempts_per_completed_run}
+pooled, where the cost counts every attempt in the cell, including those
+of incomplete runs.
 
 \begin{table}[htbp]
 \centering\scriptsize

@@ -7,7 +7,7 @@ identifiers and writes an unremarkable constraint: \idpattern, a
 containing letters, digits, or underscores. Asked for the identifier of
 an entity whose name is a street address, a GPT-5.6 model in our study
 returns \code{888\_7th\_avenue}. The rendering is faithful to the name and
-fails the anchor \code{\^{}[a-z]}. A conforming identifier exists
+fails the anchor \code{\textasciicircum{}[a-z]}. A conforming identifier exists
 (\code{building\_888\_7th\_avenue}), but the task does not specify which
 conforming normalisation to use.
 
@@ -29,16 +29,27 @@ counterpart and cannot be enforced at decoding time. A pipeline that
 must run across vendors, model generations, or endpoints therefore
 keeps the schema in the prompt and validates afterwards, and its
 validate-and-retry loop stays in place even where decoding is
-constrained. How that loop fails is an engineering question, and a single
-validity rate cannot answer it.
+constrained. How that loop fails is an engineering question, and a single validity
+rate cannot answer it.
+
+We treat failure diagnosis as part of pipeline design. A validation log
+records whether an output passed and the errors Pydantic raised for it.
+That record does not separate a formatting failure from a schema
+violation it may hide, does not say whether a pattern violation came from
+the character class or from a length ceiling written into the pattern,
+and does not say whether a change to the prompt or schema removed a
+failure or exposed one that was already present. Each distinction changes
+what an engineer should fix: the parser, the schema, the retry feedback,
+or the way the pipeline is evaluated.
 
 We study the prompt-and-validate paradigm: the schema is stated in the
 prompt, the completion is validated with Pydantic, and failures are
 retried with the validation error appended. We do not evaluate
 constrained decoding (\cref{sec:related}). We ask three questions.
 \begin{description}[leftmargin=1.4em,itemsep=1pt,topsep=2pt,font=\normalfont\bfseries]
-  \item[RQ1] Do models with similar failure rates fail in the same way?
-  \item[RQ2] Does a model's failure profile stay stable when the schema's
+  \item[RQ1] Do configurations with similar failure rates fail in the
+  same way?
+  \item[RQ2] Does a failure profile stay stable when the schema's
   constraints or the task domain change?
   \item[RQ3] What do formatting failures conceal, and how does that
   change the reading of repairs and prompt ablations?
@@ -46,13 +57,18 @@ constrained decoding (\cref{sec:related}). We ask three questions.
 We define a taxonomy of conformance failures, assign each failing attempt
 a category with a deterministic classifier, and apply it to
 \pn{reported.attempts} attempts across \pn{reported.cells} configurations
-of \pn{reported.models} models from two vendors, one baseline schema and
-two targeted variants, and two task domains.
+of nine models from two vendors, one baseline schema and
+two targeted variants, and two task domains. A configuration is a model
+endpoint called through its vendor's API with the request parameters in
+\cref{app:manifest}, so comparisons are between these configurations, not
+between model capabilities in general.
 
 The answer to all three questions is that the validity rate hides what an
-engineer needs. Models with overlapping failure rates fall into four
-profiles defined by their dominant category (RQ1). Raising length caps
-changes which category dominates for the same model, and the same model
+engineer needs. Configurations with overlapping failure rates fall into
+four profiles defined by their dominant category (RQ1). Raising length
+caps changes which category dominates for the same model, and revalidating
+the same stored outputs against the relaxed schema shows that the caps
+alone account for the removed length violations; the same model also
 shows different profiles on the two domains (RQ2). Only
 \pn{fence.reported.pure_share} of fenced failures validate once the fence
 is removed. The rest conceal a length or pattern violation that the
@@ -60,26 +76,41 @@ returned parse error never mentions, and ignoring this makes a prompt
 ablation appear to move failures from one mode to another (RQ3).
 
 \paragraph{Contributions.}
+The central contribution is a failure-diagnosis framework for
+prompt-and-validate pipelines: it separates visible output-format
+failures from the schema violations beneath them, and uses targeted
+interventions to tell failure causes apart. Concretely:
 \begin{enumerate}[leftmargin=1.4em,itemsep=1pt,topsep=2pt]
-  \item An operational failure taxonomy with deterministic detectors, an
-  explicit precedence rule, and development-set checks against human
-  labels (\cref{sec:setup:taxonomy}).
+  \item A reproducible diagnostic taxonomy and deterministic classifier,
+  with an explicit precedence rule, development-set checks against human
+  labels, and released code that relabels the corpus from stored
+  completions (\cref{sec:setup:taxonomy}).
   % DECISION D1: if held-out, second-labeller validation is completed,
   % restore "validated against held-out human labels (Cohen's kappa ...)".
-  \item An empirical study of \pn{reported.models} models showing that
-  similar failure rates hide different failure modes, and that a profile
-  shifts with the constraint surface and the task domain
-  (\cref{sec:results:profiles,sec:results:surface}).
-  \item A layered analysis showing that markdown wrapping conceals
-  underlying schema violations and that ignoring concealment misreads
-  both repair loops and prompt ablations (\cref{sec:results:concealment}).
-  \item Three practices for engineers who build validation pipelines,
-  derived from these results (\cref{sec:implications}).
+  \item Evidence that visible formatting failures conceal underlying
+  violations: the parse error returned for a fenced output never names
+  the violation beneath it, and ignoring concealment misreads both repair
+  loops and prompt ablations (\cref{sec:results:concealment}).
+  \item Targeted schema interventions that separate failure causes: an
+  offline revalidation that holds model output fixed attributes the
+  removed length violations to the relaxed caps, and in a small,
+  unmatched comparison, loosening an identifier's character class was
+  followed by no leading-digit violations while the length overflow
+  encoded in the same pattern remained
+  (\cref{sec:results:surface}).
+  \item Engineering guidance for validator, schema, retry and evaluation
+  design, each practice tied to the finding that supports it
+  (\cref{sec:implications}).
 \end{enumerate}
+The results across the nine model configurations
+(\cref{sec:results:rates,sec:results:profiles}) are the evidence base for
+these contributions, not a ranking of models: similar failure rates hide
+different failure profiles, which is why a single rate cannot guide the
+design decisions above.
 
 % EMSE: if review is double-anonymous, use the anonymized mirror for the
 % submitted PDF; the arXiv build and the final version use the GitHub URL.
 \paragraph{Artifact.} The classifier, harness, locked results database,
 raw completions, annotations, and the scripts that regenerate every table
 and figure are available at \url{https://github.com/amitvermaknw/schema-enforcement}
-(see also \cref{sec:declarations}).
+(see also the Statements and Declarations).

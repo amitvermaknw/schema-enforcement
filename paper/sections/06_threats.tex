@@ -1,6 +1,9 @@
 \section{Threats to Validity}
 \label{sec:threats}
 
+We organise threats by the construct, internal, external and conclusion
+validity classification of \citet{wohlin2012experimentation}.
+
 \paragraph{Construct validity.}
 The taxonomy is an operational diagnostic for the prompt-and-validate
 paradigm, not a complete account of structured-output failure. Primary
@@ -8,7 +11,19 @@ categories are single-valued, labels follow how a constraint is encoded
 rather than what it intends (\cref{sec:setup:taxonomy}), and we quantify
 co-occurrence only beneath fences. Classifier agreement is
 development-set agreement from a single labeller who also wrote the
-classifier. We evaluate conformance only, not whether extracted content
+classifier: no second annotator labelled the sample, and no held-out set
+was labelled after the classifier was frozen, so we report no
+inter-annotator agreement. Three properties limit what this can affect.
+Stage-1 categories are syntactic predicates on the raw completion, and
+corpus-wide screens that do not depend on any human label find no
+missed case among the failures they match (\cref{app:classifier}). Stage-2 categories are a fixed map
+from the Pydantic error types stored with each attempt, and rerunning the
+released classifier over the database reproduces every stored label.
+The four blind disagreements were resolved against the stored error
+record or the raw completion, not the labeller's judgement. The residual
+risk lies in the category definitions and the precedence rule rather than
+in label noise; we release the annotations and stored completions so that
+an independent labeller can test both. We evaluate conformance only, not whether extracted content
 is correct. Among attempts whose model-level validators ran, no
 cross-field violation occurred (\cref{app:crossfield}), but attempts
 rejected earlier, including during JSON parsing, never reached those
@@ -31,9 +46,33 @@ explicit temperature, and the Anthropic and OpenAI branches use
 different token ceilings. Some questions were run more than once; keeping
 only the earliest run per question changes any cell's failure rate by at
 most \pn{robust.within_cell.max_abs_delta_pp} percentage points
-(\cref{app:manifest}). The prompt-ablation variants were run after the
-final baseline batch rather than interleaved with it and are not paired
-by question.
+(\cref{app:manifest}). The prompt ablation is exploratory: the variant
+cells (189 and 176 attempts against 1{,}066; \cref{tab:ablation}) were run after the final baseline batch
+rather than interleaved with it and are not paired by question, so
+differences between conditions may reflect question composition or
+collection time as well as prompt wording. We use it only to show how
+concealment changes the reading of failure labels, and draw no conclusion
+about prompt effectiveness; a matched, interleaved rerun would be needed
+for that.
+
+\paragraph{Which comparisons are matched.}
+Across all nine configurations, the HotpotQA cells at the medium tier
+share the schema, the baseline system prompt, the retry budget of three
+further attempts, and the same 50-question prefix (\cref{tab:manifest});
+these cells are the matched basis for cross-model comparison. The
+pooled per-model figures in \cref{tab:models} and \cref{fig:profiles}
+also include FinanceBench for six models; per-cell results are in
+\cref{tab:domains}. They are not matched in sampling or collection: four
+configurations run at \code{temperature=0} and five at provider
+defaults, the Anthropic branch sets an output-token ceiling that the
+OpenAI branch does not, collection dates range over three weeks
+(\cref{tab:provenance}), and the number of runs per question varies by
+cell, most for Haiku~4.5 (\cref{tab:manifest}). FinanceBench was
+run for six of the nine models, so domain comparisons are within-model
+only, and each schema variant was run on one or two models, so
+constraint-surface comparisons are within those models. We therefore
+describe differences between configurations and do not attribute them to
+model capability alone.
 
 \paragraph{External validity.}
 The schemas are ours, and one ablation showed that a cap we set was
@@ -54,11 +93,7 @@ not reproduce these distributions.
 \paragraph{Conclusion validity.}
 Attempts are not independent, so all intervals are question-clustered
 bootstrap intervals (\cref{sec:setup:basis}) that describe variability
-over the observed question set, not over the benchmarks. No conclusion
-depends on ordering models whose intervals overlap. We do not interpret
-cells with a handful of failures, including the identifier-perturbation
-cells and the combined length rates across prompt variants, and we treat
-maximum-gap divergence statistics as secondary because they are selected
-to be extreme (\cref{app:divergence}). The Haiku~4.5 FinanceBench cell
-rests on \pn{c.claude-haiku-4-5@medium@financebench.questions} distinct
-questions.
+over the observed question set, not over the benchmarks. We do not
+interpret cells with a handful of failures, and we treat maximum-gap
+divergence statistics as secondary because they are selected to be
+extreme (\cref{app:divergence}).

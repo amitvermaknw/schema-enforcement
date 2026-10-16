@@ -54,6 +54,34 @@ the level of a single node attempt, with categories assigned by
 deterministic predicates and human labels used only to check the
 classifier.
 
+\paragraph{Software-engineering perspective.}
+A Pydantic schema applied to a model's reply is a runtime contract in the
+sense of design by contract \citep{meyer1992contract}: a postcondition
+checked at a component boundary. What changes with a language-model
+component is the response to a violation. The component cannot be
+corrected, only re-invoked, so the information the contract check
+returns becomes the input to the next attempt, and its diagnostic
+content matters for repair as well as for reporting. Prompts in such
+systems are themselves software artifacts: \citet{liang2025prompts} find
+that developers treat prompts as programs but build them less
+systematically than code, and the literature review of
+\citet{hou2024llm4se} catalogues the use of language models across
+software-engineering tasks. Closest to our setting,
+\citet{shankar2024spade} synthesize data-quality assertions for language
+model pipelines from a developer's prompt history; their question is
+which checks to write, ours is how to read the failures a fixed set of
+checks reports. Fault taxonomies are an established empirical
+instrument; \citet{humbatova2020taxonomy} derive one for real faults in
+deep learning systems. Our taxonomy is
+narrower and operational, assigned by deterministic predicates to runtime
+conformance failures rather than by annotators to reported faults. On
+diagnosis, \citet{yuan2012logging} find that developers often do not get
+log messages right the first time and later spend effort revising them.
+A parse error recorded for a fenced output raises a related problem: the
+record is accurate but omits the violation an engineer would need to act
+on
+(\cref{sec:results:concealment}).
+
 \paragraph{Relation to extract-then-validate practice.}
 A common engineering response to these failures is to extract the first
 JSON object from the completion, validate it, and report syntax errors
@@ -69,3 +97,13 @@ pipeline that retains both is doing the layered analysis of
 either changes the conclusions drawn.
 Our categories refine the schema-error class and keep the formatting
 layer visible beneath it.
+The contribution is therefore not a finer error vocabulary on its own. It
+is keeping both the visible formatting failure and the schema violation
+beneath it, and showing on one corpus that discarding either changes an
+engineering conclusion: counting fence removal as a repair would report
+the compound remainder as solved (\cref{sec:results:concealment}),
+reading primary labels alone makes a prompt ablation appear to move
+failures between modes (\cref{sec:results:concealment}), and a single
+schema-error class hides that loosening a character class leaves a
+length overflow encoded in the same pattern untouched
+(\cref{sec:results:surface}).

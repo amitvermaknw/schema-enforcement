@@ -4,7 +4,8 @@
 \subsection{Pipeline, schemas and enforcement}
 \label{sec:setup:pipeline}
 
-Each run processes one question through a three-node sequential pipeline.
+\Cref{fig:overview} summarises the design. Each run processes one
+question through a three-node sequential pipeline.
 \textbf{identify} extracts entities with canonical identifiers and types
 and designates a primary entity; \textbf{gather} produces facts keyed to
 those identifiers with a coverage summary; \textbf{answer} returns the
@@ -43,6 +44,8 @@ pattern to \idpatternloose{}, keeping the 31-character ceiling, rewords
 the \code{canonical\_id} description to match, and is run on
 gpt-5.6-sol and gpt-5.6-terra only. The design is therefore not fully
 crossed; \cref{app:manifest} lists every cell.
+
+\input{sections/fig_overview}
 
 \subsection{Models, data and reporting basis}
 \label{sec:setup:basis}
@@ -122,10 +125,12 @@ numeric bounds to \cat{range\_bound} and \code{json\_invalid} to
 \cat{range\_bound} and the string, list, dict and boolean type errors to
 \cat{missing\_field}; any unmapped type, including the lax-mode parsing
 errors such as \code{float\_parsing}, falls to the catch-all
-\cat{other\_validation\_error}. No type or parsing error occurs in the
-corpus, in stored error details or beneath stripped fences, so this
-part of the map is untested here; a dedicated \cat{type\_mismatch}
-category is left to future work. Validator errors arrive as \code{value\_error}; the
+\cat{other\_validation\_error}. These type assignments are a coarse
+fallback in the released classifier, not a claim that a type error is a
+range or missing-field violation. No type or parsing error occurs in the
+corpus, in stored error details or beneath stripped fences, so no
+reported label depends on this part of the map and it is untested here;
+a dedicated \cat{type\_mismatch} category is left to future work. Validator errors arrive as \code{value\_error}; the
 supporting-identifier check routes to \cat{regex\_pattern} and cross-field
 messages to \cat{cross\_field\_ref}. With several errors, the primary
 category is the plurality, ties broken by first occurrence.
@@ -146,7 +151,7 @@ strict-parsing failure, not the absence of a further defect.
 occur, and \cat{cross\_field\_ref}, \cat{missing\_field},
 \cat{range\_bound} and the catch-all category do not.
 
-\begin{table}[t]
+\begin{table}[!htbp]
 \centering\small
 \caption{Primary categories on the reporting basis.}
 \label{tab:categories}

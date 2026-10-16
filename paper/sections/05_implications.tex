@@ -2,29 +2,78 @@
 \label{sec:implications}
 \label{sec:discussion} % kept so existing \cref{sec:discussion} still resolves
 
-Three practices follow from the data, each at the scale of this corpus.
+Each practice below follows from a specific finding and targets one
+component of a prompt-and-validate pipeline: the validator, the schema,
+the retry loop, or the way the pipeline is evaluated
+(\cref{tab:practices}). The first, second and fourth are supported at the
+scale of this corpus; the third is a design implication of our findings
+that we did not test.
 
-\paragraph{Strip fences, then revalidate and record what remains.}
+\begin{table}[!htbp]
+\centering\small
+\caption{Engineering practices, the pipeline component each targets, and
+the finding that supports it.}
+\label{tab:practices}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{@{}p{3.1cm}p{4.6cm}p{4.4cm}l@{}}
+\toprule
+Component & Finding & Practice & Evidence \\
+\midrule
+Validator & Only \pn{fence.reported.pure_share} of fenced failures
+validate once the fence is removed & Strip fences, revalidate, and record
+the residual violation & \cref{sec:results:concealment} \\
+Schema & A length ceiling written into a pattern is reported as a
+pattern violation; caps below observed lengths drive the dominant
+category & Express length limits separately from patterns; measure
+output lengths before fixing caps & \cref{sec:results:surface} \\
+Retry loop & The parse error for a fenced output never names the
+violation beneath it & Build retry feedback from the fence-stripped
+validation (untested) & \cref{sec:results:concealment} \\
+Evaluation & Aggregate rates are dominated by one configuration;
+primary labels misread a prompt ablation & Report failure composition
+per configuration, counting concealed violations &
+\cref{sec:results:rates,sec:results:concealment} \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\paragraph{Validator: strip fences, then revalidate and record what remains.}
 Fence removal is a partial repair: it recovers the pure-formatting share
 of wrapped failures, which ranged from most of Sonnet~5's to under half
 of Haiku~4.5's (\cref{sec:results:concealment}). A pipeline that counts
 fence removal as a fix would report the compound remainder as solved.
-Because the parse error returned for a fenced output does not mention
-the violation beneath it, the repair loop learns of that violation only
-on a later attempt.
 
-\paragraph{Represent identifier length separately when diagnosis matters.}
+\paragraph{Schema: separate conflated causes and set caps from data.}
 A \code{\{2,30\}} quantifier turns an over-long identifier into a pattern
 violation, and the natural remedy for a pattern violation, loosening the
 character class, leaves it untouched (\cref{sec:results:surface}). A
 separate \code{max\_length} separates the causes at validation time.
-
-\paragraph{Measure a field's observed length distribution before fixing its cap.}
+Caps should likewise be set from a field's observed length distribution.
 Sonnet~4.6's dominant mode came from caps sitting modestly below its
 output lengths, and Haiku~4.5's incomplete runs all ended on length. Such
 a cap may still be a real downstream requirement; the measurement
 identifies the mismatch the application must resolve, not that the cap
 is wrong.
+
+\paragraph{Retry loop: give the model the violation it must fix.}
+The error returned for a fenced output is a JSON parse error, so the
+repair loop learns of a concealed length violation only on a later
+attempt: of the run-nodes that exhausted their retries, most received the
+length error only once (\cref{sec:results:concealment}). Validating the
+fence-stripped payload before composing the retry message would name the
+underlying violation on the first retry. We did not run this variant, so
+we do not claim it would reduce exhaustion; it is the natural design
+change our data point to.
+
+\paragraph{Evaluation: report composition, not only a rate.}
+Over this corpus the attempt-weighted failure rate is largely a statement
+about one configuration (\cref{sec:results:rates}), and reading primary
+labels alone makes a prompt ablation appear to move failures from
+wrapping to length (\cref{sec:results:concealment}). Evaluating a
+pipeline change should therefore report the failure composition per
+configuration, including violations concealed beneath fences, before
+concluding that the change removed a failure.
 
 \paragraph{Will these modes persist?}
 A reasonable objection is that providers are engineering these modes

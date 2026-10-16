@@ -1,0 +1,62 @@
+% Overview of the study design: pipeline, validate-and-retry loop, and the
+% two-stage classifier. Requires: tikz with \usetikzlibrary{positioning,arrows.meta}, adjustbox
+\begin{figure}[!htbp]
+\centering
+\begin{adjustbox}{max width=\linewidth}
+\begin{tikzpicture}[
+  font=\footnotesize,
+  >={Stealth[length=2mm]},
+  node distance=4mm and 6mm,
+  box/.style={draw, rounded corners=2pt, align=center, inner sep=3pt,
+              minimum height=7mm},
+  node/.style={box, fill=black!6, minimum width=17mm},
+  stp/.style={box, minimum width=24mm},
+  cat/.style={align=left, inner sep=2pt},
+  stage/.style={draw, rounded corners=2pt, inner sep=4pt, align=left},
+]
+% --- pipeline row
+\node[box, minimum width=14mm] (q) {Question};
+\node[node, right=of q] (n1) {\textbf{identify}};
+\node[node, right=of n1] (n2) {\textbf{gather}};
+\node[node, right=of n2] (n3) {\textbf{answer}};
+\node[box, right=of n3, minimum width=14mm] (out) {Result};
+\draw[->] (q) -- (n1);
+\draw[->] (n1) -- (n2);
+\draw[->] (n2) -- (n3);
+\draw[->] (n3) -- (out);
+
+% --- one attempt at a node
+\node[stp, below=9mm of n1] (prompt) {Prompt with\\JSON Schema};
+\node[stp, right=of prompt] (llm) {Model\\completion $y$};
+\node[stp, right=of llm] (val) {Pydantic\\validation};
+\draw[->] (prompt) -- (llm);
+\draw[->] (llm) -- (val);
+\draw[->, dashed] (n2.south) -- node[right, pos=0.45, font=\scriptsize]{each node} (llm.north);
+\draw[->] (val.east) -- ++(8mm,0) node[right, font=\scriptsize, align=left]{valid:\\next node};
+\draw[->] (val.south) -- ++(0,-4mm) -| node[pos=0.25, below, font=\scriptsize]
+  {invalid: retry with validation error appended (up to 3 further attempts)} (prompt.south);
+
+% --- classifier
+\node[stage, below=15mm of prompt.south west, anchor=north west, text width=55mm] (s1)
+  {\raggedright\textbf{Stage 1:} predicates on raw text $y$, in order\\[2pt]
+   \cat{markdown\_wrap}: starts with a \texttt{\textasciigrave\textasciigrave\textasciigrave} fence\\
+   \cat{prose\_preamble}: prose before the JSON\\
+   \cat{schema\_mirroring}: returns schema keywords\\[2pt]
+   \emph{first match wins; precedence over Stage 2}};
+\node[stage, right=6mm of s1.north east, anchor=north west, text width=55mm] (s2)
+  {\raggedright\textbf{Stage 2:} if no predicate fires,\\map the Pydantic error type\\[2pt]
+   \cat{regex\_pattern}, \cat{length\_bound}, \cat{enum\_violation},
+   \cat{missing\_field}, \cat{range\_bound}, \cat{parse\_error},
+   \cat{cross\_field\_ref}, catch-all\\[1pt]
+   several errors: plurality category};
+\draw[->] (s1.east |- s2.north west) ++(0,-3mm) -- ++(6mm,0);
+\node[font=\scriptsize, anchor=south west] at (s1.north west) {Classifier: each failed attempt receives one primary category};
+\end{tikzpicture}
+\end{adjustbox}
+\caption{Study design. Each question passes through three nodes, each with
+its own Pydantic schema stated in the prompt; a failed validation is
+retried with the error appended. Every failed attempt is assigned one
+primary category, first by behavioural predicates on the raw completion
+and otherwise by the Pydantic error type (\cref{sec:setup:taxonomy}).}
+\label{fig:overview}
+\end{figure}

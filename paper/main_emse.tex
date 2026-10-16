@@ -9,6 +9,10 @@
 % =====================================================================
 \documentclass[pdflatex,sn-basic]{sn-jnl}   % sn-basic = author-year (natbib)
 
+% sn-jnl uses a two-sided layout, so the text block shifts left/right on
+% alternate pages. A submission PDF is read on screen: use one margin.
+\AtBeginDocument{\setlength{\evensidemargin}{\oddsidemargin}}
+
 % ---- Review mode --------------------------------------------------------
 % Set to \anontrue ONLY if EMSE's guidelines say double-anonymous review.
 \newif\ifanon
@@ -20,13 +24,19 @@
 \usepackage{amsmath,amssymb}  % sn-jnl calls \allowdisplaybreaks (amsmath)
 \usepackage{array}
 \usepackage{booktabs}
-\usepackage{adjustbox}     % shrink-to-fit for wide generated tables
+\usepackage{adjustbox}       % shrink-to-fit for wide generated tables
+\usepackage{flafter}         % a float never appears before the text that introduces it
+\usepackage{tikz}            % overview figure (sections/fig_overview.tex)
+\usetikzlibrary{positioning,arrows.meta}
 \usepackage{graphicx}
 \usepackage{enumitem}
 \usepackage{listings}
 \usepackage{url}
 \usepackage{hyperref}
 \usepackage[capitalise,noabbrev]{cleveref}
+\usepackage{etoolbox}
+\crefname{appendix}{Appendix}{Appendices}
+\AtBeginEnvironment{appendices}{\crefalias{section}{appendix}}
 
 \lstset{basicstyle=\ttfamily\scriptsize,breaklines=true,columns=fullflexible,
         showstringspaces=false,frame=single,upquote=true,
@@ -36,10 +46,15 @@
 % ---- Paper macros (unchanged from main.tex) -----------------------------
 \newcommand{\cat}[1]{\texttt{\small #1}}
 \newcommand{\code}[1]{\texttt{\small #1}}
-\newcommand{\idpattern}{\code{\^{}[a-z][a-z0-9\_]\{2,30\}\$}}
-\newcommand{\idpatternloose}{\code{\^{}[a-zA-Z0-9][a-zA-Z0-9\_\textbackslash-]\{2,30\}\$}}
+\newcommand{\idpattern}{\code{\textasciicircum{}[a-z][a-z0-9\_]\{2,30\}\$}}
+\newcommand{\idpatternloose}{\code{\textasciicircum{}[a-zA-Z0-9][a-zA-Z0-9\_\textbackslash-]\{2,30\}\$}}
 
 \input{generated/numbers}
+
+% Boxed one-paragraph answer at the end of each results subsection.
+\newcommand{\rqanswer}[2]{\par\medskip\noindent
+  \fbox{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
+  \small\textbf{Answer to #1:} #2}}\par\medskip}
 
 % sn-jnl wraps every table in threeparttable, which breaks tables built
 % with \resizebox{...}{!}{\input{generated/...}}. Restore the standard
@@ -49,9 +64,8 @@
 
 \begin{document}
 
-\title[When ``JSON Only'' Isn't Enough]{When ``JSON Only'' Isn't Enough:
-A Fine-Grained Failure Taxonomy for Prompt-Enforced Pydantic Schemas
-Across LLM Families}
+\title[Why Does Structured Output Fail?]{Why Does Structured Output Fail?
+An Empirical Study of Prompt-Enforced Pydantic Schemas Across Nine LLMs}
 
 \ifanon
   \author{\fnm{Anonymous} \sur{Author}}
@@ -64,27 +78,31 @@ Across LLM Families}
 
 % VERIFY the four hard-coded numbers against generated/numbers.tex:
 %   3,997 = reported.attempts ; 52% / 48% = fence compound / pure share.
-\abstract{Pipelines that need structured output from hosted language
-models often state a Pydantic schema in the prompt, validate the reply,
-and retry with the validation error. This prompt-and-validate loop
-persists because native structured-output modes differ in which schema
-features they support and cannot enforce application-level validators.
-Such pipelines are usually judged by a single validity rate, which does
-not tell an engineer why outputs fail, which repair will work, or whether
-a prompt change helped. We define a taxonomy of schema-conformance
-failures, assigned by a deterministic classifier, and apply it to 3,997
-generation attempts from nine OpenAI and Anthropic models on HotpotQA and
-FinanceBench questions. Models with similar validity rates fail in
-different ways, and the dominant failure shifts with the schema's
-constraints and the task, so a validity rate measured in one setting does
-not transfer to another. The most common failure, wrapping JSON in a
-markdown fence, conceals a second violation, usually an over-length
-field, in 52\% of cases, so fence stripping, a common fix, repairs at most
-48\% of fenced failures. An apparent prompt-induced shift from fencing to
-length violations is consistent with exposing violations that were
-already present, which shows how comparing aggregate validity rates can
-mislead. We derive three engineering practices for validation pipelines
-and release the classifier, completions and annotations.}
+\abstract{Pipelines that require structured outputs from hosted language
+models often specify a Pydantic schema in the prompt, validate the
+response, and retry when validation fails. Although native
+structured-output modes provide an alternative, application-side
+validation remains important for enforcing custom constraints. Yet
+pipeline reliability is often summarized by a single validity rate, which
+obscures why outputs fail and which interventions may help. We introduce
+a fine-grained taxonomy of schema-conformance failures and a deterministic
+classifier that assigns failure categories from model responses and
+Pydantic validation errors. We apply this framework to 3,997 generation
+attempts across nine OpenAI and Anthropic model/API configurations, using questions from
+HotpotQA and FinanceBench. Our results show that similar validity rates
+can mask different failure patterns, and that dominant failure categories
+vary with schema constraints and task. Markdown-fenced JSON is the most
+common failure: among 681 fenced failures, only 48.0\% pass validation
+after fence removal, while the remainder conceal additional violations,
+predominantly field-length violations. In an exploratory prompt
+ablation, variants that suppress fences appear to shift failures toward
+length violations, but the shift
+is consistent with exposing violations that were already present,
+illustrating how aggregate validity rates can obscure changes in failure
+composition. We derive four engineering practices for validator, schema,
+retry and evaluation design, three supported by our data and one, on retry
+feedback, proposed but not tested, and release the classifier,
+completions, and annotations.}
 
 \keywords{Large language models, Structured output, Schema validation,
 Pydantic, Failure taxonomy, Empirical study}
