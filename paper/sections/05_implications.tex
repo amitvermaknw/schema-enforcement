@@ -1,0 +1,40 @@
+\section{Implications for Practice}
+\label{sec:implications}
+\label{sec:discussion} % kept so existing \cref{sec:discussion} still resolves
+
+Three practices follow from the data, each at the scale of this corpus.
+
+\paragraph{Strip fences, then revalidate and record what remains.}
+Fence removal is a partial repair: it recovers the pure-formatting share
+of wrapped failures, which ranged from most of Sonnet~5's to under half
+of Haiku~4.5's (\cref{sec:results:concealment}). A pipeline that counts
+fence removal as a fix would report the compound remainder as solved.
+Because the parse error returned for a fenced output does not mention
+the violation beneath it, the repair loop learns of that violation only
+on a later attempt.
+
+\paragraph{Represent identifier length separately when diagnosis matters.}
+A \code{\{2,30\}} quantifier turns an over-long identifier into a pattern
+violation, and the natural remedy for a pattern violation, loosening the
+character class, leaves it untouched (\cref{sec:results:surface}). A
+separate \code{max\_length} separates the causes at validation time.
+
+\paragraph{Measure a field's observed length distribution before fixing its cap.}
+Sonnet~4.6's dominant mode came from caps sitting modestly below its
+output lengths, and Haiku~4.5's incomplete runs all ended on length. Such
+a cap may still be a real downstream requirement; the measurement
+identifies the mismatch the application must resolve, not that the cap
+is wrong.
+
+\paragraph{Will these modes persist?}
+A reasonable objection is that providers are engineering these modes
+away. Our cross-generation data are descriptive and do not isolate model
+generation from other configuration differences, including collection
+date, sampling parameters and endpoint. With that caveat, they point in
+both directions: \cat{schema\_mirroring} dominates gpt-4o and was not
+observed in the GPT-5.6 configurations we tested, while
+\cat{markdown\_wrap} was not observed in Sonnet~4.6 and dominates
+Sonnet~5 and Haiku~4.5. What differs across these models is which
+category dominates. A vocabulary for the categories remains useful as the
+distribution moves, which is a weaker claim than predicting that any
+particular mode persists.

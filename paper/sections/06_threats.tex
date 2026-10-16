@@ -1,0 +1,64 @@
+\section{Threats to Validity}
+\label{sec:threats}
+
+\paragraph{Construct validity.}
+The taxonomy is an operational diagnostic for the prompt-and-validate
+paradigm, not a complete account of structured-output failure. Primary
+categories are single-valued, labels follow how a constraint is encoded
+rather than what it intends (\cref{sec:setup:taxonomy}), and we quantify
+co-occurrence only beneath fences. Classifier agreement is
+development-set agreement from a single labeller who also wrote the
+classifier. We evaluate conformance only, not whether extracted content
+is correct. Among attempts whose model-level validators ran, no
+cross-field violation occurred (\cref{app:crossfield}), but attempts
+rejected earlier, including during JSON parsing, never reached those
+checks, so the zero describes a filtered subset of the node-level
+validators we implemented. Cross-node referential integrity, whether a
+later node's identifiers appear in an earlier node's entities, is not
+implemented in our schemas; it is expressible in Pydantic by passing the
+earlier output as validation context
+(\code{model\_validate\_json(data, context=\ldots)}) and is the natural
+next measurement.
+
+\paragraph{Internal validity.}
+Repair attempts, which are conditioned on a prior failure, make up a
+model-dependent share of each attempt rate; first-attempt rates and run
+completion are reported separately for that reason
+(\cref{app:breakdowns}). Every retry carries the validation error and no
+condition retries without it, so the design does not separate the effect
+of the feedback from that of a further attempt. Five models reject an
+explicit temperature, and the Anthropic and OpenAI branches use
+different token ceilings. Some questions were run more than once; keeping
+only the earliest run per question changes any cell's failure rate by at
+most \pn{robust.within_cell.max_abs_delta_pp} percentage points
+(\cref{app:manifest}). The prompt-ablation variants were run after the
+final baseline batch rather than interleaved with it and are not paired
+by question.
+
+\paragraph{External validity.}
+The schemas are ours, and one ablation showed that a cap we set was
+binding below the output lengths of one model; a different author would
+produce a different distribution over categories, and the domain
+comparison shows that a different task would too. We cover two vendors by
+design, trading breadth for several generations and capability tiers per
+vendor, which the within-family comparisons require; a third vendor or an
+open-weights model may exhibit modes our taxonomy lacks. We do not
+compare against constrained decoding or vendor structured-output modes
+(\cref{sec:related}), so we make no claim about how often those
+configurations would prevent the failures we report. Questions are fixed
+dataset prefixes, the design is not fully crossed, and most failures in
+this corpus come from a single model. Most endpoints returned an alias
+rather than a pinned version, so later calls to the same identifier may
+not reproduce these distributions.
+
+\paragraph{Conclusion validity.}
+Attempts are not independent, so all intervals are question-clustered
+bootstrap intervals (\cref{sec:setup:basis}) that describe variability
+over the observed question set, not over the benchmarks. No conclusion
+depends on ordering models whose intervals overlap. We do not interpret
+cells with a handful of failures, including the identifier-perturbation
+cells and the combined length rates across prompt variants, and we treat
+maximum-gap divergence statistics as secondary because they are selected
+to be extreme (\cref{app:divergence}). The Haiku~4.5 FinanceBench cell
+rests on \pn{c.claude-haiku-4-5@medium@financebench.questions} distinct
+questions.
