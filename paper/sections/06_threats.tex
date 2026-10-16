@@ -47,7 +47,9 @@ different token ceilings. Some questions were run more than once; keeping
 only the earliest run per question changes any cell's failure rate by at
 most \pn{robust.within_cell.max_abs_delta_pp} percentage points
 (\cref{app:manifest}). The prompt ablation is exploratory: the variant
-cells (189 and 176 attempts against 1{,}066; \cref{tab:ablation}) were run after the final baseline batch
+cells (\pn{ablation.aggressive.attempts} and \pn{ablation.few_shot.attempts}
+attempts against \pn{ablation.baseline.attempts}; \cref{tab:ablation}) were
+run after the final baseline batch
 rather than interleaved with it and are not paired by question, so
 differences between conditions may reflect question composition or
 collection time as well as prompt wording. We use it only to show how
@@ -58,7 +60,8 @@ for that.
 \paragraph{Which comparisons are matched.}
 Across all nine configurations, the HotpotQA cells at the medium tier
 share the schema, the baseline system prompt, the retry budget of three
-further attempts, and the same 50-question prefix (\cref{tab:manifest});
+further attempts, and the same
+\pn{matched.hotpotqa_medium.shared_questions}-question prefix (\cref{tab:manifest});
 these cells are the matched basis for cross-model comparison. The
 pooled per-model figures in \cref{tab:models} and \cref{fig:profiles}
 also include FinanceBench for six models; per-cell results are in

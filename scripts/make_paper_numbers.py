@@ -403,6 +403,20 @@ def s_robustness(rep):
     put("robust.one_run.rate", float(one.failed.mean()), "reported")
 
 
+def s_matched(rep):
+    """Matched cross-model basis: HotpotQA medium-tier cells share one question set."""
+    m = rep[(rep.tier == "medium") & (rep.domain == "hotpotqa")]
+    qsets = m.groupby("model")["question"].agg(frozenset)
+    shared = frozenset.intersection(*qsets)
+    union = frozenset.union(*qsets)
+    assert shared == union, (
+        f"HotpotQA medium cells do not share one question set: "
+        f"shared={len(shared)} union={len(union)} per-model={qsets.map(len).to_dict()}")
+    put("matched.hotpotqa_medium.models", int(len(qsets)), "reported")
+    put("matched.hotpotqa_medium.shared_questions", int(len(shared)), "reported")
+    put("matched.hotpotqa_medium.union_questions", int(len(union)), "reported")
+
+
 def s_validation(df, labels):
     lab = labels.merge(df[["id", "cat"]], left_on="attempt_id", right_on="id")
     recovered = {}
@@ -587,6 +601,7 @@ def main() -> int:
     s_calibration(rep)
     s_perturbation(rep)
     s_robustness(rep)
+    s_matched(rep)
     s_validation(df, labels)
     s_cross_field(rep)
     s_tier2(rep)

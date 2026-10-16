@@ -2718,6 +2718,9 @@ manifest.gpt-5.6-terra@medium_v3_loose_regex@hotpotqa@baseline.dates
 manifest.gpt-5.6-terra@medium_v3_loose_regex@hotpotqa@baseline.failures
 manifest.gpt-5.6-terra@medium_v3_loose_regex@hotpotqa@baseline.questions
 manifest.gpt-5.6-terra@medium_v3_loose_regex@hotpotqa@baseline.runs
+matched.hotpotqa_medium.models
+matched.hotpotqa_medium.shared_questions
+matched.hotpotqa_medium.union_questions
 meta.bootstrap.cluster
 meta.bootstrap.interval
 meta.bootstrap.reps

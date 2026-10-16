@@ -2,7 +2,7 @@
   "meta": {
     "db": "results/archive/paper1_FINAL_DATA_locked_v4_20260913.db",
     "sha256": "d0f406f00882dadb4c0aa0b1bea3a4a77b562c80ec46f19fe7d6ad7d4ebfbeb4",
-    "generated_utc": "2026-10-01T19:07:55.175224+00:00"
+    "generated_utc": "2026-10-16T20:42:55.838074+00:00"
   },
   "numbers": {
     "reported.attempts": {
@@ -2663,6 +2663,21 @@
       "basis": "reported",
       "note": "",
       "fmt": "pct"
+    },
+    "matched.hotpotqa_medium.models": {
+      "value": 9,
+      "basis": "reported",
+      "note": ""
+    },
+    "matched.hotpotqa_medium.shared_questions": {
+      "value": 50,
+      "basis": "reported",
+      "note": ""
+    },
+    "matched.hotpotqa_medium.union_questions": {
+      "value": 50,
+      "basis": "reported",
+      "note": ""
     },
     "validation.n": {
       "value": 144,
