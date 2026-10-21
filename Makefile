@@ -15,7 +15,7 @@ GEN     := paper/generated
 TMP     ?= /tmp
 
 .PHONY: help install install-latest verify-db numbers lint-numbers audit counterfactual \
-        check-reclassify check-revalidate repro paper lint-code format pilot clean clean-db
+        check-reclassify check-revalidate check-fence repro paper lint-code format pilot clean clean-db
 
 help:
 	@echo "Offline (no API keys):"
@@ -24,10 +24,11 @@ help:
 	@echo "  verify-db         check the locked database's SHA-256"
 	@echo "  numbers           regenerate paper/generated/* from the locked database"
 	@echo "  lint-numbers      fail on hard-coded or unknown numbers in the paper"
-	@echo "  audit             first-attempt audit (Appendix E) -> audit_review3.md"
-	@echo "  counterfactual    counterfactual revalidation (Section 4.3)"
+	@echo "  audit             first-attempt audit -> audit_review3.md"
+	@echo "  counterfactual    counterfactual revalidation of the relaxed-caps result"
 	@echo "  check-reclassify  re-run the classifier on a copy; expect 0 changed labels"
 	@echo "  check-revalidate  revalidate all 4396 stored completions; expect full agreement"
+	@echo "  check-fence       recompute fence-strip outcomes on a copy; expect 379/789 pure, 0 unstrippable"
 	@echo "  repro             all of the above, in order"
 	@echo "  paper             build paper/main_emse.tex (needs LaTeX)"
 	@echo "  lint-code / format  ruff / black"
@@ -76,7 +77,13 @@ check-revalidate: verify-db
 	@grep -qE '^agree: 4396$$' $(TMP)/revalidate_check.out
 	@echo "check-revalidate OK"
 
-repro: numbers lint-numbers audit counterfactual check-reclassify check-revalidate verify-db
+check-fence: verify-db
+	cp $(DB) $(TMP)/fence_check.db
+	DB_PATH=$(TMP)/fence_check.db $(PY) scripts/fence_strip_revalidation.py --dry-run | tee $(TMP)/fence_check.out
+	@grep -qF 'Summary: 379/789 (48.0%) pure formatting  |  410/789 (52.0%) compound  |  0/789 (0.0%) unstrippable' $(TMP)/fence_check.out
+	@echo "check-fence OK"
+
+repro: numbers lint-numbers audit counterfactual check-reclassify check-revalidate check-fence verify-db
 	@echo "repro OK: all numbers regenerated and all checks passed"
 
 # main.tex is the archived TMLR submission; main_emse.tex is the current manuscript.
