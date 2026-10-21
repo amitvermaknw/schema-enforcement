@@ -703,7 +703,7 @@ def cmd_numbers(a):
     fdom = [{k: c.get(k) for k in ("model", "tier", "domain", "attempts", "failures", "rate", "dominant",
                                    "dominant_share", "fence_n", "fence_pure")} for c in cells_out]
     N.put("fence_by_domain", fdom, "reported", "list")
-    for m in {c["model"] for c in cells_out}:
+    for m in sorted({c["model"] for c in cells_out}):
         doms = {c["domain"]: c.get("dominant") for c in cells_out if c["model"] == m and c["tier"] == "medium"}
         if len(set(doms.values())) > 1:
             N.put(f"domain_shift.{m}", ", ".join(f"{d}={v}" for d, v in sorted(doms.items())), "reported", "str",
