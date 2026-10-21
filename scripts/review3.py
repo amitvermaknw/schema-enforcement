@@ -493,6 +493,94 @@ def code_breakable(s: str) -> str:
     return r"\code{" + tex_esc(s).replace("-", r"-\allowbreak{}") + "}"
 
 
+def retry_feedback_gap(con, sch, a, included, N):
+    # Retry-feedback gap: feedback messages that named only json_invalid while the
+    # fence-stripped payload already violated the schema (upper bound for a loop
+    # that validates the stripped payload before composing the retry message).
+    import json as _json
+    import re as _re
+    sys.path.insert(0, str(Path(a.repo) / "src"))
+    from pydantic import ValidationError
+    from schemaeval.errors import _strip_code_fences
+    from schemaeval.schemas import get_schemas
+    edcol = pick(con, "node_attempts", ["error_details"])
+    b = "reported"
+    schemas = {}
+
+    def schema_for(tier, node):
+        if tier not in schemas:
+            schemas[tier] = dict(zip(("identify", "gather", "answer"), get_schemas(tier)))
+        return schemas[tier][node]
+
+    def cause(t):
+        if t in ("string_too_long", "too_long"):
+            return "length"
+        if t == "string_pattern_mismatch":
+            return "pattern"
+        if t in ("literal_error", "enum"):
+            return "enum"
+        if t == "missing":
+            return "missing"
+        return "other"
+
+    def returned_types(ed):
+        try:
+            return {d.get("type") for d in _json.loads(ed or "[]")}
+        except (ValueError, TypeError, AttributeError):
+            return set()
+
+    def stripped_types(tier, node, raw):
+        try:
+            schema_for(tier, node).model_validate_json(_strip_code_fences(raw or ""))
+            return set()
+        except ValidationError as e:
+            return {d["type"] for d in e.errors()}
+
+    exhausted = {(x["run_id"], x["node_name"]) for x in
+                 con.execute("SELECT run_id, node_name FROM node_runs WHERE success=0")}
+    fb_total = conc_total = 0
+    rn_conc, rn_exh = set(), set()
+    causes, per_fb, per_conc = Counter(), Counter(), Counter()
+    for r in included:
+        model = _re.sub(r"-\d{8}$", "", r.model)
+        rows = con.execute(f"SELECT {sch.node} node, attempt_num, validation_ok ok, {sch.raw} raw, "
+                           f"{edcol} ed FROM node_attempts WHERE run_id=? ORDER BY {sch.node}, attempt_num",
+                           (r.run_id,)).fetchall()
+        by_node = {}
+        for x in rows:
+            by_node.setdefault(x["node"], []).append(x)
+        for node, atts in by_node.items():
+            for x in atts[:-1]:
+                if x["ok"]:
+                    continue
+                fb_total += 1
+                per_fb[model] += 1
+                if returned_types(x["ed"]) != {"json_invalid"}:
+                    continue
+                st = stripped_types(r.tier, node, x["raw"]) - {"json_invalid"}
+                if not st:
+                    continue
+                conc_total += 1
+                per_conc[model] += 1
+                rn_conc.add((r.run_id, node))
+                if (r.run_id, node) in exhausted:
+                    rn_exh.add((r.run_id, node))
+                for c in {cause(t) for t in st}:
+                    causes[c] += 1
+    N.put("retrygap.feedback_msgs", fb_total, b, "int",
+          "failed non-final attempts: their returned error was sent as retry feedback")
+    N.put("retrygap.concealed_msgs", conc_total, b, "int",
+          "feedback naming only json_invalid while the fence-stripped payload violated the schema")
+    N.put("retrygap.concealed_share", conc_total / fb_total if fb_total else 0.0, b, "pct")
+    N.put("retrygap.runnodes", len(rn_conc), b, "int", "run-nodes with >= 1 concealed feedback message")
+    N.put("retrygap.runnodes_exhausted", len(rn_exh), b, "int", "of those, run-nodes that never validated")
+    for c in ("length", "pattern", "enum", "missing", "other"):
+        N.put(f"retrygap.cause.{c}", causes[c], b, "int")
+    for m in sorted(per_fb):
+        N.put(f"retrygap.model.{m}.feedback_msgs", per_fb[m], b, "int")
+        N.put(f"retrygap.model.{m}.concealed_msgs", per_conc[m], b, "int")
+
+
 def concealment_and_hidden(con, sch, a, included, N):
     # Tier 2: (F1) concealment linkage in Haiku's exhausted run-nodes and the feedback
     # their fenced attempts returned; (F2) sensitivity to the supporting-identifier check,
@@ -626,6 +714,7 @@ def cmd_numbers(a):
     included = [r for r in allruns if r.variant == BASELINE and baseline_runs[(r.model, r.tier, r.dataset)] >= PILOT_MIN_RUNS]
     inc_ids = {id(r) for r in included}
     concealment_and_hidden(con, sch, a, included, N)
+    retry_feedback_gap(con, sch, a, included, N)
 
     def tot(rs):
         at = [x for r in rs for x in r.attempts]
