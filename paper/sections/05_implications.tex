@@ -58,13 +58,21 @@ is wrong.
 
 \paragraph{Retry loop: give the model the violation it must fix.}
 The error returned for a fenced output is a JSON parse error, so the
-repair loop learns of a concealed length violation only on a later
-attempt: of the run-nodes that exhausted their retries, most received the
-length error only once (\cref{sec:results:concealment}). Validating the
-fence-stripped payload before composing the retry message would name the
-underlying violation on the first retry. We did not run this variant, so
-we do not claim it would reduce exhaustion; it is the natural design
-change our data point to.
+repair loop learns of a concealed violation only on a later attempt.
+Across the reported basis, \pn{retrygap.concealed_msgs} of the
+\pn{retrygap.feedback_msgs} retry messages sent
+(\pn{retrygap.concealed_share}) named only a parse error while the
+fence-stripped payload already violated the schema, almost all of them
+Haiku~4.5's (\pn{retrygap.model.claude-haiku-4-5.concealed_msgs}) and
+\pn{retrygap.cause.length} of them concealing a length violation; they
+span \pn{retrygap.runnodes} run-nodes, including all
+\pn{retrygap.runnodes_exhausted} that exhausted their retries
+(\cref{sec:results:concealment}). Validating the fence-stripped payload
+before composing the retry message would name the underlying violation
+in each of these messages. This count bounds how often the change would
+alter the feedback, not its effect: we did not run this variant, and
+whether a model repairs a violation once it is named is untested, so we
+do not claim it would reduce retries or exhaustion.
 
 \paragraph{Evaluation: report composition, not only a rate.}
 Over this corpus the attempt-weighted failure rate is largely a statement

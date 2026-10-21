@@ -2,7 +2,7 @@
   "meta": {
     "db": "results/archive/paper1_FINAL_DATA_locked_v4_20260913.db",
     "sha256": "d0f406f00882dadb4c0aa0b1bea3a4a77b562c80ec46f19fe7d6ad7d4ebfbeb4",
-    "generated_utc": "2026-10-21T05:08:33.448582+00:00",
+    "generated_utc": "2026-10-21T05:36:21.287340+00:00",
     "schema_resolution": {
       "attempt_pk": "id",
       "node": "node_name",
@@ -1195,6 +1195,174 @@
     },
     "hidden.exhausted_attempts": {
       "value": 3,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.feedback_msgs": {
+      "value": 1101,
+      "basis": "reported",
+      "note": "failed non-final attempts: their returned error was sent as retry feedback",
+      "fmt": "int"
+    },
+    "retrygap.concealed_msgs": {
+      "value": 354,
+      "basis": "reported",
+      "note": "feedback naming only json_invalid while the fence-stripped payload violated the schema",
+      "fmt": "int"
+    },
+    "retrygap.concealed_share": {
+      "value": 0.3215258855585831,
+      "basis": "reported",
+      "note": "",
+      "fmt": "pct"
+    },
+    "retrygap.runnodes": {
+      "value": 218,
+      "basis": "reported",
+      "note": "run-nodes with >= 1 concealed feedback message",
+      "fmt": "int"
+    },
+    "retrygap.runnodes_exhausted": {
+      "value": 24,
+      "basis": "reported",
+      "note": "of those, run-nodes that never validated",
+      "fmt": "int"
+    },
+    "retrygap.cause.length": {
+      "value": 328,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.cause.pattern": {
+      "value": 26,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.cause.enum": {
+      "value": 2,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.cause.missing": {
+      "value": 1,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.cause.other": {
+      "value": 0,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.model.claude-haiku-4-5.feedback_msgs": {
+      "value": 854,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.model.claude-haiku-4-5.concealed_msgs": {
+      "value": 350,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.model.claude-opus-4-8.feedback_msgs": {
+      "value": 13,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.model.claude-opus-4-8.concealed_msgs": {
+      "value": 0,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.model.claude-sonnet-4-6.feedback_msgs": {
+      "value": 52,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.model.claude-sonnet-4-6.concealed_msgs": {
+      "value": 0,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.model.claude-sonnet-5.feedback_msgs": {
+      "value": 67,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.model.claude-sonnet-5.concealed_msgs": {
+      "value": 4,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.model.gpt-4o.feedback_msgs": {
+      "value": 40,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.model.gpt-4o.concealed_msgs": {
+      "value": 0,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.model.gpt-4o-mini.feedback_msgs": {
+      "value": 32,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.model.gpt-4o-mini.concealed_msgs": {
+      "value": 0,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.model.gpt-5.6-luna.feedback_msgs": {
+      "value": 11,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.model.gpt-5.6-luna.concealed_msgs": {
+      "value": 0,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.model.gpt-5.6-sol.feedback_msgs": {
+      "value": 14,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.model.gpt-5.6-sol.concealed_msgs": {
+      "value": 0,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.model.gpt-5.6-terra.feedback_msgs": {
+      "value": 18,
+      "basis": "reported",
+      "note": "",
+      "fmt": "int"
+    },
+    "retrygap.model.gpt-5.6-terra.concealed_msgs": {
+      "value": 0,
       "basis": "reported",
       "note": "",
       "fmt": "int"
@@ -12725,13 +12893,13 @@
       "fmt": "str"
     },
     "meta.git_head": {
-      "value": "a86a36a685a97230f55bd66efebe736aaa338081",
+      "value": "1a5f52b7c36a39fcfb53981d05321659ef519772",
       "basis": "meta",
       "note": "",
       "fmt": "str"
     },
     "meta.git_head_short": {
-      "value": "a86a36a685",
+      "value": "1a5f52b7c3",
       "basis": "meta",
       "note": "",
       "fmt": "str"
@@ -12757,7 +12925,7 @@
           "dirty": false
         },
         "scripts/review3.py": {
-          "commit": "a86a36a685a97230f55bd66efebe736aaa338081",
+          "commit": "1a5f52b7c36a39fcfb53981d05321659ef519772",
           "dirty": false
         }
       },
