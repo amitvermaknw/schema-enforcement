@@ -1,0 +1,217 @@
+{
+  "n": 100,
+  "agree": 69,
+  "rate": 0.69,
+  "wilson95": [
+    0.5937376052204429,
+    0.7722043679386762
+  ],
+  "population_weighted_rate": 0.7340333333333333,
+  "per_category": {
+    "length_bound": {
+      "n": 30,
+      "agree": 12,
+      "frame_size": 239
+    },
+    "markdown_wrap": {
+      "n": 40,
+      "agree": 34,
+      "frame_size": 660
+    },
+    "regex_pattern": {
+      "n": 30,
+      "agree": 23,
+      "frame_size": 101
+    }
+  },
+  "disagreements": [
+    {
+      "attempt_id": 10,
+      "classifier": "length_bound",
+      "human": "other",
+      "notes": ""
+    },
+    {
+      "attempt_id": 1629,
+      "classifier": "regex_pattern",
+      "human": "enum_violation",
+      "notes": ""
+    },
+    {
+      "attempt_id": 2840,
+      "classifier": "regex_pattern",
+      "human": "enum_violation",
+      "notes": ""
+    },
+    {
+      "attempt_id": 833,
+      "classifier": "markdown_wrap",
+      "human": "length_bound",
+      "notes": ""
+    },
+    {
+      "attempt_id": 1320,
+      "classifier": "regex_pattern",
+      "human": "other",
+      "notes": ""
+    },
+    {
+      "attempt_id": 1029,
+      "classifier": "regex_pattern",
+      "human": "other",
+      "notes": ""
+    },
+    {
+      "attempt_id": 716,
+      "classifier": "markdown_wrap",
+      "human": "length_bound",
+      "notes": ""
+    },
+    {
+      "attempt_id": 3568,
+      "classifier": "regex_pattern",
+      "human": "ambiguous",
+      "notes": ""
+    },
+    {
+      "attempt_id": 2170,
+      "classifier": "length_bound",
+      "human": "ambiguous",
+      "notes": ""
+    },
+    {
+      "attempt_id": 3906,
+      "classifier": "length_bound",
+      "human": "ambiguous",
+      "notes": ""
+    },
+    {
+      "attempt_id": 2338,
+      "classifier": "length_bound",
+      "human": "ambiguous",
+      "notes": ""
+    },
+    {
+      "attempt_id": 3110,
+      "classifier": "length_bound",
+      "human": "ambiguous",
+      "notes": ""
+    },
+    {
+      "attempt_id": 497,
+      "classifier": "length_bound",
+      "human": "ambiguous",
+      "notes": ""
+    },
+    {
+      "attempt_id": 577,
+      "classifier": "length_bound",
+      "human": "ambiguous",
+      "notes": ""
+    },
+    {
+      "attempt_id": 4013,
+      "classifier": "length_bound",
+      "human": "ambiguous",
+      "notes": ""
+    },
+    {
+      "attempt_id": 2025,
+      "classifier": "markdown_wrap",
+      "human": "length_bound",
+      "notes": ""
+    },
+    {
+      "attempt_id": 1196,
+      "classifier": "regex_pattern",
+      "human": "other",
+      "notes": ""
+    },
+    {
+      "attempt_id": 3860,
+      "classifier": "markdown_wrap",
+      "human": "ambiguous",
+      "notes": ""
+    },
+    {
+      "attempt_id": 3171,
+      "classifier": "length_bound",
+      "human": "ambiguous",
+      "notes": ""
+    },
+    {
+      "attempt_id": 2492,
+      "classifier": "markdown_wrap",
+      "human": "ambiguous",
+      "notes": ""
+    },
+    {
+      "attempt_id": 3759,
+      "classifier": "regex_pattern",
+      "human": "other",
+      "notes": ""
+    },
+    {
+      "attempt_id": 2217,
+      "classifier": "length_bound",
+      "human": "ambiguous",
+      "notes": ""
+    },
+    {
+      "attempt_id": 3157,
+      "classifier": "length_bound",
+      "human": "ambiguous",
+      "notes": ""
+    },
+    {
+      "attempt_id": 2368,
+      "classifier": "length_bound",
+      "human": "ambiguous",
+      "notes": ""
+    },
+    {
+      "attempt_id": 2032,
+      "classifier": "length_bound",
+      "human": "ambiguous",
+      "notes": ""
+    },
+    {
+      "attempt_id": 1998,
+      "classifier": "markdown_wrap",
+      "human": "length_bound",
+      "notes": ""
+    },
+    {
+      "attempt_id": 2023,
+      "classifier": "length_bound",
+      "human": "ambiguous",
+      "notes": ""
+    },
+    {
+      "attempt_id": 610,
+      "classifier": "length_bound",
+      "human": "ambiguous",
+      "notes": ""
+    },
+    {
+      "attempt_id": 503,
+      "classifier": "length_bound",
+      "human": "ambiguous",
+      "notes": ""
+    },
+    {
+      "attempt_id": 753,
+      "classifier": "length_bound",
+      "human": "ambiguous",
+      "notes": ""
+    },
+    {
+      "attempt_id": 717,
+      "classifier": "length_bound",
+      "human": "ambiguous",
+      "notes": ""
+    }
+  ],
+  "seed": 20261021,
+  "db": "results/archive/paper1_FINAL_DATA_locked_v4_20260913.db"
+}
