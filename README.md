@@ -54,7 +54,8 @@ assigned category.
 | Schemas: baseline and the two variants | `src/schemaeval/schemas/` |
 | Prompt variants (baseline, aggressive, few-shot) | `src/schemaeval/prompts.py` |
 | Pipeline (three-node sequential, strict-repair loop) | `src/schemaeval/topologies/`, `src/schemaeval/paradigms/` |
-| Hand-label record (144 blind labels) | `hand_labels` table in the database |
+| Development hand labels (144; classifier label shown while labelling, so not blind) | `hand_labels` table in the database |
+| Pre-registered held-out relabel (100 items, blind) | `results/heldout/` |
 | Analysis producing every `\pn{}` number | `scripts/make_paper_numbers.py`, `scripts/review3.py` |
 | Paper source | `paper/` (`main_emse.tex`) |
 
@@ -147,7 +148,7 @@ make paper     # latexmk -pdf main_emse.tex in paper/
 | `runs` | one row per question run: model, schema tier, dataset, prompt variant, question, timestamp, `graph_success` |
 | `node_attempts` | one row per generation attempt: node, `attempt_num`, `raw_output`, `validation_ok`, `primary_category`, `all_categories`, `error_details`, `resolved_model_version` |
 | `node_runs` | per-node summary: tokens, repairs, latency |
-| `hand_labels` | 144 blind human labels with adjudication notes |
+| `hand_labels` | 144 development labels (classifier label displayed, not blind) with adjudication notes |
 | `markdown_wrap_revalidation` | fence-strip outcome for every wrapped failure |
 
 `node_attempts.attempt_num` starts at 0 for the first attempt; retries follow

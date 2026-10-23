@@ -44,7 +44,7 @@ LABELS_SQL = "SELECT attempt_id, classifier_label, ground_truth, notes FROM hand
 REVAL_SQL = "SELECT attempt_id, outcome, compound_category FROM markdown_wrap_revalidation"
 
 # ---- set from diagnostics (2026-09-14) ------------------------------------
-# hand_labels.ground_truth holds the ADJUDICATED label; blind labels are recovered
+# hand_labels.ground_truth holds the ADJUDICATED label; unadjudicated labels (not blind: the classifier label was displayed) are recovered
 # from the CORRECTED notes and must equal this dict (asserted).
 HUMAN_ERRORS = {
     987: ("enum_violation", "regex_pattern"),
