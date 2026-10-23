@@ -1,6 +1,0 @@
-# Files kept in the repository but excluded from `git archive` exports
-# (GitHub release zips and the Zenodo archive): work not reported in the
-# paper and internal working notes.
-scripts/held_out_v1.py    export-ignore
-doc/RUNBOOK_review3.md    export-ignore
-results/doc               export-ignore
