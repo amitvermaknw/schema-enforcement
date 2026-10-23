@@ -130,7 +130,7 @@ text.
 \label{app:classifier}
 
 \paragraph{Provenance.}
-Hand labelling was performed against an earlier classifier in which
+Development labelling was performed against an earlier classifier in which
 Pydantic error-type mapping preceded the behavioural predicates.
 Schema-mirrored outputs were consequently labelled \cat{missing\_field}
 and prose-preamble outputs \cat{parse\_error}. We corrected the order and
@@ -143,20 +143,38 @@ released database reproduces the stored primary label of all
 \paragraph{Agreement.}
 The sample was drawn from all \pn{full.failures} failures in the corpus,
 including pilot cells and prompt variants. \Cref{tab:validation} reports
-precision and recall of the corrected classifier against the \emph{blind}
-human labels. The four disagreements were adjudicated as labelling
+precision and recall of the corrected classifier against the author's
+unadjudicated development labels, assigned with the classifier's label
+displayed. The four disagreements were adjudicated as labelling
 errors: three outputs labelled \cat{enum\_violation} carried a
 \code{string\_pattern\_mismatch} on an identifier, and one labelled \cat{markdown\_wrap} contained no fence. The first three
 are checkable against the stored error record and the fourth against the raw
-completion, without reference to the labeller. We headline blind agreement
+completion, without reference to the labeller. We headline unadjudicated agreement
 because adjudication uses evidence the labeller did not consult. The sample
 contains every \cat{enum\_violation}, \cat{prose\_preamble} and
 \cat{schema\_mirroring} failure in the corpus, so a held-out check with a
 frozen classifier can test only the remaining categories.
 
+\paragraph{Held-out check.}
+The protocol, sample and seed were committed to the repository before
+labelling, in \code{PREREGISTRATION.md} under \code{results/heldout/}.
+The labelling screen showed model, dataset, tier, node and the raw output, truncated in the middle
+for long outputs as in the development round, but not the classifier's
+label, and offered no default answer. Labelling was restarted once, after
+the precedence rule was reread and before any score was computed; the
+restarted pass is the one reported. Agreement was
+\pn{heldout.cat.markdown_wrap.agree} of \pn{heldout.cat.markdown_wrap.n}
+for \cat{markdown\_wrap}, \pn{heldout.cat.regex_pattern.agree} of
+\pn{heldout.cat.regex_pattern.n} for \cat{regex\_pattern}, and
+\pn{heldout.cat.length_bound.agree} of \pn{heldout.cat.length_bound.n}
+for \cat{length\_bound}. The annotator marked \pn{heldout.ambiguous}
+items ambiguous; excluding them, agreement is
+\pn{heldout.nonambiguous.rate} (post hoc). The per-item disagreement
+record is released as \code{results/heldout/adjudication.md}.
+
 \begin{table}[ht]
 \centering\small
-\caption{Corrected classifier against blind human labels
+\caption{Corrected classifier against unadjudicated development labels
 ($n=\pn{validation.n}$), full corpus frame. Recall is computed within the
 label-stratified sample, not over the corpus.}
 \label{tab:validation}

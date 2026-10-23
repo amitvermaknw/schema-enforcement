@@ -82,11 +82,10 @@ failures from the schema violations beneath them, and uses targeted
 interventions to tell failure causes apart. Concretely:
 \begin{enumerate}[leftmargin=1.4em,itemsep=1pt,topsep=2pt]
   \item A reproducible diagnostic taxonomy and deterministic classifier,
-  with an explicit precedence rule, development-set checks against human
-  labels, and released code that relabels the corpus from stored
-  completions (\cref{sec:setup:taxonomy}).
-  % DECISION D1: if held-out, second-labeller validation is completed,
-  % restore "validated against held-out human labels (Cohen's kappa ...)".
+  with an explicit precedence rule, a development check and a
+  pre-registered, blind held-out check against human labels, and released
+  code that relabels the corpus from stored completions
+  (\cref{sec:setup:taxonomy}).
   \item Evidence that visible formatting failures conceal underlying
   violations: the parse error returned for a fenced output never names
   the violation beneath it, and ignoring concealment misreads both repair

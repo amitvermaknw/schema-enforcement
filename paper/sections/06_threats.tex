@@ -9,17 +9,18 @@ The taxonomy is an operational diagnostic for the prompt-and-validate
 paradigm, not a complete account of structured-output failure. Primary
 categories are single-valued, labels follow how a constraint is encoded
 rather than what it intends (\cref{sec:setup:taxonomy}), and we quantify
-co-occurrence only beneath fences. Classifier agreement is
-development-set agreement from a single labeller who also wrote the
-classifier: no second annotator labelled the sample, and no held-out set
-was labelled after the classifier was frozen, so we report no
-inter-annotator agreement. Three properties limit what this can affect.
+co-occurrence only beneath fences. Human checks of the classifier come from a single labeller who also
+wrote it. The development check displayed the classifier's label and is
+not independent; the pre-registered held-out check was blind and gives
+\pn{heldout.rate} agreement, but covers only the three categories with
+attempts left after development, and no second annotator labelled either
+sample, so we report no inter-annotator agreement. Three properties limit what this can affect.
 Stage-1 categories are syntactic predicates on the raw completion, and
 corpus-wide screens that do not depend on any human label find no
 missed case among the failures they match (\cref{app:classifier}). Stage-2 categories are a fixed map
 from the Pydantic error types stored with each attempt, and rerunning the
 released classifier over the database reproduces every stored label.
-The four blind disagreements were resolved against the stored error
+Disagreements in both checks were resolved against the stored error
 record or the raw completion, not the labeller's judgement. The residual
 risk lies in the category definitions and the precedence rule rather than
 in label noise; we release the annotations and stored completions so that

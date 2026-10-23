@@ -159,17 +159,44 @@ occur, and \cat{cross\_field\_ref}, \cat{missing\_field},
 \end{table}
 
 \paragraph{Validation.}
-We hand-labelled \pn{validation.n} failing attempts stratified by
-predicted category, blind to the classifier's output, drawn from the full
-corpus of \pn{full.failures} failures so that rare categories had
-support. Labelling surfaced a detection-order defect in an earlier
+We checked the classifier against human labels twice. During development
+we hand-labelled \pn{validation.n} failing attempts stratified by
+predicted category, drawn from the full corpus of \pn{full.failures}
+failures so that rare categories had support. The labelling screen
+displayed the classifier's label, and the author consulted an LLM
+assistant when interpreting outputs; every label was assigned by the
+author. This labelling surfaced a detection-order defect in an earlier
 classifier, in which Pydantic mapping preceded the behavioural
 predicates; we corrected the order and reclassified the corpus. Against
-the corrected classifier, blind agreement is \pn{validation.blind_agree}
-of \pn{validation.n} (\pn{validation.blind_rate}, Wilson 95\% CI over labelled attempts
-\pn{validation.blind_ci}). On adjudication all four disagreements were
-labelling errors. Because these samples also surfaced the defect, this is
-development-set agreement, not held-out validation, and a single labeller
-who also wrote the classifier produced every label.
-\Cref{app:classifier} gives per-category precision and recall and
-over-broad corpus screens for the Stage-1 categories.
+the corrected classifier, unadjudicated agreement is
+\pn{validation.blind_agree} of \pn{validation.n}
+(\pn{validation.blind_rate}, Wilson 95\% CI \pn{validation.blind_ci}),
+and on adjudication all four disagreements were labelling errors. Because
+the classifier's label was visible and these samples shaped the
+classifier, this is a development-time consistency check, not
+independent validation.
+
+After freezing the classifier we ran a pre-registered held-out check:
+\pn{heldout.n} further failures from the reported basis, excluding every
+development item and stratified over the three categories with attempts
+remaining, labelled by hand by the author with the classifier's label
+hidden and without AI assistance on any item. Agreement is
+\pn{heldout.agree} of \pn{heldout.n} (\pn{heldout.rate}, Wilson 95\% CI
+\pn{heldout.ci}; \pn{heldout.weighted_rate} weighted by category
+frequency). Checked post hoc against the validator's error record and the
+raw completion, none of the \pn{heldout.disagree} disagreements showed
+the classifier misapplying the category definitions or the precedence
+rule. In \pn{heldout.dis.length_unverified} the annotator could not
+confirm from the displayed output a length overflow the validator
+reported; \pn{heldout.dis.fence_underlying} fenced outputs were labelled
+by the violation beneath the fence and \pn{heldout.dis.fence_ambiguous}
+more were marked ambiguous; and \pn{heldout.dis.identifier_pattern}
+identifier pattern mismatches were labelled otherwise,
+\pn{heldout.dis.identifier_as_enum} of them as \cat{enum\_violation}, the
+confusion behind three of the four development disagreements. Stage-2
+labels are a fixed map from validator errors, so human labels chiefly
+test the category definitions and the Stage-1 predicates, and unaided
+reading cannot verify a length label. The gap between the two figures is
+consistent with anchoring on the displayed label in the development
+round. \Cref{app:classifier} gives per-category results and corpus
+screens for the Stage-1 categories.
