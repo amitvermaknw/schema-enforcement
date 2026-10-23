@@ -2,7 +2,7 @@
   "meta": {
     "db": "results/archive/paper1_FINAL_DATA_locked_v4_20260913.db",
     "sha256": "d0f406f00882dadb4c0aa0b1bea3a4a77b562c80ec46f19fe7d6ad7d4ebfbeb4",
-    "generated_utc": "2026-10-21T05:36:21.939123+00:00"
+    "generated_utc": "2026-10-23T04:24:55.339798+00:00"
   },
   "numbers": {
     "reported.attempts": {
@@ -2765,6 +2765,129 @@
       },
       "basis": "full",
       "note": "against blind human labels (pre-adjudication)"
+    },
+    "heldout.n": {
+      "value": 100,
+      "basis": "heldout",
+      "note": "blind single-annotator relabel; reported basis minus development set"
+    },
+    "heldout.agree": {
+      "value": 69,
+      "basis": "heldout",
+      "note": "blind single-annotator relabel; reported basis minus development set"
+    },
+    "heldout.rate": {
+      "value": 0.69,
+      "basis": "heldout",
+      "note": "blind single-annotator relabel; reported basis minus development set"
+    },
+    "heldout.ci": {
+      "value": [
+        0.5937394420163071,
+        0.7722030284514743
+      ],
+      "basis": "heldout",
+      "note": "blind single-annotator relabel; reported basis minus development set"
+    },
+    "heldout.weighted_rate": {
+      "value": 0.734033,
+      "basis": "heldout",
+      "note": "weighted by frame size"
+    },
+    "heldout.cat.length_bound.n": {
+      "value": 30,
+      "basis": "heldout",
+      "note": ""
+    },
+    "heldout.cat.length_bound.agree": {
+      "value": 12,
+      "basis": "heldout",
+      "note": ""
+    },
+    "heldout.cat.length_bound.frame": {
+      "value": 239,
+      "basis": "heldout",
+      "note": ""
+    },
+    "heldout.cat.markdown_wrap.n": {
+      "value": 40,
+      "basis": "heldout",
+      "note": ""
+    },
+    "heldout.cat.markdown_wrap.agree": {
+      "value": 34,
+      "basis": "heldout",
+      "note": ""
+    },
+    "heldout.cat.markdown_wrap.frame": {
+      "value": 660,
+      "basis": "heldout",
+      "note": ""
+    },
+    "heldout.cat.regex_pattern.n": {
+      "value": 30,
+      "basis": "heldout",
+      "note": ""
+    },
+    "heldout.cat.regex_pattern.agree": {
+      "value": 23,
+      "basis": "heldout",
+      "note": ""
+    },
+    "heldout.cat.regex_pattern.frame": {
+      "value": 101,
+      "basis": "heldout",
+      "note": ""
+    },
+    "heldout.ambiguous": {
+      "value": 20,
+      "basis": "heldout",
+      "note": ""
+    },
+    "heldout.nonambiguous.n": {
+      "value": 80,
+      "basis": "heldout",
+      "note": "post hoc"
+    },
+    "heldout.nonambiguous.agree": {
+      "value": 69,
+      "basis": "heldout",
+      "note": "post hoc"
+    },
+    "heldout.nonambiguous.rate": {
+      "value": 0.8625,
+      "basis": "heldout",
+      "note": "post hoc"
+    },
+    "heldout.disagree": {
+      "value": 31,
+      "basis": "heldout",
+      "note": "post hoc grouping; see results/heldout/adjudication.md"
+    },
+    "heldout.dis.length_unverified": {
+      "value": 18,
+      "basis": "heldout",
+      "note": "post hoc"
+    },
+    "heldout.dis.fence_underlying": {
+      "value": 4,
+      "basis": "heldout",
+      "note": "post hoc"
+    },
+    "heldout.dis.fence_ambiguous": {
+      "value": 2,
+      "basis": "heldout",
+      "note": "post hoc"
+    },
+    "heldout.dis.identifier_pattern": {
+      "value": 7,
+      "basis": "heldout",
+      "note": "post hoc"
+    },
+    "heldout.dis.identifier_as_enum": {
+      "value": 2,
+      "basis": "heldout",
+      "note": "post hoc"
     },
     "crossfield.validated": {
       "value": 2871,
@@ -15417,13 +15540,13 @@
       "fmt": "str"
     },
     "meta.git_head": {
-      "value": "1a5f52b7c36a39fcfb53981d05321659ef519772",
+      "value": "3fa1bff2551346c92e6ca22a4f4bac5857d96c8c",
       "basis": "meta",
       "note": "",
       "fmt": "str"
     },
     "meta.git_head_short": {
-      "value": "1a5f52b7c3",
+      "value": "3fa1bff255",
       "basis": "meta",
       "note": "",
       "fmt": "str"
@@ -15441,7 +15564,7 @@
           "dirty": false
         },
         "scripts/make_paper_numbers.py": {
-          "commit": "37befdab703c5936b55134e11bec4987e53d6c73",
+          "commit": "3fa1bff2551346c92e6ca22a4f4bac5857d96c8c",
           "dirty": false
         },
         "scripts/render_paper_assets.py": {

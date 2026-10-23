@@ -2,7 +2,7 @@
   "meta": {
     "db": "results/archive/paper1_FINAL_DATA_locked_v4_20260913.db",
     "sha256": "d0f406f00882dadb4c0aa0b1bea3a4a77b562c80ec46f19fe7d6ad7d4ebfbeb4",
-    "generated_utc": "2026-10-21T05:36:21.287340+00:00",
+    "generated_utc": "2026-10-23T04:24:54.735523+00:00",
     "schema_resolution": {
       "attempt_pk": "id",
       "node": "node_name",
@@ -12893,13 +12893,13 @@
       "fmt": "str"
     },
     "meta.git_head": {
-      "value": "1a5f52b7c36a39fcfb53981d05321659ef519772",
+      "value": "3fa1bff2551346c92e6ca22a4f4bac5857d96c8c",
       "basis": "meta",
       "note": "",
       "fmt": "str"
     },
     "meta.git_head_short": {
-      "value": "1a5f52b7c3",
+      "value": "3fa1bff255",
       "basis": "meta",
       "note": "",
       "fmt": "str"
@@ -12917,7 +12917,7 @@
           "dirty": false
         },
         "scripts/make_paper_numbers.py": {
-          "commit": "37befdab703c5936b55134e11bec4987e53d6c73",
+          "commit": "3fa1bff2551346c92e6ca22a4f4bac5857d96c8c",
           "dirty": false
         },
         "scripts/render_paper_assets.py": {
