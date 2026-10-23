@@ -440,6 +440,55 @@ def s_validation(df, labels):
             "full", "against blind human labels (pre-adjudication)")
 
 
+def s_heldout(df):
+    """Held-out blind relabel (pre-registered in results/heldout/PREREGISTRATION.md)."""
+    import csv
+    import json
+    hd = Path("results/heldout")
+    with (hd / "sample.csv").open() as fh:
+        ids = [int(r["attempt_id"]) for r in csv.DictReader(fh)]
+    with (hd / "labels.csv").open() as fh:
+        human = {int(r["attempt_id"]): r["human_label"] for r in csv.DictReader(fh)}
+    score = json.loads((hd / "score.json").read_text())
+    assert set(human) == set(ids), "labels.csv does not cover sample.csv exactly"
+    cls = df.set_index("id").loc[ids, "cat"].to_dict()
+    b, note = "heldout", "blind single-annotator relabel; reported basis minus development set"
+    n = len(ids)
+    agree = sum(cls[i] == human[i] for i in ids)
+    assert (n, agree) == (score["n"], score["agree"]), f"disagrees with score.json: {(n, agree)}"
+    put("heldout.n", n, b, note)
+    put("heldout.agree", agree, b, note)
+    put("heldout.rate", agree / n, b, note)
+    put("heldout.ci", wilson(agree, n), b, note)
+    put("heldout.weighted_rate", float(score["population_weighted_rate"]), b, "weighted by frame size")
+    for c, v in score["per_category"].items():
+        k = sum(cls[i] == c and human[i] == c for i in ids)
+        m = sum(cls[i] == c for i in ids)
+        assert (m, k) == (v["n"], v["agree"]), f"per-category mismatch for {c}"
+        put(f"heldout.cat.{c}.n", m, b)
+        put(f"heldout.cat.{c}.agree", k, b)
+        put(f"heldout.cat.{c}.frame", int(v["frame_size"]), b)
+    amb = [i for i in ids if human[i] == "ambiguous"]
+    rest = [i for i in ids if human[i] != "ambiguous"]
+    put("heldout.ambiguous", len(amb), b)
+    put("heldout.nonambiguous.n", len(rest), b, "post hoc")
+    put("heldout.nonambiguous.agree", sum(cls[i] == human[i] for i in rest), b, "post hoc")
+    put("heldout.nonambiguous.rate", sum(cls[i] == human[i] for i in rest) / len(rest), b, "post hoc")
+    dis = [i for i in ids if cls[i] != human[i]]
+    groups = {
+        "length_unverified": [i for i in dis if cls[i] == "length_bound"],
+        "fence_underlying": [i for i in dis if cls[i] == "markdown_wrap" and human[i] != "ambiguous"],
+        "fence_ambiguous": [i for i in dis if cls[i] == "markdown_wrap" and human[i] == "ambiguous"],
+        "identifier_pattern": [i for i in dis if cls[i] == "regex_pattern"],
+    }
+    assert sum(map(len, groups.values())) == len(dis), "disagreement groups do not partition"
+    put("heldout.disagree", len(dis), b, "post hoc grouping; see results/heldout/adjudication.md")
+    for g, v in groups.items():
+        put(f"heldout.dis.{g}", len(v), b, "post hoc")
+    put("heldout.dis.identifier_as_enum",
+        sum(human[i] == "enum_violation" for i in groups["identifier_pattern"]), b, "post hoc")
+
+
 def s_cross_field(rep):
     err = rep.err.fillna("")
     cross = err.apply(lambda s: any(m in s for m in VALIDATOR_MESSAGES))
@@ -603,6 +652,7 @@ def main() -> int:
     s_robustness(rep)
     s_matched(rep)
     s_validation(df, labels)
+    s_heldout(df)
     s_cross_field(rep)
     s_tier2(rep)
     s_zero_length(rep)
