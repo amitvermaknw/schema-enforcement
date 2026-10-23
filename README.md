@@ -3,6 +3,8 @@
 Code, data and analysis for *Why Does Structured Output Fail? An Empirical
 Study of Prompt-Enforced Pydantic Schemas Across Nine LLMs*.
 
+Archived version (release `emse-submission`): https://doi.org/10.5281/zenodo.23586834
+
 Every number in the paper is regenerated from one locked SQLite database by
 the scripts in this repository; none is typed by hand. Reproducing them needs
 no API keys and makes no model calls.
